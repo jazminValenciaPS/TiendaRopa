@@ -11,5 +11,7 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js(['resources/assets/js/app.js'], 'public/js/app.js')
-    .sass('resources/sass/app.scss', 'public/css');
+mix.styles(['resources/assests/plantillas/css/marialize.css',
+'resources/assests/plantillas/css/marialize.min.css'],'public/css/plantilla.css')
+.scripts(['resources/assests/plantillas/js/marialize.js',
+'resources/assests/plantillas/css/marialize.min.js'],'public/css/plantilla.js')
