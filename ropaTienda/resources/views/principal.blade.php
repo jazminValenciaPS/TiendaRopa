@@ -59,7 +59,6 @@
        @include('plantilla.navbar')      
 
        <!--Inicia Contenido Principal-->
-       <h1>Aquí va el contenido</h1>
          @yield('contenido')
        <!--Termina Contenido Principal-->
      </div>
