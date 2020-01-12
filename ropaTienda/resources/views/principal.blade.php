@@ -16,6 +16,9 @@
            width: 200px;
 
         }
+        .textoArribos{
+          margin-top: -23px;
+        }
         .centerText{
             margin-left: 30px;
         }

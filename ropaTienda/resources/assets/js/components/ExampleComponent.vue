@@ -1,19 +1,4 @@
 <template>
-<!-- 
- <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Example Component</div>
-
-                    <div class="card-body">
-                     HOLAAAA
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
     <main class="main">
         <div class="container ">
             <div class="row">
@@ -30,8 +15,8 @@
     
         <div class="row ">
             <div class="col s3 borde"></div>
-            <div class="col s3 right-align tamañoMedio" >Nuevos</div>
-            <div class="col h3 s3 tamañoMedio">arrivos</div>  
+            <div class="col s3 right-align tamañoMedio" ><div class="textoArribos">Nuevos</div></div>
+            <div class="col h3 s3 tamañoMedio"><div class="textoArribos">arrivos</div></div>  
             <div class="col s3 borde"></div>  
         </div>  
 
@@ -41,7 +26,6 @@
                 <div class="card medium">
                     <div class="card-image ">
                         <img src="img/topAzul.jpg">
-                        <span class="card-title">Card Title</span>
                     </div>
                     <div class="card-content">
                         <p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y 
@@ -60,7 +44,6 @@
                 <div class="card medium">
                     <div class="card-image ">
                         <img src="img/topAzul.jpg">
-                        <span class="card-title">Card Title</span>
                     </div>
                     <div class="card-content">   
                         <p>Lorem Ipsum Lorem Lorem  Melissa paolaes simplemente el texto de relleno de las imprentas y 
@@ -78,7 +61,6 @@
                 <div class="card medium ">
                     <div class="card-image ">
                         <img src="img/topAzul.jpg">
-                        <span class="card-title">Card Title</span>
                     </div>
                     <div class="card-content">
                         <p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y 

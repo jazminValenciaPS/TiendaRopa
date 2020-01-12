@@ -2018,24 +2018,6 @@ module.exports = {
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 document.addEventListener('DOMContentLoaded', function () {
   var elems = document.querySelectorAll('.carousel');
   var instances = M.Carousel.init(elems, {
@@ -37466,11 +37448,11 @@ var staticRenderFns = [
         _c("div", { staticClass: "col s3 borde" }),
         _vm._v(" "),
         _c("div", { staticClass: "col s3 right-align tamañoMedio" }, [
-          _vm._v("Nuevos")
+          _c("div", { staticClass: "textoArribos" }, [_vm._v("Nuevos")])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "col h3 s3 tamañoMedio" }, [
-          _vm._v("arrivos")
+          _c("div", { staticClass: "textoArribos" }, [_vm._v("arrivos")])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "col s3 borde" })
@@ -37480,15 +37462,13 @@ var staticRenderFns = [
         _c("div", { staticClass: "col s2 m4" }, [
           _c("div", { staticClass: "card medium" }, [
             _c("div", { staticClass: "card-image " }, [
-              _c("img", { attrs: { src: "img/topAzul.jpg" } }),
-              _vm._v(" "),
-              _c("span", { staticClass: "card-title" }, [_vm._v("Card Title")])
+              _c("img", { attrs: { src: "img/topAzul.jpg" } })
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "card-content" }, [
               _c("p", [
                 _vm._v(
-                  "Lorem Ipsum es simplemente el texto de relleno de las imprentas y \n                        archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de \n                        las industrias desde el año 1500, cuando un impresor (N. del T. persona\n                        que se dedica a la imprenta) desconocido usó una galería de textos.\n                        "
+                  "Lorem Ipsum es simplemente el texto de relleno de las imprentas y \n                    archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de \n                    las industrias desde el año 1500, cuando un impresor (N. del T. persona\n                    que se dedica a la imprenta) desconocido usó una galería de textos.\n                    "
                 )
               ])
             ]),
@@ -37502,15 +37482,13 @@ var staticRenderFns = [
         _c("div", { staticClass: "col s2 m4" }, [
           _c("div", { staticClass: "card medium" }, [
             _c("div", { staticClass: "card-image " }, [
-              _c("img", { attrs: { src: "img/topAzul.jpg" } }),
-              _vm._v(" "),
-              _c("span", { staticClass: "card-title" }, [_vm._v("Card Title")])
+              _c("img", { attrs: { src: "img/topAzul.jpg" } })
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "card-content" }, [
               _c("p", [
                 _vm._v(
-                  "Lorem Ipsum Lorem Lorem  Melissa paolaes simplemente el texto de relleno de las imprentas y \n                        archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de \n                        las industrias desde el año 1500, cuando un impresor (N. del T. persona\n                        que se dedica a la imprenta) desconocido usó una galería de textos."
+                  "Lorem Ipsum Lorem Lorem  Melissa paolaes simplemente el texto de relleno de las imprentas y \n                    archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de \n                    las industrias desde el año 1500, cuando un impresor (N. del T. persona\n                    que se dedica a la imprenta) desconocido usó una galería de textos."
                 )
               ])
             ]),
@@ -37524,15 +37502,13 @@ var staticRenderFns = [
         _c("div", { staticClass: "col s2 m4 " }, [
           _c("div", { staticClass: "card medium " }, [
             _c("div", { staticClass: "card-image " }, [
-              _c("img", { attrs: { src: "img/topAzul.jpg" } }),
-              _vm._v(" "),
-              _c("span", { staticClass: "card-title" }, [_vm._v("Card Title")])
+              _c("img", { attrs: { src: "img/topAzul.jpg" } })
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "card-content" }, [
               _c("p", [
                 _vm._v(
-                  "Lorem Ipsum es simplemente el texto de relleno de las imprentas y \n                        archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de \n                        las industrias desde el año 1500, cuando un impresor (N. del T. persona\n                        que se dedica a la imprenta) desconocido usó una galería de textos."
+                  "Lorem Ipsum es simplemente el texto de relleno de las imprentas y \n                    archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de \n                    las industrias desde el año 1500, cuando un impresor (N. del T. persona\n                    que se dedica a la imprenta) desconocido usó una galería de textos."
                 )
               ])
             ]),
