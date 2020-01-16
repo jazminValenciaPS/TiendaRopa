@@ -1,0 +1,59 @@
+
+.tImagen{
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+}
+.productos{
+  margin-top: 40px;
+ 
+}
+.logoNav{
+  width: 80px;  
+}
+.tLogo{
+    height:100px;
+    width: 200px;
+
+ }
+ .textoArribos{
+   margin-top: -23px;
+ }
+ .centerText{
+     margin-left: 30px;
+ }
+ .menuCentrado{
+     padding-left: 35%;
+   /* position: fixed;
+    z-index:10;
+    border-top:0;*/
+ }
+ .menuCentradoConsola{
+  padding-left: 20%;
+/* position: fixed;
+ z-index:10;
+ border-top:0;*/
+}
+.centerTextConsola{
+  margin-right: 90px;
+}
+ .borde{
+   border: 1px solid black;
+   color: black;
+ }
+ .contenedorCard{
+   width: 1400px;
+   padding-left: 10%;
+   padding-right: 9%;
+   margin-right: 0px;
+   margin-left: 0px;
+   margin-bottom: 0px;
+
+}
+.tamañoCarousel{
+ max-width: 600px;
+ width: 80%;
+}
+.tamañoMedio{
+ font-size: 2em;
+}

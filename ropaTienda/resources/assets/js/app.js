@@ -20,6 +20,11 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('ropa-component', require('./components/Ropa.vue').default);
+Vue.component('accesorios-component', require('./components/Accesorios.vue').default);
+Vue.component('cosmeticos-component', require('./components/Cosmeticos.vue').default);
+Vue.component('subcategorias-component', require('./consoleComponents/Subcategorias.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

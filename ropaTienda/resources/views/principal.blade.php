@@ -11,43 +11,7 @@
       <meta name="csrf-token" content="{{ csrf_token()  }}">
         <!-- Styles -->
       <style>
-        .tImagen{
-           height:100px;
-           width: 200px;
-
-        }
-        .textoArribos{
-          margin-top: -23px;
-        }
-        .centerText{
-            margin-left: 30px;
-        }
-        .menuCentrado{
-            padding-left: 35%;
-          /* position: fixed;
-           z-index:10;
-           border-top:0;*/
-        }
-        .borde{
-          border: 1px solid black;
-          color: black;
-        }
-        .contenedorCard{
-          width: 1400px;
-          padding-left: 10%;
-          padding-right: 9%;
-          margin-right: 0px;
-          margin-left: 0px;
-          margin-bottom: 0px;
-
-       }
-       .tamañoCarousel{
-        max-width: 600px;
-        width: 80%;
-       }
-       .tamañoMedio{
-        font-size: 2em;
-       }
+       
        
       </style>
    </head>
@@ -56,7 +20,7 @@
      <div id="app">
        <div class="row">
          <div class="col s12 m12 l12 center">
-           <img class="tImagen" src="img/algoPrecioso.png" alt="">
+           <img class="tLogo" src="img/algoPrecioso.png" alt="">
          </div>
        </div>
        @include('plantilla.navbar')      

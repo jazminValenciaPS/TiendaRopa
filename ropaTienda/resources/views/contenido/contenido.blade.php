@@ -4,12 +4,12 @@
     <example-component></example-component>
     </template>
     <template v-if="menu==1">
-        <h1>menu1 </h1>
+        <ropa-component></ropa-component>
     </template>
     <template v-if="menu==2">
-        <h1>menu 2</h1>
+        <accesorios-component><accesorios-component>
     </template>
     <template v-if="menu==3">
-        <h1>menu 3</h1>
+        <cosmeticos-component><cosmeticos-component>
     </template>
 @endsection

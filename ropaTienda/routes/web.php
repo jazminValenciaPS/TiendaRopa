@@ -14,3 +14,28 @@
 Route::get('/', function () {
     return view('contenido/contenido');
 });
+Route::get('/consola', function () {
+    return view('contenido/consola');
+});
+// Sub Categorias
+Route::get('/subcategoria', 'SubCategoriaController@index');
+Route::post('/subcategoria/registrar', 'SubCategoriaController@store');
+Route::put('/subcategoria/actualizar', 'SubCategoriaController@update');
+Route::put('/subcategoria/desactivar', 'SubCategoriaController@desactivar');
+Route::put('/subcategoria/activar', 'SubCategoriaController@activar');
+
+//Productos
+// Route::get('/productos', 'ProductoController@index');
+
+//Colores
+Route::get('/colores', 'ColorController@index');
+Route::post('/colores/registrar', 'ColorController@store');
+Route::put('/colores/actualizar', 'ColorController@update');
+
+
+//Slider
+Route::get('/slider', 'SliderController@index');
+Route::post('/slider/registrar', 'SliderController@store');
+Route::put('/slider/actualizar', 'SliderController@update');
+Route::put('/slider/desactivar', 'SliderController@desactivar');
+Route::put('/slider/activar', 'SliderController@activar');

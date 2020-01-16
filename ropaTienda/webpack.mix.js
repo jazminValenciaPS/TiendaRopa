@@ -13,7 +13,8 @@ const mix = require('laravel-mix');
 
 mix.styles([
     'resources/assets/plantilla/css/materialize.css',
-'resources/assets/plantilla/css/materialize.min.css'],'public/css/plantilla.css')
+'resources/assets/plantilla/css/materialize.min.css',
+'resources/assets/plantilla/css/estilos.css'],'public/css/plantilla.css')
 .scripts(['resources/assets/plantilla/js/materialize.js',
 'resources/assets/plantilla/js/materialize.min.js'],'public/js/plantilla.js')
 .js(['resources/assets/js/app.js'],'public/js/app.js');
