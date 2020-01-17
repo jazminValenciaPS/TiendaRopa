@@ -19,14 +19,14 @@
   <!-- Compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
 <script>
-$(document).ready(function() {
-    $('#selectValue').on('change',function(){
-      var data = $("#selectValue").find(":selected").val();
+    $(document).ready(function() {
+        $('#selectValue').on('change',function(){
+        var data = $("#selectValue").find(":selected").val();
 
-     console.log(data);
+        console.log(data);
+        });
+
     });
-
- });
 
 </script>
 
