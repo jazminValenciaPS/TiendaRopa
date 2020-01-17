@@ -11,12 +11,16 @@
 |
 */
 
+//Ruta página principal
 Route::get('/', function () {
     return view('contenido/contenido');
 });
+
+//Ruta página de administrador "consola"
 Route::get('/consola', function () {
     return view('contenido/consola');
 });
+
 // Sub Categorias
 Route::get('/subcategoria', 'SubCategoriaController@index');
 Route::post('/subcategoria/registrar', 'SubCategoriaController@store');
@@ -25,7 +29,7 @@ Route::put('/subcategoria/desactivar', 'SubCategoriaController@desactivar');
 Route::put('/subcategoria/activar', 'SubCategoriaController@activar');
 
 //Productos
-// Route::get('/productos', 'ProductoController@index');
+Route::get('/productos', 'ProductoController@index');
 
 //Colores
 Route::get('/colores', 'ColorController@index');

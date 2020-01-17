@@ -2,6 +2,7 @@
 @section('consola')
     <template v-if="menu==0">
     <h3>Altas y bajas de sliders</h3>
+    <sliders-component></sliders-component>
 
     </template>
     <template v-if="menu==1">
@@ -13,5 +14,6 @@
     </template>
     <template v-if="menu==3">
     <h3>Altas y bajas de productos</h3>
+    <productos-component></productos-component>
     </template>
 @endsection

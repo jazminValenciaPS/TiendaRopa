@@ -8,7 +8,7 @@ class Slider extends Model
 {
     protected $table = 'Slider';
     protected $fillable = [
-        'idImagen','Status'
+        'imagen'
     ];
 
     public function imagen(){
