@@ -7,18 +7,18 @@ use App\subCategoria;
 
 class SubCategoriaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        //if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
 
         $buscar = $request->buscar;
         $criterio = $request->criterio;
         
         if ($buscar==''){
-            $subCat = subCategoria::orderBy('id', 'desc')->paginate(3);
+            $subCat = subCategoria::orderBy('idSubCategorias', 'desc')->paginate(3);
         }
         else{
-            $subCat = subCategoria::where($criterio, 'like', '%'. $buscar . '%')->orderBy('id', 'desc')->paginate(3);
+            $subCat = subCategoria::where($criterio, 'like', '%'. $buscar . '%')->orderBy('idSubCategorias', 'desc')->paginate(3);
         }
         
 
