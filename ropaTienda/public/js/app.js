@@ -2532,30 +2532,66 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-$(document).ready(function () {
-  var instance = M.FormSelect.getInstance(elem);
-  $('select').formSelect();
-  $('select').formSelect('methodName');
-  $('select').formSelect('methodName', paramName);
-});
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       nombre: '',
       arraySubcategoria: [],
       modal: 0,
-      tituloModal: ''
+      tituloModal: '',
+      pagination: {
+        " total": 0,
+        'current_page': 0,
+        'per_page': 0,
+        'last_page': 0,
+        'from': 0,
+        'to': 0
+      },
+      offset: 3,
+      criterio: 'nombre',
+      buscar: ''
     };
   },
+  computed: {
+    isActived: function isActived() {
+      return this.pagination.current_page;
+    },
+    //Calcula los elementos de la paginación
+    pagesNumber: function pagesNumber() {
+      if (!this.pagination.to) {
+        return [];
+      }
+
+      var from = this.pagination.current_page - this.offset;
+
+      if (from < 1) {
+        from = 1;
+      }
+
+      var to = from + this.offset * 2;
+
+      if (to >= this.pagination.last_page) {
+        to = this.pagination.last_page;
+      }
+
+      var pagesArray = [];
+
+      while (from <= to) {
+        pagesArray.push(from);
+        from++;
+      }
+
+      return pagesArray;
+    }
+  },
   methods: {
-    listarSubcategoria: function listarSubcategoria() {
-      var m = this;
-      axios.get('/subcategoria').then(function (response) {
-        m.arraySubcategoria = response.data;
+    listarSubcategoria: function listarSubcategoria(page, buscar, criterio) {
+      var me = this;
+      var url = 'subcategoria/?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.arrayPersona = respuesta.personas.data;
+        me.pagination = respuesta.pagination;
       })["catch"](function (error) {
         console.log(error);
       });
@@ -2581,17 +2617,10 @@ $(document).ready(function () {
             }
           }
       }
-    },
-    inicializar: function inicializar() {
-      document.addEventListener('DOMContentLoaded', function () {
-        var elems = document.querySelectorAll('select');
-        var instances = M.FormSelect.init(elems);
-      });
     }
   },
   mounted: function mounted() {
-    this.listarSubcategoria();
-    this.inicializar();
+    this.listarPersona(1, this.buscar, this.criterio);
   }
 });
 
@@ -39543,11 +39572,58 @@ var render = function() {
   return _c("main", { staticClass: "main" }, [
     _c("div", { staticClass: "row", class: { mostrar: _vm.modal } }, [
       _c("div", { staticClass: "col s12 center" }, [
-        _c("h3", { domProps: { textContent: _vm._s(_vm.tituloModal) } }),
+        _c("h3", { domProps: { textContent: _vm._s(_vm.tituloModal) } }, [
+          _vm._v("Sub Categoria")
+        ]),
         _vm._v(" "),
         _vm._m(0),
         _vm._v(" "),
-        _vm._m(1)
+        _c("div", { staticClass: "form-group row" }, [
+          _c("div", { staticClass: "input-field col s6" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.criterio,
+                    expression: "criterio"
+                  }
+                ],
+                staticClass: "form-control col-md-3",
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.criterio = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
+                }
+              },
+              [
+                _c("option", { attrs: { value: "Ropa" } }, [_vm._v("Ropa")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "Accesorios" } }, [
+                  _vm._v("Accesorios")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "Cosmticos" } }, [
+                  _vm._v("Cosméticos")
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c("label", [_vm._v("Seleccione la categoría")])
+          ])
+        ])
       ])
     ]),
     _vm._v(" "),
@@ -39637,22 +39713,6 @@ var staticRenderFns = [
       }),
       _vm._v(" "),
       _c("label", { attrs: { for: "subcategoria" } }, [_vm._v("Nombre")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-field col s6" }, [
-      _c("select", [
-        _c("option", { attrs: { value: "1" } }, [_vm._v("Ropa")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "2" } }, [_vm._v("Accesorios")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "3" } }, [_vm._v("Cosméticos")])
-      ]),
-      _vm._v(" "),
-      _c("label", [_vm._v("Seleccione la categoría")])
     ])
   }
 ]

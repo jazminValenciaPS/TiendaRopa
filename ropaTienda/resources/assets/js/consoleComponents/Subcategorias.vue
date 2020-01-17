@@ -45,15 +45,6 @@
 </template>
 
 <script>
-    $(document).ready(function(){
-        var instance = M.FormSelect.getInstance(elem);
-
-        $('select').formSelect();
-        
-        $('select').formSelect('methodName');
-        $('select').formSelect('methodName', paramName);
-    });
-
     export default {
         data(){
             return{
@@ -61,14 +52,58 @@
                 nombre: '',
                 arraySubcategoria:[],
                 modal : 0,
-                tituloModal : '' 
+                tituloModal : '',
+                pagination: {
+                   " total" : 0,
+                    'current_page' : 0,
+                    'per_page' : 0,
+                    'last_page' : 0,
+                    'from' : 0,
+                    'to' : 0,
+                },
+                offset: 3,
+                criterio: 'nombre',
+                buscar: ''
+            }
+                
+        },
+        computed:{
+            isActived: function(){
+                return this.pagination.current_page;
+            },
+            //Calcula los elementos de la paginación
+            pagesNumber: function() {
+                if(!this.pagination.to) {
+                    return [];
+                }
+                
+                var from = this.pagination.current_page - this.offset; 
+                if(from < 1) {
+                    from = 1;
+                }
+
+                var to = from + (this.offset * 2); 
+                if(to >= this.pagination.last_page){
+                    to = this.pagination.last_page;
+                }  
+
+                var pagesArray = [];
+                while(from <= to) {
+                    pagesArray.push(from);
+                    from++;
+                }
+                return pagesArray;             
+
             }
         },
         methods:{
-            listarSubcategoria(){
-             let m=this;
-            axios.get('/subcategoria').then(function (response){
-                m.arraySubcategoria = response.data;
+            listarSubcategoria(page,buscar,criterio){
+              let me=this;
+                var url= 'subcategoria/?page=' + page + '&buscar='+ buscar + '&criterio='+ criterio;
+                axios.get(url).then(function (response) {
+                    var respuesta= response.data;
+                    me.arrayPersona = respuesta.personas.data;
+                    me.pagination= respuesta.pagination;
             })
             .catch(function(error){
                 console.log(error);
@@ -100,19 +135,11 @@
                         }
                 }
 
-            },
-            inicializar(){
-            document.addEventListener('DOMContentLoaded', function() {
-                        var elems = document.querySelectorAll('select');
-                        var instances = M.FormSelect.init(elems);
-                    });
-            },
+            }
           
         },
         mounted() {
-            this.listarSubcategoria();
-            this.inicializar();
-
+            this.listarPersona(1,this.buscar,this.criterio);
           
         }
      };

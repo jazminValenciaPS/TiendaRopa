@@ -9,7 +9,30 @@ class SubCategoriaController extends Controller
 {
     public function index()
     {
-        return $subCat = subCategoria::all();
+        //if (!$request->ajax()) return redirect('/');
+
+        $buscar = $request->buscar;
+        $criterio = $request->criterio;
+        
+        if ($buscar==''){
+            $subCat = subCategoria::orderBy('id', 'desc')->paginate(3);
+        }
+        else{
+            $subCat = subCategoria::where($criterio, 'like', '%'. $buscar . '%')->orderBy('id', 'desc')->paginate(3);
+        }
+        
+
+        return [
+            'pagination' => [
+                'total'        => $subCat->total(),
+                'current_page' => $subCat->currentPage(),
+                'per_page'     => $subCat->perPage(),
+                'last_page'    => $subCat->lastPage(),
+                'from'         => $subCat->firstItem(),
+                'to'           => $subCat->lastItem(),
+            ],
+            'subCat' => $subCat
+        ];
          
     }
 
