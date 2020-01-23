@@ -16,7 +16,7 @@ class CreateSliderTable extends Migration
         Schema::create('slider', function (Blueprint $table) {
             $table->bigIncrements('idSlider');
            
-            $table->boolean('Status')->default(0);
+            $table->boolean('Status')->default(1);
            // $table->foreign('idImagen')->references('idImagen')->on('imagenes')->onDelete('cascade');
            $table->string('imagen',256);
             $table->timestamps();

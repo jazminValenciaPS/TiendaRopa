@@ -20,7 +20,7 @@ class CreateSubCategoriasTable extends Migration
             $table->foreign('idCate')->references('idCategorias')->on('categorias');
             
             $table->string('Nombre',250);
-            $table->boolean('Status')->default(0);
+            $table->boolean('Status')->default(1);
             
             $table->timestamps();
         });

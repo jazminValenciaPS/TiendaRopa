@@ -1,8 +1,21 @@
 
+ body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+main {
+  flex: 1 0 auto;
+  font-family: sans-serif;
+}
 .tImagen{
     width: 300px;
     height: 300px;
     border-radius: 50%;
+}
+.imagenEdit{
+  width: 30%;
+  height: 30%;
 }
 .productos{
   margin-top: 40px;
@@ -42,7 +55,7 @@
    color: black;
  }
  .contenedorCard{
-   width: 1400px;
+   width: 100%;
    padding-left: 10%;
    padding-right: 9%;
    margin-right: 0px;
@@ -56,4 +69,9 @@
 }
 .tamañoMedio{
  font-size: 2em;
+}
+.page-footer {
+  position: flex;
+  bottom: 0;
+  width: 100%;
 }

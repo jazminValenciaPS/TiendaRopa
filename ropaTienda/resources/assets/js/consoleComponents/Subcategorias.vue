@@ -1,42 +1,64 @@
-
-
 <template>
     <main class="main">
-        <div class="row" :class="{'mostrar' : modal}" >
-            <div class="col s6">
-                    <div class="input-field">
-                        <input  id="subcategoria" type="text" class="validate">
-                        <label for="subcategoria">Nombre</label>
 
-                        <select name="LeaveType" @change="onChange($event)" class="browser-default" v-model="key">
+        <!-- Inicia modal -->
+
+            <div class="modal fade" tabindex="-1" :class="{'mostrar' : modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+                  <div class="col s6">
+
+                <h3 v-text="tituloModal"></h3>
+                    <div class="input-field">
+                        <!-- input para el nombre de la Sub categoria -->
+                        <input id="nombre" type="text" v-model="Nombre" class="validate">
+                        <label  for="nombre">Nombre</label>
+                        <br> 
+                        <!-- select Sub categorias -->
+                        <select name="LeaveType" class="browser-default" v-model="idCate">
                             <option value="" disabled selected>Selecciona la categoria</option>
                             <option value="1">Ropa</option>
                             <option value="2">Accesorios</option>
                             <option value="3">Cosmeticos</option>
-                        </select>  
+                        </select> 
+                        <br>
+                        <!-- recoleccion de imagenes para la sub categoria -->       
+                         <form action="#">
+                            <div class="file-field input-field">
+                                <div class="btn deep-orange lighten-4">
+                                    <span class="brown-text" >Imagen</span>
+                                    <input id="file" ref="filea" type="file" data-vv-scope="new"  v-on:change="seleccionarImagen(1)" class="subCategoriaAlta">
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" type="text">
+                                </div>
+                            </div>
+                        </form>                          
                     </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="right col s2">
-                <a class="btn-floating btn-large waves-effect waves-light deep-orange lighten-4 right" @click="abrirModal('subcategoria','registrar')"><i class="brown-text material-icons">add</i></a>
+          
+            <div class="modal-footer">
+                <a class=" espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text"  @click="nuevaSubCategoria()">Guardar</a>
+                <button type="button" class=" espacioButton btn btn-secondary deep-orange lighten-4 brown-text" @click="cerrarModal()">Cerrar</button>
             </div>
-        </div>
-
+         </div>
+       <!-- Termina modal  -->
+      
         <div class="row">
             <div class="col s12">    
-                <ul class="collection" v-for="subcategoria in arraySubcategoria" :key="subcategoria.id">
-
+                <div class="row">
+                    <div class="right col s2">
+                        <a class="btn-floating btn-large waves-effect waves-light deep-orange lighten-4 right" @click="abrirModal('subCategoria','registrar')"><i class="brown-text material-icons">add</i></a>
+                    </div>
+                </div>
+                <ul class="collection" v-for="subcategoria in arraySubcategoria" :key="subcategoria.idSubCategorias">
                     <li class="collection-item avatar">
-                        <img src="img/topAzul.jpg" alt="" class="circle">
-                    </li>
-
-                     <p class="center" v-text="subcategoria.Nombre"><br></p>
+                        <img :src="'img/'+subcategoria.imagenSub" class="circle">
+                        <p v-text="subcategoria.Nombre"></p>
+                        <p v-text="subcategoria.NombreCategorias"></p>
                     <a href="#!" class="secondary-content">
-                    <i class="material-icons" @click="abrirModal('categoria','actualizar',subcategoria)">create</i>
-                    <i class="material-icons">delete</i></a>
+                    <i class="material-icons" @click="abrirModal('subCategoria','actualizar',subcategoria)">create</i>
+                    <i class="material-icons" @click="desactivarSubCategorias(subcategoria.idSubCategorias)">delete</i></a>
+                    </li>
                 </ul>
-
             </div>
         </div>
     </main>
@@ -46,16 +68,168 @@
     export default {
         data(){
             return{
-                key: "",
-                nombre: '',
+                idSubCategorias: 0,
+                idCate: 0,
+                Nombre: '',
+                status: '1',
+                nombreCat: '',
                 arraySubcategoria:[],
                 modal : 0,
+                imagenSub: '',
+                tituloModal : 'Registrar Sub Categorias' ,
+                cambio : 0,
+                file: ''
             }
         },
         methods: {
-            onChange(event) {
-                console.log(event.target.value)
+            listarSubCategorias(){
+             let m=this;
+             axios.get('/subcategoria').then(function (response){
+                    m.arraySubcategoria = response.data;
+                  
+                })
+                .catch(function(error){
+                    console.log(error);
+                });
+
+            },
+            limpiar() {
+                let me = this;
+                me.errors.clear('new');
+                me.errors.clear('update');
+                
+                me.img = '';
+                me.Cambio = 0;
+            },
+            seleccionarImagen(img){
+                if (img == 1) {            
+                    this.file = this.$refs.filea.files[0];
+                    readURL(document.getElementsByClassName("subCategoriaAlta")[0], 1);
+                }
+                else {
+                    this.file = this.$refs.filec.files[0];
+                    readURL(document.getElementsByClassName("subCategoriaEdit")[0], 2);
+                }
+                this.cambio = 1;
+
+                function readURL(input, img) {
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            if (img == 1) {
+                                $('.imgAlta').attr('src', e.target.result);
+                            }
+                            else {
+                                $('.imgCambio').attr('src', e.target.result);
+                            }
+                        };
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                }
+            },
+            nuevaSubCategoria(even,nombre) {
+                let me = this;
+
+                //Validamos si la informacion modificada es correcta
+                // me.$validator.validateAll('new').then(valid => {
+                //     if (valid) {
+                let formData = new FormData();
+                formData.append('file', me.file);
+                formData.append('idCate', me.idCate);
+                formData.append('Nombre', me.Nombre);
+
+                
+                
+                //Registramos la informacion
+                axios.post('/subcategoria/registrar', formData, {
+                    
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+
+                })
+                .then(function (response) {
+                    me.cerrarModal();
+                    me.listarSubCategorias();
+                    // var toastHTML = '<span>Slider Registrado Correctamente</span>';
+                    // M.toast({ html: toastHTML, classes: 'rounded tos', displayLength: 1500 });
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            //}
+            // else {
+            //     var toastHTML = '<span>Corrige la información e intente de nuevo</span>';
+            //     M.toast({html: toastHTML, classes: 'rounded tos'});
+            // }
+            
+            },
+            cerrarModal(){
+                this.modal=0;
+                this.idCate=""
+                this.Nombre="";
+                this.Status='1';
+                this.tituloModal='';
+                this.imagenSub='nuevo '
+            },
+            abrirModal(modelo,accion, data = []){
+                switch(modelo){
+                    case "subCategoria":{
+                        switch(accion){
+                            case 'registrar':
+                                {
+                                    this.modal = 1;
+                                    this.nombre = '';
+                                    this.status = '';
+                                    this.tituloModal = 'Registrar Sub categoria';
+                                    break;
+
+                                }
+                            case 'actualizar':
+                                {
+                                    this.modal = 1;
+                                    this.idSubCategorias = data['idSubCategorias']
+                                    this.idCate = data['idCate']
+                                    this.nombre = data['Nombre'];
+                                    this.tipoAccion = 2;
+                                    this.tituloModal = 'Actualizar Sub categoria';
+                                    break;
+                                }
+                        }
+
+                    }
+                }
+
+            },
+            desactivarSubCategorias(id){
+                console.log(id)
+                let me = this;
+
+                axios.put('/subcategoria/desactivar',{
+                    'id': id
+                }).then(function (response) {
+                    me.listarSubCategorias();
+                    console.log('entro a then')
+                }).catch(function (error) {
+                    console.log(error);
+                }); 
             }
+
+        },
+        mounted(){
+            this.listarSubCategorias();
+          
         }
-    }
+    };
 </script>
+<style>
+    .mostrar{
+        display: list-item !important;
+        opacity: 1 !important; 
+        position: absolute !important;
+        background-color: pink !important;
+    }  
+    .espacioButton{
+        margin-left: 10px !important;
+    }
+</style>

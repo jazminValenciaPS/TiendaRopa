@@ -26,6 +26,8 @@ Vue.component('cosmeticos-component', require('./components/Cosmeticos.vue').def
 Vue.component('subcategorias-component', require('./consoleComponents/Subcategorias.vue').default);
 Vue.component('sliders-component', require('./consoleComponents/Sliders.vue').default);
 Vue.component('productos-component', require('./consoleComponents/Productos.vue').default);
+Vue.component('colores-component', require('./consoleComponents/Colores.vue').default);
+
 
 
 
