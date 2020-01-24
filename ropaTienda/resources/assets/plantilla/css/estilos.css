@@ -75,3 +75,7 @@ main {
   bottom: 0;
   width: 100%;
 }
+.centro{
+   margin-left: 30% !important;
+   margin-right: 30% !important;
+}

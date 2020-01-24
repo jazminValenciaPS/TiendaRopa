@@ -9,12 +9,17 @@ class ColorController extends Controller
 {
     public function index()
     {
-        $colores = Colores::all();
+       
+        $colores = Colores::all()->where('Status','=','1');;
         return $colores;
     }
 
     public function store(Request $request)
     {
+        $validateData = $request->validate([
+           'Nombre' => 'unique:colores,Nombre'
+         ] );
+
         $colores = new Colores();
         $colores->Nombre = $request->Nombre;
         
@@ -28,12 +33,13 @@ class ColorController extends Controller
         $colores->save();   
     }
 
-    // public function desactivar(Request $request)
-    // {
-    //     $colores = Colores::findOrFail($request->id);
-        
-    //     $colores->save(); 
-    // }
+    
+    public function desactivar(Request $request)
+    {
+        $colores = Colores::findOrFail($request->id);
+        $colores->Status = '0';
+        $colores->save(); 
+    }
     
     // public function activar(Request $request)
     // {

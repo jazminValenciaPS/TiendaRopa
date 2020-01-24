@@ -34,7 +34,8 @@ Route::get('/productos', 'ProductoController@index');
 //Colores
 Route::get('/colores', 'ColorController@index');
 Route::post('/colores/registrar', 'ColorController@store');
-Route::put('/colores/actualizar', 'ColorController@update');
+Route::put('/colores/desactivar', 'ColorController@desactivar');
+
 
 
 //Slider

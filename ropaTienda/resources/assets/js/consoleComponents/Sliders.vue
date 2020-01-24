@@ -9,7 +9,7 @@
                             <span aria-hidden="true">×</span>
                             </button> -->
                             <div class="col s5 center">
-                                         <img :src="'img/'+img"  class="imagenEdit" alt="">
+                                         <img v-if="tipoAccion==2" :src="'img/'+img"  class="imagenEdit" alt="">
                                     </div>
                                 <div class="form-group row">
                                     <div class="col s10 center">
@@ -215,6 +215,49 @@
                 // });
                       
                     
+                                me.limpiar();
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                        
+            },
+            cerrarModal(){
+                this.modal=0;
+                this.tituloModal='';
+                this.img='';
+            },
+            abrirModal(modelo,accion, data = []){
+                switch(modelo){
+                    case "sliders":
+                        {
+                            switch(accion){
+                                case 'registrar':
+                                    {
+                                        this.modal = 1;
+                                        this.nombre = '';
+                                        this.tipoAccion = 1;
+                                        this.tituloModal = 'Registrar Sliders';
+                                        break;
+
+                                    }
+                                case 'actualizar':
+                                    {
+                                        this.modal = 2;
+                                        this.nombre = '';
+                                        this.tipoAccion = 2;
+                                        this.tituloModal = 'Actualizar Slider';
+                                        this.id=data['id'];
+                                        this.img=data['imagen'];
+
+                                        break;
+                                    }
+                            }
+
+                        }
+                }
+
+            },
             },
             cerrarModal(){
                 this.modal=0;
@@ -258,24 +301,21 @@
             this.listarSliders();
         }
      };    
- </script>
+</script>
 
 <style>
-
-   .modal-content{
-        width: 100% !important;
-        position: absolute !important;
-        background-color: pink !important;
-       
-        height: 600px;
-    }
-    .mostrar{
-        display: list-item !important;
-        opacity: 1 !important;
-        position: absolute !important;
-        z-index: 100;
-    }
-
+.modal-content{
+    width: 100% !important;
+    position: absolute !important;
+    background-color: pink !important;
+    height: 600px;
+}
+.mostrar{
+    display: list-item !important;
+    opacity: 1 !important;
+    position: absolute !important;
+    z-index: 100;
+}
 .centrado{
     height:560px;
      margin-left: 20%;

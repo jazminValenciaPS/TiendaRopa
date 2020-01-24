@@ -24,8 +24,6 @@ class SliderController extends Controller
     public function store(Request $request)
     {
         $slider = new Slider();
-        
-
         $imagen = Peticion::file('file');
         
         $extension = $imagen->guessExtension();

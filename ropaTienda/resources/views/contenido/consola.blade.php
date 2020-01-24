@@ -2,7 +2,7 @@
 @section('consola')
     <template v-if="menu==0">
     <sliders-component></sliders-component>
-
+<h1>Hola</h1>
     </template>
     <template v-if="menu==1">
     <colores-component></colores-component>

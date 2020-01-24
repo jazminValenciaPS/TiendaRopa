@@ -17,14 +17,15 @@ class SubCategoriaController extends Controller
     public function index(Request $request) {
         if (!$request->ajax()) return redirect('/');
 
-        return $subCat = subCategoria::all();
+        return $subCat = subCategoria::all()->where('Status','=','1');
 
-        // $subCat = subCategoria::join('categorias','sub_categorias.idCate', '=' ,'categorias.idCategorias')
-        //     ->select('sub_categorias.idSubCategorias', 'sub_categorias.idCate', 'sub_categorias.Nombre', 'categorias.nombre as NombreCategorias','sub_categorias.Status')
-        //     ->where('sub_categorias.Status = 1')
-        //     ->orderBy('sub_categorias.idSubCategorias', 'desc');
+        // $subCat = subCategoria::join('categorias','categorias.idCategorias', '=' ,)
+        //     ->select('sub_categorias.idSubCategorias', 'sub_categorias.idCate', 'sub_categorias.Nombre', 
+        //     'categorias.nombre as NombreCategorias','sub_categorias.Status')
+        //     ->where('Status','=','1');
+        //    ->orderBy('sub_categorias.idSubCategorias', 'desc');
 
-        // return ['subCat' => $subCat];
+        // return ['subCate' => $subCat];
          
     }
 
@@ -51,12 +52,13 @@ class SubCategoriaController extends Controller
     }
     public function update(Request $request)
     {
-        $subCat = subCategoria::findOrFail($request->idSubCategorias);
+        if (!$request->ajax()) return redirect('/');
+
+        $subCat = subCategoria::findOrFail($request->id);
         $subCat->idCate = $request->idCate;
         $subCat->Nombre = $request->Nombre;
-        $subCat->Status = '1';
+        // $subCat->Status = '1';
        
-
         $imagenSub = Peticion::file('file');
                
         $extension = $imagenSub->guessExtension();
@@ -64,6 +66,7 @@ class SubCategoriaController extends Controller
         $prefijo = 'Image';
         $nombreImagen = $prefijo.'_'.$date.'.'.$extension;
         $imagenSub->move('img', $nombreImagen);
+        
         $subCat->imagenSub = $nombreImagen;
         
                 
@@ -72,14 +75,14 @@ class SubCategoriaController extends Controller
 
     public function desactivar(Request $request)
     {
-        $subCat = subCategoria::findOrFail($request->i);
+        $subCat = subCategoria::findOrFail($request->id);
         $subCat->Status = '0';
         $subCat->save(); 
     }
     
     public function activar(Request $request)
     {
-        $subCat = subCategoria::findOrFail($request->idSubCategorias);
+        $subCat = subCategoria::findOrFail($request->id);
         $subCat->Status = '1';
         $subCat->save();
     }

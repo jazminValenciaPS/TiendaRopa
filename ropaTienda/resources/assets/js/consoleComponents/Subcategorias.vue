@@ -55,7 +55,7 @@
                         <p v-text="subcategoria.Nombre"></p>
                         <p v-text="subcategoria.NombreCategorias"></p>
                     <a href="#!" class="secondary-content">
-                    <i class="material-icons" @click="abrirModal('subCategoria','actualizar',subcategoria)">create</i>
+                    <i class="material-icons" @click="actualizarSubCategoria()">create</i>
                     <i class="material-icons" @click="desactivarSubCategorias(subcategoria.idSubCategorias)">delete</i></a>
                     </li>
                 </ul>
@@ -207,13 +207,29 @@
 
                 axios.put('/subcategoria/desactivar',{
                     'id': id
-                }).then(function (response) {
+                }).then(response => { 
+                     me.listarSubCategorias();
+                    console.log(response)
+                })
+                .catch(error => {
+                    console.log(error.response)
+                });
+            },
+            actualizarSubCategoria(){
+                let me = this;
+
+                axios.put('/subcategoria/actualizar',{
+                    'Nombre': this.Nombre,
+                    'idCate': this.idCate,
+                    'imagenSub': this.imagenSub,
+                    'idSubCategorias': this.idSubCategorias
+                }).then( response => {
+                    me.cerrarModal();
                     me.listarSubCategorias();
-                    console.log('entro a then')
-                }).catch(function (error) {
+                }).catch(error => {
                     console.log(error);
                 }); 
-            }
+            },
 
         },
         mounted(){
