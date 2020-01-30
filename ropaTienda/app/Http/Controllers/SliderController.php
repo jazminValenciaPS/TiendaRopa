@@ -41,7 +41,7 @@ class SliderController extends Controller
     
     public function update(Request $request)
      {
-        $slider = Slider::findOrFail(1);
+        $slider = Slider::findOrFail($request->id);
 
         $imagen = Peticion::file('file');
         $extension = $imagen -> guessExtension();

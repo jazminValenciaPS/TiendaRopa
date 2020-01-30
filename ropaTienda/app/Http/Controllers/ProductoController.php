@@ -11,15 +11,40 @@ class ProductoController extends Controller
     public function index(Request $request){
         // if (!$request->ajax()) return redirect('/');
 
-        // $buscar = $request->buscar;
-        // $criterio = $request->criterio;
+        $buscar = $request->buscar;
+        $criterio = $request->criterio;
 
-        $productos = Producto::paginate(2);
+        // $productos = Producto::paginate(2);
+        if ($buscar==''){
+            $personas = Producto::join('tallas','producto.idTalla','=','tallas.idTalla')
+            ->join('imagenes','producto.idImg','=','imagenes.idImagen')
+            ->join('sub_categorias','producto.idSubcat','=','sub_categorias.idSubCategorias')
+            ->join('colores','producto.idColor','=','colores.id')
+            ->select('tallas.idTalla','tallas.Talla','imagenes.idImagen',
+            'imagenes.Imagen','sub_categorias.idSubCategorias','sub_categorias.Nombre',
+            'colores.id','colores.Nombre','producto.Nombre','producto.Descripcion',
+            'producto.Precio','producto.Existencia')
+            ->orderBy('personas.id', 'desc')->paginate(3);
+        }
+        else{
+            $personas = Producto::join('tallas','producto.idTalla','=','tallas.idTalla')
+            ->join('imagenes','producto.idImg','=','imagenes.idImagen')
+            ->join('sub_categorias','producto.idSubcat','=','sub_categorias.idSubCategorias')
+            ->join('colores','producto.idColor','=','colores.id')
+            ->select('tallas.idTalla','tallas.Talla','imagenes.idImagen',
+            'imagenes.Imagen','sub_categorias.idSubCategorias','sub_categorias.Nombre',
+            'colores.id','colores.Nombre','producto.Nombre','producto.Descripcion',
+            'producto.Precio','producto.Existencia')
+            ->where('personas.'.$criterio, 'like', '%'. $buscar . '%')
+            ->orderBy('personas.id', 'desc')->paginate(3);
+        }
 
-        // if($buscar == ''){
-        //     $productos = Producto::orderBy('id','desc')->paginate(3); 
-        // }
-        // $productos = Producto::all();
+
+
+        if($buscar == ''){
+            $productos = Producto::orderBy('idProducto','desc')->paginate(3); 
+        }
+         $productos = Producto::all();
         return [
                 "pagination" => [
                     "total" => $productos -> total(),

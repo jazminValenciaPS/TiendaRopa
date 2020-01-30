@@ -7,10 +7,14 @@
                   <div class="col s6">
 
                 <h3 v-text="tituloModal"></h3>
+                 <div  class="col s5 center">
+                               <img  v-if="tipoAccion==2" :src="'img/'+imagenSub"  class="imagenEdit" alt="">
+                         </div>
                     <div class="input-field">
                         <!-- input para el nombre de la Sub categoria -->
                         <input id="nombre" type="text" v-model="Nombre" class="validate">
-                        <label  for="nombre">Nombre</label>
+                         <label  for="nombre">Nombre</label>
+
                         <br> 
                         <!-- select Sub categorias -->
                         <select name="LeaveType" class="browser-default" v-model="idCate">
@@ -22,7 +26,7 @@
                         <br>
                         <!-- recoleccion de imagenes para la sub categoria -->       
                          <form action="#">
-                            <div class="file-field input-field">
+                            <div v-if="tipoAccion==1" class="file-field input-field">
                                 <div class="btn deep-orange lighten-4">
                                     <span class="brown-text" >Imagen</span>
                                     <input id="file" ref="filea" type="file" data-vv-scope="new"  v-on:change="seleccionarImagen(1)" class="subCategoriaAlta">
@@ -36,7 +40,9 @@
             </div>
           
             <div class="modal-footer">
-                <a class=" espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text"  @click="nuevaSubCategoria()">Guardar</a>
+                <a class=" espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" v-if="tipoAccion==1"  @click="nuevaSubCategoria()">Guardar</a>
+                <a class=" espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" v-if="tipoAccion==2"  @click="actualizarSubCategorias()">Actualizar</a>
+
                 <button type="button" class=" espacioButton btn btn-secondary deep-orange lighten-4 brown-text" @click="cerrarModal()">Cerrar</button>
             </div>
          </div>
@@ -55,7 +61,7 @@
                         <p v-text="subcategoria.Nombre"></p>
                         <p v-text="subcategoria.NombreCategorias"></p>
                     <a href="#!" class="secondary-content">
-                    <i class="material-icons" @click="actualizarSubCategoria()">create</i>
+                    <i class="material-icons brown-text " @click="abrirModal('subCategoria','actualizar',subcategoria)">create</i>
                     <i class="material-icons" @click="desactivarSubCategorias(subcategoria.idSubCategorias)">delete</i></a>
                     </li>
                 </ul>
@@ -78,6 +84,7 @@
                 imagenSub: '',
                 tituloModal : 'Registrar Sub Categorias' ,
                 cambio : 0,
+                tipoAccion: 0,
                 file: ''
             }
         },
@@ -127,7 +134,7 @@
                     }
                 }
             },
-            nuevaSubCategoria(even,nombre) {
+            nuevaSubCategoria() {
                 let me = this;
 
                 //Validamos si la informacion modificada es correcta
@@ -181,6 +188,7 @@
                                     this.modal = 1;
                                     this.nombre = '';
                                     this.status = '';
+                                    this.tipoAccion = 1;
                                     this.tituloModal = 'Registrar Sub categoria';
                                     break;
 
@@ -188,10 +196,12 @@
                             case 'actualizar':
                                 {
                                     this.modal = 1;
-                                    this.idSubCategorias = data['idSubCategorias']
-                                    this.idCate = data['idCate']
-                                    this.nombre = data['Nombre'];
                                     this.tipoAccion = 2;
+                                    this.idSubCategorias = data['idSubCategorias']
+                                    this.idCate = data['idCate'];
+                                    this.Nombre = data['Nombre'];
+                                    this.id= data['idSubCategoria'];
+                                    this.imagenSub= data['imagenSub'];
                                     this.tituloModal = 'Actualizar Sub categoria';
                                     break;
                                 }
@@ -215,22 +225,31 @@
                     console.log(error.response)
                 });
             },
-            actualizarSubCategoria(){
+            actualizarSubCategorias(){
                 let me = this;
 
-                axios.put('/subcategoria/actualizar',{
-                    'Nombre': this.Nombre,
-                    'idCate': this.idCate,
-                    'imagenSub': this.imagenSub,
-                    'idSubCategorias': this.idSubCategorias
-                }).then( response => {
+                let formData = new FormData();
+                formData.append('file', me.file);
+                formData.append('idSubCategorias', me.idSubCategorias)
+                formData.append('idCate', me.idCate);
+                formData.append('Nombre', me.Nombre);
+
+                //Registramos la informacion
+                axios.post('/subcategoria/actualizar', formData, {                
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    }
+
+                })
+                .then(function (response) {
                     me.cerrarModal();
                     me.listarSubCategorias();
-                }).catch(error => {
+                })
+                .catch(function (error) {
                     console.log(error);
-                }); 
+                });
             },
-
+            
         },
         mounted(){
             this.listarSubCategorias();
@@ -243,7 +262,6 @@
         display: list-item !important;
         opacity: 1 !important; 
         position: absolute !important;
-        background-color: pink !important;
     }  
     .espacioButton{
         margin-left: 10px !important;

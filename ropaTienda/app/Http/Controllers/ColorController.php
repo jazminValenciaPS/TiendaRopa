@@ -10,7 +10,7 @@ class ColorController extends Controller
     public function index()
     {
        
-        $colores = Colores::all()->where('Status','=','1');;
+        $colores = Colores::all();
         return $colores;
     }
 
@@ -41,10 +41,10 @@ class ColorController extends Controller
         $colores->save(); 
     }
     
-    // public function activar(Request $request)
-    // {
-    //     $colores = Colores::findOrFail($request->id);
-        
-    //     $colores->save();
-    // }
+    public function activar(Request $request)
+    {
+        $colores = Colores::findOrFail($request->id);
+        $colores->Status = '1';
+        $colores->save();
+    }
 }

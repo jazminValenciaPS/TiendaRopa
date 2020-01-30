@@ -1,8 +1,10 @@
 <template>
     <main class="main">
         <div class="container-fluid">
+              
+              
                 <!-- Ejemplo de tabla Listado -->
-                <div class="card">
+                 <div class="card">
                     <div class="card-body">
                         <div class="form-group row">
                             <div class="col-md-6">
@@ -19,7 +21,7 @@
                         <table class="table table-bordered table-striped table-sm">
                             <thead>
                                 <tr>
-                                    <th>Nombre</th>
+                                    <th>Nombre<th>
                                     <th>Descripción</th>
                                     <th>Estado</th>
                                 </tr>
@@ -69,10 +71,103 @@
                             </ul>
                         </div>
                     </div>
-                </div>
+                 </div>
                 <!-- Fin ejemplo de tabla Listado -->
             </div>
+
+    
+  <!-- Modal de Registrar/Actualizar Slider -->
+            <div class="modal fade" tabindex="-1" :class="{'mostrar' : modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+                <div class="modal-dialog modal-primary modal-lg" role="document">
+                            <h4 class="modal-title center" v-text="tituloModal"></h4>
+                            
+                            <div class="col s5 center">
+                                         <img v-if="tipoAccion==2" :src="'img/'+img"  class="imagenEdit" alt="">
+                            </div>
+                                <div class="form-group row">
+                                    <!-- input para el nombre del producto -->
+                                    <input id="nombre" type="text" v-model="Nombre" class="validate">
+                                    <label  for="nombre">Nombre</label>
+                                    <br> 
+                                    <!-- input para la descripción del producto -->
+                                    <input id="descripcion" type="text" v-model="Descripcion" class="validate">
+                                    <label  for="descripcion">descripcion</label>
+                                    <br> 
+                                    <!-- input para el precio del producto -->
+                                    <input id="precio" type="text" v-model="Precio" class="validate">
+                                    <label  for="precio">Precio</label>
+                                    <br> 
+                                    <!-- select Subcategorias -->
+                                    <select name="LeaveType" class="browser-default" v-model="idSubcat">
+                                        <option value="" disabled selected>Selecciona la subCategoría</option>
+                                        <option v-for="subcategoria in arraySubcategoria" :value="subcategoria.id" :key="subcategoria.id">{{ subcategoria.Nombre }}</option>
+                                    </select> 
+                                    <br>
+                                    <!-- select color -->
+
+                                    <select multiple name="LeaveType" class="browser-default" v-model="idColor">
+                                        
+                                        <option value="" disabled selected>Selecciona el color</option>
+                                        <option v-for="color in arrayColor" :value="color.id" :key="color.id">{{ color.Nombre }}</option>
+                                      
+                                    </select> 
+                                    <br>
+                                    <!-- input para la imagen del producto -->
+                                    <div class="col s10 center">
+                                        <div class="file-field input-field">
+                                            <div class="waves-effect waves-light btn deep-orange lighten-4 brown-text">
+                                                <span>Imagen</span>
+                                                <input id="file" ref="filea"  type="file" data-vv-scope="new"  v-on:change="seleccionarImagen(1)" class="sliderAlta">
+                                            </div>
+                                            <div class="file-path-wrapper">
+                                                <input class="file-path validate" type="text">
+                                            </div>
+                                        </div>
+                                    </div> 
+
+                                </div> 
+                        <div class="modal-footer">
+                            <button type="button" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="cerrarModal()">Cerrar</button>
+                            <button type="button" v-if="tipoAccion==1" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="nuevoProducto()">Guardar</button>
+                            <button type="button" v-if="tipoAccion==2" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="actualizarProducto(id)">Actualizar</button>
+                        </div>
+                    </div>
+             </div>  
+ <!-- termina modal   -->
+
+
+    <!-- Muestra productos -->
+
+       <div class="row">
+           <div class="col s12">
+            <h3 class="center">Productos</h3>
+            <div class="right col s2">
+                <a class="btn-floating btn-large waves-effect waves-light deep-orange lighten-4 right" @click="abrirModal('productos','registrar')"><i class="brown-text material-icons">add</i></a>
+            </div>
+           </div>
+
+        <br>
+           <div class="center col s12">
+               <div class="centro col s5 ">
+                    <ul class="collection " v-for="productos in arrayProductos" :key="productos.id">
+                        <li class="collection-item avatar">
+                            <h5 v-text="productos.Nombre"></h5>
+                        <a href="#!" class="secondary-content">
+                            <i class="switch">
+                                <label>Off<input type="checkbox" @click="actualizarProducto()"><span class="lever"></span>On</label>
+                            </i></a>
+                        </li>
+                    </ul>
+               </div> 
+           </div>   
+       </div>
+    <!-- Termina muestra de productos -->
+
+
     </main>
+
+
+
 </template>
 
 <script>
@@ -84,7 +179,15 @@ document.addEventListener('DOMContentLoaded', function() {
         data(){
             return{
                 img: '',
+                Nombre: '',
+                Descripcion:'',
+                Precio:'',
+                idSubcat:'',
+                idColor:'',
+                tipoAccion:0,
                 arrayProductos:[],
+                arrayColor:[],
+                arraySubcategoria:[],
                 modal : 0,
                 tituloModal : '',
                 pagination:{
@@ -97,7 +200,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 offset : 3,
                 criterio : 'nombre',
-                buscar : ''
+                buscar : '',
+                file: ''
+
             }
         },computed:{
             isActived: function() {
@@ -130,18 +235,18 @@ document.addEventListener('DOMContentLoaded', function() {
         methods:{
             listarProductos(page,buscar,criterio){
                 let m=this;
-                var url= '/producto?page=' + page + '&buscar='+ buscar + '&criterio='+ criterio;
+                var url= '/productos?page=' + page + '&buscar='+ buscar + '&criterio='+ criterio;
 
                 axios.get(url).then(function (response){
                     var respuesta = response.data;
                     me.arrayProductos = respuesta.productos.data;
                     me.pagination = respuesta.pagination;
-            })
-            .catch(function(error){
+             })
+             .catch(function(error){
                 console.log(error);
-            });
+             });
 
-            },
+             },
             cambiarPagina(page){
                 let me = this;
 
@@ -149,44 +254,120 @@ document.addEventListener('DOMContentLoaded', function() {
                 me.pagination.current_page = page;
                 me.listarProductos(page,buscar,criterio);
             },
+            abrirModal(modelo,accion, data = []){
+                switch(modelo){
+                    case "productos":
+                        {
+                            switch(accion){
+                                case 'registrar':
+                                    {
+                                        this.modal = 1;
+                                        this.nombre = '';
+                                        this.tipoAccion = 1;
+                                        this.tituloModal = 'Registrar Producto';
+                                        break;
 
-            // abrirModal(modelo,accion, data = []){
-            //     switch(modelo){
-            //         case "Producto":
-            //             {
-            //                 switch(accion){
-            //                     case 'registrar':
-            //                         {
-            //                             this.modal = 1;
-            //                             this.nombre = '';
-            //                             this.tituloModal = 'Registrar Sliders';
-            //                             break;
+                                    }
+                                case 'actualizar':
+                                    {
+                                        this.modal = 2;
+                                        this.Nombre = '';
+                                        this.tipoAccion = 2;
+                                        this.tituloModal = 'Actualizar Producto';
+                                    }
+                            }
+                        }
+                }
+            },
+            nuevoProducto(){
+                let me = this;
 
-            //                         }
-            //                     case 'actualizar':
-            //                         {
+                let formData = new FormData();
+                formData.append('file', me.file);
+                
+                
+                //Registramos la informacion
+                axios.post('/productos/registrar', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
+                .then(function (response) {
+                    me.listarProductos();
+                    me.cerrarModal();
+                    me.limpiar();
+                    // var toastHTML = '<span>Slider Registrado Correctamente</span>';
+                    // M.toast({ html: toastHTML, classes: 'rounded tos', displayLength: 1500 });
 
-            //                         }
-            //                 }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            actualizarProducto(){
+                let me = this;
+                    let formData = new FormData();
+                        formData.append('file', me.file);
+                         formData.append('id',id);
+                    
+                    //Regresamos la informacion
+                    axios.post('/productos/actualizar', formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    })
+                    .then(function (response) {
+                        me.listarProductos();
+                        me.cerrarModal();
+                   
+                   })
+                    .catch(function (error) {
+                        console.log(error);
+        
+             });
 
-            //             }
-            //     }
-
-            // },
-          
-        },
-        mounted() {
-            // this.listarSliders();
-          
+            },
+             cerrarModal(){
+                this.modal=0;
+                this.tituloModal='';
+                this.img='';
+            },
+            limpiar(){
+                let me = this;
+                me.errors.clear('new');
+                me.errors.clear('update');
+                me.img = '';
+                me.Descripcion='';
+                me.Precio='';
+                me.idSubcat='';
+                me.idColor='';
+                me.tipoAccion = 0;
+                me.Cambio = 0;
+            },
+        mounted(){
+            this.listarProductos();
         }
-     };
+        }
+    };
 </script>
 <style>
-
-.mostrar{
-    display: list-item !important;
-    opacity: 1 !important;
-    position: absolute !important;
-    background-color: white !important;
-}
+    .modal-content{
+        width: 100% !important;
+        position: absolute !important;
+        height: 600px;
+    }
+    .mostrar{
+        display: list-item !important;
+        opacity: 1 !important;
+        position: absolute !important;
+        z-index: 100;
+    }
+    .centrado{
+        height:560px;
+        margin-left: 20%;
+        margin-right: 30%;
+    }
+    .espacioButton{
+        margin-left: 10px !important;
+    }
 </style>

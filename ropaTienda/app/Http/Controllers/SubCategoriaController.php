@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\subCategoria;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB; 
 
 
 use File;
 use Request as Peticion;
 
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB; 
 
 class SubCategoriaController extends Controller
 {
@@ -50,27 +50,28 @@ class SubCategoriaController extends Controller
 
         $subCat->save();
     }
+
     public function update(Request $request)
     {
-        if (!$request->ajax()) return redirect('/');
 
-        $subCat = subCategoria::findOrFail($request->id);
-        $subCat->idCate = $request->idCate;
-        $subCat->Nombre = $request->Nombre;
-        // $subCat->Status = '1';
-       
-        $imagenSub = Peticion::file('file');
-               
-        $extension = $imagenSub->guessExtension();
+        $subCat = subCategoria::findOrFail($request->idSubCategorias);
+        
+   
+        
+        $imagen = Peticion::file('file');
+        $extension = $imagen -> guessExtension();
         $date = date('d-m-Y_h-i-s-ms-a');
         $prefijo = 'Image';
         $nombreImagen = $prefijo.'_'.$date.'.'.$extension;
-        $imagenSub->move('img', $nombreImagen);
-        
+        $imagen->move('img', $nombreImagen);
+        File::delete('img/' . $subCat->Imagen);
+
         $subCat->imagenSub = $nombreImagen;
-        
+        $subCat->idCate = $request->idCate;
+        $subCat->Nombre = $request->Nombre;
                 
-        $subCat->save();   
+        $subCat->save(); 
+        
     }
 
     public function desactivar(Request $request)

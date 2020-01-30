@@ -36,14 +36,22 @@
            </div>
 
         <br>
-           <div class="center col s12">
+           <div class=" col s12">
                <div class="centro col s5 ">
                     <ul class="collection " v-for="color in arrayColores" :key="color.id">
                         <li class="collection-item avatar">
-                        <h5 v-text="color.Nombre"></h5>
-                       <a href="#!" class="secondary-content">
-                    <i class="material-icons brown-text  " @click="desactivarColor(color.id)">delete</i></a>
-                    </li>
+                            <h5 v-text="color.Nombre"></h5>
+                        <a href="#!" class="secondary-content" v-if="color.Status == 1">
+                            <i class="switch">
+                                <label>desactivado<input type="checkbox" checked="checked" name="status" v-model="color.status" @click="desactivarColor(color.id)"><span class="lever"></span>Activado</label>
+                            </i>
+                        </a>
+                        <a href="#!" class="secondary-content" v-if="color.Status == 0">
+                            <i class="switch">
+                                <label>desactivado<input type="checkbox"  name="status" v-model="color.status" @click="activarColor(color.id)"><span class="lever"></span>Activado</label>
+                            </i>
+                        </a>
+                        </li>
                     </ul>
                </div> 
            </div>   
@@ -54,6 +62,7 @@
 </template>
 <script>
 import Swal from 'sweetalert2';
+
      export default {
           data(){
             return{
@@ -63,6 +72,7 @@ import Swal from 'sweetalert2';
                 tituloModal : '' ,
                 cambio : 0,
                 tipoAccion : 0,
+                status : true,
                 id: 0,
                 errorColor : 0,
                 errorMostrarMsjColor : [],
@@ -72,8 +82,16 @@ import Swal from 'sweetalert2';
             listarColores(){
              let m=this;
 
+           
+
              axios.get('/colores').then(function (response){
                     m.arrayColores = response.data;
+                    m.status = response.status.data;
+                      if(status == true){
+                            status = 1
+                        }else{
+                            status = 0
+                        }
                   
                 })
                 .catch(function(error){
@@ -128,8 +146,6 @@ import Swal from 'sweetalert2';
                             formData.append('Nombre', me.nombre);
                             formData.append('id',me.id);
 
-                            
-                            
                             //Registramos la informacion
                             axios.put('/colores/actualizar',{
                                 
@@ -181,8 +197,53 @@ import Swal from 'sweetalert2';
                 }
             },      
             desactivarColor(id){
+                    let me = this;
+                
+                    Swal.fire({
+                    title: '¿Está seguro de desactivar este color?',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Aceptar!',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonClass: 'btn btn-success',
+                    cancelButtonClass: 'btn btn-danger',
+                    buttonsStyling: false,
+                    reverseButtons: true
+                    }).then((result) => {
+                    if (result.value) {
+                    
+
+                        axios.put('/colores/desactivar',{
+                            'id': id
+                        }).then(function (response) {
+                            me.listarColores();
+                            Swal.fire(
+                                'Desactivado!',
+                                'El color ha sido desactivado con éxito.',
+                                'success'
+                            )
+                        }).catch(function (error) {
+                            console.log(error);
+                        });
+                        
+                    
+                } else if (
+                        // Read more about handling dismissals
+                        result.dismiss === Swal.DismissReason.cancel
+                    ) {
+                        
+                    }
+                    })
+                
+               },
+                    
+            activarColor(id){
+                let me = this;
+              
                 Swal.fire({
-                title: '¿Está seguro de desactivar este color?',
+                title: '¿Está seguro de activar este color?',
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -195,53 +256,33 @@ import Swal from 'sweetalert2';
                 reverseButtons: true
                 }).then((result) => {
                 if (result.value) {
-                    let me = this;
-
-                    axios.put('/colores/desactivar',{
+                    axios.put('/colores/activar',{
                         'id': id
                     }).then(function (response) {
                         me.listarColores();
                         Swal.fire(
-                        'Desactivado!',
-                        'El color ha sido desactivado con éxito.',
-                        'success'
+                            'activado!',
+                            'El color ha sido activado con éxito.',
+                            'success'
                         )
                     }).catch(function (error) {
                         console.log(error);
                     });
-                    
-                    
-                } else if (
+                
+               } else if (
                     // Read more about handling dismissals
                     result.dismiss === Swal.DismissReason.cancel
                 ) {
                     
                 }
                 }) 
-
-
-
-
-
-
-                // let me = this;
-
-                // axios.put('/colores/desactivar',{
-                //     'id': id
-                // }).then(response => { 
-                //      me.listarColores();  
-                // })
-                // .catch(error => {
-                //     console.log(error.response)
-                // });
-                }
-                }) 
-            },
-        },
+                  
+               },
+        },  
         mounted(){
             this.listarColores();
         }
-     };    
+    }
 </script>
 <style>
 .div-error{
@@ -252,21 +293,4 @@ import Swal from 'sweetalert2';
         color: red !important;
         font-weight: bold;
     }
-</style>      }) 
-            },
-        },
-        mounted(){
-            this.listarColores();
-        }
-     };    
-</script>
-<style>
-.div-error{
-        display: flex;
-        justify-content: center;
-    }
-    .text-error{
-        color: red !important;
-        font-weight: bold;
-    }
-</style>
+</style>  

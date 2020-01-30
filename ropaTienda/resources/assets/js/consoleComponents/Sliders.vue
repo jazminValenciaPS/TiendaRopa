@@ -16,8 +16,8 @@
                                         <div class="file-field input-field">
                                             <div class="waves-effect waves-light btn deep-orange lighten-4 brown-text">
                                                 <span>Imagen</span>
-                                                <input id="file" ref="filea" v-if="tipoAccion==1" type="file" data-vv-scope="new"  v-on:change="seleccionarImagen(1)" class="sliderAlta">
-                                                <input id="file" ref="filec" v-if="tipoAccion==2" type="file" data-vv-scope="new"  v-on:change="seleccionarImagen(2)" class="sliderEdit">
+                                                <input id="file" ref="filea"  type="file" data-vv-scope="new"  v-on:change="seleccionarImagen(1)" class="sliderAlta">
+                                                <!-- <input id="file" ref="filec" v-if="tipoAccion==2" type="file" data-vv-scope="new"  v-on:change="seleccionarImagen(2)" class="sliderEdit"> -->
 
                                             </div>
                                             <div class="file-path-wrapper">
@@ -29,7 +29,7 @@
                         <div class="modal-footer">
                             <button type="button" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="cerrarModal()">Cerrar</button>
                             <button type="button" v-if="tipoAccion==1" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="nuevoSlider()">Guardar</button>
-                            <button type="button" v-if="tipoAccion==2" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="actualizarSlider()">Actualizar</button>
+                            <button type="button" v-if="tipoAccion==2" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="actualizarSlider(id)">Actualizar</button>
                         </div>
                     </div>
              </div>  
@@ -146,6 +146,7 @@
                             .then(function (response) {
                                 me.listarSliders();
                                 me.cerrarModal();
+                                me.limpiar();
                                 // var toastHTML = '<span>Slider Registrado Correctamente</span>';
                                 // M.toast({ html: toastHTML, classes: 'rounded tos', displayLength: 1500 });
 
@@ -153,73 +154,34 @@
                             .catch(function (error) {
                                 console.log(error);
                             });
-                        //}
-                        // else {
-                        //     var toastHTML = '<span>Corrige la información e intente de nuevo</span>';
-                        //     M.toast({html: toastHTML, classes: 'rounded tos'});
-                        // }
-                    
-            },
-            actualizarSlider(){
-                 let me = this;
-
-                            let formData = new FormData();
-                            formData.append('file', me.file);
-                            formData.append('id',me.id);
-
-                            
-                            
-                            //Registramos la informacion
-                            axios.put('/slider/actualizar', formData, {
-                                headers: {
-                                    'Content-Type': 'multipart/form-data'
-                                }
-                            })
-                            .then(function (response) {
-                                me.listarSliders();
-                                me.cerrarModal();
-                                // var toastHTML = '<span>Slider Registrado Correctamente</span>';
-                                // M.toast({ html: toastHTML, classes: 'rounded tos', displayLength: 1500 });
-
-                            })
-                            .catch(function (error) {
-                                console.log(error);
-                            });
-                        //}
-                        // else {
-                        //     var toastHTML = '<span>Corrige la información e intente de nuevo</span>';
-                        //     M.toast({html: toastHTML, classes: 'rounded tos'});
-                        // }
-
-
-                // let me = this;
-                // let formData = new FormData();
-                // formData.append('file', me.file);
-                // formData.append('slider_id',me.slider_id);
-                
-                
-                // //Actualizar la informacion
-                // axios.put('/slider/actualizar', formData, {
-                //     headers: {
-                //         'Content-Type': 'multipart/form-data'
-                //     }
-                // })
-                // .then(function (response) {
-                //     me.listarSliders();
-                //     me.cerrarModal();
-                    
-
-                // })
-                // .catch(function (error) {
-                //     console.log(error);
-                // });
                       
                     
-                                me.limpiar();
-                            })
-                            .catch(function (error) {
-                                console.log(error);
-                            });
+            },
+            actualizarSlider(id){
+            
+             let me = this;
+
+                    let formData = new FormData();
+                        formData.append('file', me.file);
+                         formData.append('id',id);
+
+                
+                    
+                    //Regresamos la informacion
+                    axios.post('/slider/actualizar', formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    })
+                    .then(function (response) {
+                        me.listarSliders();
+                        me.cerrarModal();
+                   
+                   })
+                    .catch(function (error) {
+                        console.log(error);
+        
+             });
                         
             },
             cerrarModal(){
@@ -249,7 +211,6 @@
                                         this.tituloModal = 'Actualizar Slider';
                                         this.id=data['id'];
                                         this.img=data['imagen'];
-
                                         break;
                                     }
                             }
@@ -296,7 +257,7 @@
 
             },
           
-        },
+        // },
         mounted(){
             this.listarSliders();
         }
@@ -307,7 +268,6 @@
 .modal-content{
     width: 100% !important;
     position: absolute !important;
-    background-color: pink !important;
     height: 600px;
 }
 .mostrar{

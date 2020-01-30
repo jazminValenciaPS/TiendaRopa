@@ -24,16 +24,21 @@ Route::get('/consola', function () {
 // Sub Categorias
 Route::get('/subcategoria', 'SubCategoriaController@index');
 Route::post('/subcategoria/registrar', 'SubCategoriaController@store');
-Route::put('/subcategoria/actualizar', 'SubCategoriaController@update');
+Route::post('/subcategoria/actualizar', 'SubCategoriaController@update');
 Route::put('/subcategoria/desactivar', 'SubCategoriaController@desactivar');
 Route::put('/subcategoria/activar', 'SubCategoriaController@activar');
 
 //Productos
 Route::get('/productos', 'ProductoController@index');
+Route::post('/productos/registrar', 'ProductoController@store');
+Route::post('/productos/actualizar', 'ProductoController@update');
+
+
 
 //Colores
 Route::get('/colores', 'ColorController@index');
 Route::post('/colores/registrar', 'ColorController@store');
+Route::put('/colores/activar', 'ColorController@activar');
 Route::put('/colores/desactivar', 'ColorController@desactivar');
 
 
@@ -41,6 +46,7 @@ Route::put('/colores/desactivar', 'ColorController@desactivar');
 //Slider
 Route::get('/slider', 'SliderController@index');
 Route::post('/slider/registrar', 'SliderController@store');
-Route::put('/slider/actualizar', 'SliderController@update');
+Route::post('/slider/actualizar', 'SliderController@update');
+
 Route::put('/slider/desactivar', 'SliderController@desactivar');
 Route::put('/slider/activar', 'SliderController@activar');
