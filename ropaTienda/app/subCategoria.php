@@ -11,7 +11,7 @@ class subCategoria extends Model
 
     protected $fillable = [
         'idCate',
-        'Nombre',
+        'NombreSub',
         'Status'
     ];
     
@@ -19,6 +19,6 @@ class subCategoria extends Model
         return $this->belongsTo('App\Categoria');
     }
     public function producto(){
-        return $this->belongsTo('App\Producto');
+        return $this->hasMany('App\Producto');
     }
 }

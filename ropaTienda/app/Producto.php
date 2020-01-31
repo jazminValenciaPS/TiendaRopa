@@ -21,15 +21,15 @@ class Producto extends Model
 
     public function imagenes()
     {
-        return $this->hasMany('App\Imagen');
+        return $this->belongsTo('App\Imagen');
     }
     public function subCategorias()
     {
-        return $this->hasMany('App\subCategoria');
+        return $this->belongsTo('App\subCategoria');
     }
     public function colores()
     {
-        return $this->hasMany('App\Color');
+        return $this->belongsTo('App\Color');
     }
     public function tallas()
     {

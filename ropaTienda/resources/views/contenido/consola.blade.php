@@ -13,7 +13,6 @@
 
     </template>
     <template v-if="menu==3">
-    <h3>Altas y bajas de productos</h3>
     <productos-component></productos-component>
     </template>
 @endsection

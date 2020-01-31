@@ -6,56 +6,52 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Producto;
 
+use Illuminate\Support\Facades\Log;
+
+
+use File;
 class ProductoController extends Controller
 {
+
     public function index(Request $request){
         // if (!$request->ajax()) return redirect('/');
 
-        $buscar = $request->buscar;
-        $criterio = $request->criterio;
 
-        // $productos = Producto::paginate(2);
-        if ($buscar==''){
-            $personas = Producto::join('tallas','producto.idTalla','=','tallas.idTalla')
-            ->join('imagenes','producto.idImg','=','imagenes.idImagen')
-            ->join('sub_categorias','producto.idSubcat','=','sub_categorias.idSubCategorias')
-            ->join('colores','producto.idColor','=','colores.id')
-            ->select('tallas.idTalla','tallas.Talla','imagenes.idImagen',
-            'imagenes.Imagen','sub_categorias.idSubCategorias','sub_categorias.Nombre',
-            'colores.id','colores.Nombre','producto.Nombre','producto.Descripcion',
-            'producto.Precio','producto.Existencia')
-            ->orderBy('personas.id', 'desc')->paginate(3);
-        }
-        else{
-            $personas = Producto::join('tallas','producto.idTalla','=','tallas.idTalla')
-            ->join('imagenes','producto.idImg','=','imagenes.idImagen')
-            ->join('sub_categorias','producto.idSubcat','=','sub_categorias.idSubCategorias')
-            ->join('colores','producto.idColor','=','colores.id')
-            ->select('tallas.idTalla','tallas.Talla','imagenes.idImagen',
-            'imagenes.Imagen','sub_categorias.idSubCategorias','sub_categorias.Nombre',
-            'colores.id','colores.Nombre','producto.Nombre','producto.Descripcion',
-            'producto.Precio','producto.Existencia')
-            ->where('personas.'.$criterio, 'like', '%'. $buscar . '%')
-            ->orderBy('personas.id', 'desc')->paginate(3);
-        }
+        return  $productos = DB::table('producto')
+        ->join('tallas','tallas.idTalla', '=','producto.idTalla')
+        ->join('imagenes','imagenes.idImagen', '=','producto.idImg')
+        ->join('sub_categorias','sub_categorias.idSubCategorias', '=','producto.idSubCat')
+        ->join('colores','colores.id', '=','producto.idcolor')
+        ->select('tallas.idTalla','tallas.Talla','tallas.idTalla','producto.NombreProducto','producto.Descripcion',
+        'producto.Precio','producto.Existencia','imagenes.idImagen','imagenes.Imagen','sub_categorias.idSubCategorias',
+        'sub_categorias.NombreSub','colores.NombreColor','colores.id')
+        ->get();
 
+        // return ['productos' => $productos]; 
 
+    }
 
-        if($buscar == ''){
-            $productos = Producto::orderBy('idProducto','desc')->paginate(3); 
-        }
-         $productos = Producto::all();
-        return [
-                "pagination" => [
-                    "total" => $productos -> total(),
-                    "current_page" => $productos -> currentPage(),
-                    "per_page" => $productos -> perPage(),
-                    "last_page" => $productos -> lastPage(),
-                    "from" => $productos -> firstItem(),
-                    "to" => $productos -> lastItem()
-            ],
-            'productos' => $productos
-        ];
+    public function detalleProducto(Request $request){
+        $id = $request->id;
+
+        //   print_r($id);
+
+        return $productos = DB::table('producto')
+        ->join('tallas','tallas.idTalla', '=','producto.idTalla')
+        ->join('imagenes','imagenes.idImagen', '=','producto.idImg')
+        ->join('sub_categorias','sub_categorias.idSubCategorias', '=','producto.idSubCat')
+        ->join('colores','colores.id', '=','producto.idcolor')
+        ->select('tallas.idTalla','tallas.Talla','tallas.idTalla','producto.NombreProducto','producto.Descripcion',
+        'producto.Precio','producto.Existencia','imagenes.idImagen','imagenes.Imagen','sub_categorias.idSubCategorias',
+        'sub_categorias.NombreSub','colores.NombreColor','colores.id')->where('producto.idProducto','=',$id)
+        ->get();
+        // return $productos;
+
+        
+
+        // return ['productos' => $productos]; 
+            //    $producto = Producto::all()->where('idProducto','=',$id);
+            //  return  $producto; 
         
     }
 
@@ -67,6 +63,41 @@ class ProductoController extends Controller
         // $subCat->Status = '1';
         // $subCat->save();
     }
+
+    public function productosSub(Request $request){
+        $id = $request->id;
+
+
+         $productos = DB::table('producto')
+        ->join('tallas','tallas.idTalla', '=','producto.idTalla')
+        ->join('imagenes','imagenes.idImagen', '=','producto.idImg')
+        ->join('sub_categorias','sub_categorias.idSubCategorias', '=','producto.idSubCat')
+        ->join('colores','colores.id', '=','producto.idcolor')
+        ->select('tallas.idTalla','tallas.Talla','tallas.idTalla','producto.NombreProducto','producto.Descripcion',
+        'producto.Precio','producto.Existencia','imagenes.idImagen','imagenes.Imagen','sub_categorias.idSubCategorias',
+        'sub_categorias.NombreSub','colores.NombreColor','colores.id')->where('producto.idSubcat','=',$id)
+        ->get();
+
+        return $productos;
+
+
+    //   print_r($id);
+        //    $productos = Producto::all()->where('idSubcat','=',$id);
+        //  return  $productos;
+        //  $pro =
+        // return  $productos = Producto::where('idSubCate',$idSubCate);
+
+
+    }
+
+    
+
+    public function show(Request $request){
+
+    }
+    
+   
+    
     public function update(Request $request)
     {
         if (!$request->ajax()) return redirect('/');

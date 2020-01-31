@@ -1,17 +1,17 @@
 <template>
     <main class="main">
+     <!-- Muestra los Sliders -->
         <div class="container ">
             <div class="row">
                 <div class="col s12 ">    
                     <br>    
-                    <div class="carousel center">
-                        <a class="carousel-item" ><img class="responsive-img" src="img/topAzul.jpg" ></a>
-                        <a class="carousel-item" ><img class="responsive-img" src="img/sudadera.jpg" ></a>
-                        <a class="carousel-item"><img class="responsive-img" src="img/jumper.jpg"></a>
+                    <div class="carousel center" >
+                        <a class="carousel-item" v-for="slider in arraySliders" :key="slider.id"><img  :src="'img/'+slider.imagen" class="responsive-img"></a>
                     </div>
                 </div>
             </div>
         </div>         
+     <!-- Termina muestra los Sliders -->
     
         <div class="row ">
             <div class="col s3 borde"></div>
@@ -22,6 +22,7 @@
 
 
         <div class="row contenedorCard">
+            
             <div class="col s2 m4">
                 <div class="card medium">
                     <div class="card-image ">
@@ -39,6 +40,7 @@
                     </div>
                 </div>
             </div>
+
 
             <div class="col s2 m4">
                 <div class="card medium">
@@ -78,31 +80,53 @@
 </template>
 
 <script>
+//   document.addEventListener('DOMContentLoaded', function() {
+//       var elems = document.querySelectorAll('.carousel');
+    
+//       var instances = M.Carousel.init(elems,
+//     {
+//           duration: 300,
+//           indicators: true,
+        
+//           padding: 1,
+        
+//       }); 
+//       autoplay();
+//       function autoplay(){
+//         setTimeout(autoplay, 2000);
+//       }
+//     });
     export default {
+         data(){
+            return{
+                img: '',
+                file:'',
+                arraySliders:[],
+                arrayProductos:[]
+            }
+            },methods:{
+              listarSliders(){
+                let m=this;
+
+
+                axios.get('/slider').then(function (response){
+                    m.arraySliders = response.data;
+                  
+                 })
+                 .catch(function(error){
+                    console.log(error);
+                 });
+
+             },
+             listarProductos(){
+
+             },
+            },
         mounted() {
-            console.log('Component mounted.')
+            console.log('Component mounted.');
+            this.listarSliders();
         }
      }
-// </script>
 
-
-// <script>
-  document.addEventListener('DOMContentLoaded', function() {
-      var elems = document.querySelectorAll('.carousel');
-    
-      var instances = M.Carousel.init(elems,
-    {
-          duration: 300,
-          indicators: true,
-        
-          padding: 1,
-        
-      }); 
-      autoplay();
-      function autoplay(){
-        // $('.carousel').carousel('next');
-        setTimeout(autoplay, 2000);
-      }
-    });
 
  </script>

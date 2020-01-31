@@ -11,6 +11,6 @@ class Colores extends Model
     protected $fillable = ['nombre'];
     
     public function producto(){
-        return $this->belongsTo('App\Producto');
+        return $this->hasMany('App\Producto');
     }
 }

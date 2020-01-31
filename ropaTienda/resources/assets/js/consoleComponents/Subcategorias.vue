@@ -12,7 +12,7 @@
                          </div>
                     <div class="input-field">
                         <!-- input para el nombre de la Sub categoria -->
-                        <input id="nombre" type="text" v-model="Nombre" class="validate">
+                        <input id="nombre" type="text" v-model="NombreSub" class="validate">
                          <label  for="nombre">Nombre</label>
 
                         <br> 
@@ -58,7 +58,7 @@
                 <ul class="collection" v-for="subcategoria in arraySubcategoria" :key="subcategoria.idSubCategorias">
                     <li class="collection-item avatar">
                         <img :src="'img/'+subcategoria.imagenSub" class="circle">
-                        <p v-text="subcategoria.Nombre"></p>
+                        <p v-text="subcategoria.NombreSub"></p>
                         <p v-text="subcategoria.NombreCategorias"></p>
                     <a href="#!" class="secondary-content">
                     <i class="material-icons brown-text " @click="abrirModal('subCategoria','actualizar',subcategoria)">create</i>
@@ -76,7 +76,7 @@
             return{
                 idSubCategorias: 0,
                 idCate: 0,
-                Nombre: '',
+                NombreSub: '',
                 status: '1',
                 nombreCat: '',
                 arraySubcategoria:[],

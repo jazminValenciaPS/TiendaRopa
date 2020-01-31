@@ -29,6 +29,17 @@ class SubCategoriaController extends Controller
          
     }
 
+  
+    public function accesorios(Request $request){
+        return $subCat = subCategoria::all()->where('idCate','==','2')->where('Status','==','1');
+    }
+
+    public function ropa(Request $request){
+        return $subCat = subCategoria::all()->where('idCate','=','1')->where('Status','=','1');
+    }
+    public function cosmeticos(Request $request){
+        return $subCat = subCategoria::all()->where('idCate','=','3')->where('Status','=','1');
+    }
     public function store(Request $request)
     {
 

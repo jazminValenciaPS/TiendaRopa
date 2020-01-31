@@ -3,27 +3,27 @@
        <!-- Modal de Registrar Slider -->
             <div class="modal fade" tabindex="-1" :class="{'mostrar' : modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
                 <div class="modal-dialog modal-primary modal-lg" role="document">
-                            <h4 class="modal-title center" v-text="tituloModal"></h4>
-                                <div class="form-group row">
-                                    <div class="input-field col s10 center">
-                                        <i class="material-icons prefix deep-orange-text text-lighten-4">color_lens</i>
-                                        <input v-model="Nombre" id="Nombre" type="text" class="validate">
-                                        <label for="Nombre">Nombre</label>
-                                    </div> 
-                                     <div v-show="errorColor" class="form-group row div-error">
-                                    <div class="text-center text-error">
-                                        <div v-for="error in errorMostrarMsjColor" :key="error" v-text="error">
+                    <h4 class="modal-title center" v-text="tituloModal"></h4>
+                    <div class="form-group row">
+                        <div class="input-field col s10 center">
+                            <i class="material-icons prefix deep-orange-text text-lighten-4">color_lens</i>
+                            <input v-model="Nombre" id="Nombre" type="text" class="validate">
+                            <label for="Nombre">Nombre</label>
+                        </div> 
+                        <div v-show="errorColor" class="form-group row div-error">
+                            <div class="text-center text-error">
+                                <div v-for="error in errorMostrarMsjColor" :key="error" v-text="error">
 
-                                        </div>
-                                    </div>
                                 </div>
-                                </div> 
-                        <div class="modal-footer">
-                            <button type="button" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="cerrarModal()">Cerrar</button>
-                            <button type="button" v-if="tipoAccion==1" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="nuevoColor()">Guardar</button>
-                            <button type="button" v-if="tipoAccion==2" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="actualizarColor()">Actualizar</button>
+                            </div>
                         </div>
+                    </div> 
+                    <div class="modal-footer">
+                        <button type="button" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="cerrarModal()">Cerrar</button>
+                        <button type="button" v-if="tipoAccion==1" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="nuevoColor()">Guardar</button>
+                        <button type="button" v-if="tipoAccion==2" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="actualizarColor()">Actualizar</button>
                     </div>
+                <!-- </div> -->
              </div>  
        <!-- termina modal   -->
 
@@ -33,11 +33,7 @@
             <div class="right col s2">
                 <a class="btn-floating btn-large waves-effect waves-light deep-orange lighten-4 right" @click="abrirModal('color','registrar')"><i class="brown-text material-icons">add</i></a>
             </div>
-           </div>
-
-        <br>
-           <div class=" col s12">
-               <div class="centro col s5 ">
+        </div>
                     <ul class="collection " v-for="color in arrayColores" :key="color.id">
                         <li class="collection-item avatar">
                             <h5 v-text="color.Nombre"></h5>
@@ -197,21 +193,21 @@ import Swal from 'sweetalert2';
                 }
             },      
             desactivarColor(id){
-                    let me = this;
-                
-                    Swal.fire({
-                    title: '¿Está seguro de desactivar este color?',
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Aceptar!',
-                    cancelButtonText: 'Cancelar',
-                    confirmButtonClass: 'btn btn-success',
-                    cancelButtonClass: 'btn btn-danger',
-                    buttonsStyling: false,
-                    reverseButtons: true
-                    }).then((result) => {
+                let me = this;
+            
+                Swal.fire({
+                title: '¿Está seguro de desactivar este color?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Aceptar!',
+                cancelButtonText: 'Cancelar',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                buttonsStyling: false,
+                reverseButtons: true
+                }).then((result) => {
                     if (result.value) {
                     
 
@@ -229,10 +225,10 @@ import Swal from 'sweetalert2';
                         });
                         
                     
-                } else if (
-                        // Read more about handling dismissals
-                        result.dismiss === Swal.DismissReason.cancel
-                    ) {
+                    } else if (
+                            // Read more about handling dismissals
+                            result.dismiss === Swal.DismissReason.cancel
+                        ) {
                         
                     }
                     })
