@@ -61,20 +61,23 @@ class ProductoController extends Controller
         if (!$request->ajax()) return redirect('/');
         $producto = new Producto();
         $imagenes = new Imagen();
-        $imagenes->Imagen = $request->Imagen;
-        $imagenes->Tipo = 'P';
-        $imagenes->save();
 
-       // $tipo = 'P';
         $idImg=1;
-        $imagen = new Imagen();
-        $imagen = Peticion::file('file');
-        $extension = $imagen -> guessExtension();
+        $imagenes = new Imagen();
+        $imagenes = Peticion::file('file');
+        $extension = $imagenes -> guessExtension();
         $date = date('d-m-Y_h-i-s-ms-a');
         $prefijo = 'Image';
         $nombreImagen = $prefijo.'_'.$date.'.'.$extension;
         $imagen->Imagen = $nombreImagen;
         $idImg++;
+
+        $imagenes->Imagen = $request->Imagen;
+        $imagenes->Tipo = 'P';
+        $imagenes->save();
+
+       // $tipo = 'P';
+       
  
         // $imagen = Peticion::file('file');
         

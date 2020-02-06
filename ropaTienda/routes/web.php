@@ -57,3 +57,6 @@ Route::put('/colores/activar', 'colorController@activar');
 Route::put('/colores/desactivar', 'colorController@desactivar');
 
 Route::get('/talla', 'TallaController@index');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
