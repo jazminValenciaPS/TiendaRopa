@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Talla;
 
 class TallaController extends Controller
 {
@@ -13,7 +14,8 @@ class TallaController extends Controller
      */
     public function index()
     {
-        //
+        $tallas = Talla::all();
+        return $tallas;
     }
 
     /**

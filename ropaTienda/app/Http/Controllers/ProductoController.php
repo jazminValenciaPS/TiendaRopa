@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Producto;
+use App\Imagen;
 
 use Illuminate\Support\Facades\Log;
+use Request as Peticion ;
 
 
 use File;
+
 class ProductoController extends Controller
 {
 
@@ -22,12 +25,10 @@ class ProductoController extends Controller
         ->join('imagenes','imagenes.idImagen', '=','producto.idImg')
         ->join('sub_categorias','sub_categorias.idSubCategorias', '=','producto.idSubCat')
         ->join('colores','colores.id', '=','producto.idcolor')
-        ->select('tallas.idTalla','tallas.Talla','tallas.idTalla','producto.NombreProducto','producto.Descripcion',
-        'producto.Precio','producto.Existencia','imagenes.idImagen','imagenes.Imagen','sub_categorias.idSubCategorias',
+        ->select('tallas.idTalla','tallas.Talla','tallas.idTalla','producto.NombreProducto','producto.Descripcion','producto.Status',
+        'producto.Precio','producto.idProducto','producto.Existencia','imagenes.idImagen','imagenes.Imagen','sub_categorias.idSubCategorias',
         'sub_categorias.NombreSub','colores.NombreColor','colores.id')
         ->get();
-
-        // return ['productos' => $productos]; 
 
     }
 
@@ -43,7 +44,7 @@ class ProductoController extends Controller
         ->join('colores','colores.id', '=','producto.idcolor')
         ->select('tallas.idTalla','tallas.Talla','tallas.idTalla','producto.NombreProducto','producto.Descripcion',
         'producto.Precio','producto.Existencia','imagenes.idImagen','imagenes.Imagen','sub_categorias.idSubCategorias',
-        'sub_categorias.NombreSub','colores.NombreColor','colores.id')->where('producto.idProducto','=',$id)
+        'sub_categorias.NombreSub','colores.NombreColor','colores.id','producto.idProducto')->where('producto.idProducto','=',$id)
         ->get();
         // return $productos;
 
@@ -58,27 +59,81 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
-        // $subCat = new subCategoria();
-        // $subCat->Nombre = $request->Nombre;
-        // $subCat->Status = '1';
-        // $subCat->save();
+        $producto = new Producto();
+        $imagenes = new Imagen();
+        $imagenes->Imagen = $request->Imagen;
+        $imagenes->Tipo = 'P';
+        $imagenes->save();
+
+       // $tipo = 'P';
+        $idImg=1;
+        $imagen = new Imagen();
+        $imagen = Peticion::file('file');
+        $extension = $imagen -> guessExtension();
+        $date = date('d-m-Y_h-i-s-ms-a');
+        $prefijo = 'Image';
+        $nombreImagen = $prefijo.'_'.$date.'.'.$extension;
+        $imagen->Imagen = $nombreImagen;
+        $idImg++;
+ 
+        // $imagen = Peticion::file('file');
+        
+        // $extension = $imagen->guessExtension();
+        // $date = date('d-m-Y_h-i-s-ms-a');
+        // $prefijo = 'Image';
+        // $nombreImagen = $prefijo.'_'.$date.'.'.$extension;
+        // $imagen->move('img', $nombreImagen);
+        // $slider->Imagen = $nombreImagen;
+
+
+       
+
+        $producto->NombreProducto = $request->NombreProducto;
+        $producto->Descripcion = $request->Descripcion;
+        $producto->Precio = $request->Precio;
+        $producto->Existencia = $request->Existencia;
+        $producto->idSubcat = $request->idSubcat;
+        $producto->idColor = $request->idColor;
+        $producto->idTalla = $request->idTalla;
+        $producto->idImg = $idImg ;
+        $producto->Status = '1';
+        
+        // $imagenSub = Peticion::file('file');
+               
+        $producto->save();
+        $imagen->save();
+
+        $producto = Producto::create([
+            'idImg' => $imagenes['idImagen']
+        ]);
+
     }
 
     public function productosSub(Request $request){
         $id = $request->id;
 
 
-         $productos = DB::table('producto')
+        return  $productos = DB::table('producto')
         ->join('tallas','tallas.idTalla', '=','producto.idTalla')
         ->join('imagenes','imagenes.idImagen', '=','producto.idImg')
         ->join('sub_categorias','sub_categorias.idSubCategorias', '=','producto.idSubCat')
         ->join('colores','colores.id', '=','producto.idcolor')
-        ->select('tallas.idTalla','tallas.Talla','tallas.idTalla','producto.NombreProducto','producto.Descripcion',
-        'producto.Precio','producto.Existencia','imagenes.idImagen','imagenes.Imagen','sub_categorias.idSubCategorias',
+        ->select('tallas.idTalla','tallas.Talla','tallas.idTalla','producto.NombreProducto','producto.Descripcion','producto.Status',
+        'producto.Precio','producto.idProducto','producto.Existencia','imagenes.idImagen','imagenes.Imagen','sub_categorias.idSubCategorias',
         'sub_categorias.NombreSub','colores.NombreColor','colores.id')->where('producto.idSubcat','=',$id)
         ->get();
 
-        return $productos;
+        //  return $productos = DB::table('producto')
+        // ->join('tallas','tallas.idTalla', '=','producto.idTalla')
+        // ->join('imagenes','imagenes.idImagen', '=','producto.idImg')
+        // ->join('sub_categorias','sub_categorias.idSubCategorias', '=','producto.idSubCat')
+        // ->join('colores','colores.id', '=','producto.idcolor')
+        // ->select('tallas.idTalla','tallas.Talla','tallas.idTalla','producto.NombreProducto','producto.Descripcion',
+        // 'producto.Precio','producto.idProducto','producto.Existencia','imagenes.idImagen','imagenes.Imagen','sub_categorias.idSubCategorias',
+        // 'sub_categorias.NombreSub','colores.NombreColor','colores.id')->where('producto.idSubcat','=',$id)
+        // ->get();
+
+        // return $productos;
 
 
     //   print_r($id);
@@ -101,25 +156,33 @@ class ProductoController extends Controller
     public function update(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
-        // $subCat = subCategoria::findOrFail($request->id);
-        // $subCat->Nombre = $request->Nombre;
-        // $subCat->Status = '1';
-        // $subCat->save();   
+
+        $producto = Producto::findOrFail($request->idProducto);
+        
+        $producto->NombreProducto = $request->NombreProducto;
+        $producto->Descripcion = $request->Descripcion;
+        $producto->Precio = $request->Precio;
+        $producto->Existencia = $request->Existencia;
+        $producto->idSubcat = $request->idSubcat;
+        $producto->idColor = $request->idColor;
+        $producto->idTalla = $request->idTalla;
+        
+        $producto->save();   
     }
 
     public function desactivar(Request $request)
     {
-        if (!$request->ajax()) return redirect('/');
-        // $subCat = subCategoria::findOrFail($request->id);
-        // $subCat->Status = '0';
-        // $subCat->save(); 
+        $producto = Producto::findOrFail($request->id);
+        $producto->Status = '0';
+        $producto->save(); 
+        
     }
     
     public function activar(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
-        // $subCat = subCategoria::findOrFail($request->id);
-        // $subCat->Status = '1';
-        // $subCat->save();
+        $producto = Producto::findOrFail($request->id);
+        $producto->Status = '1';
+        $producto->save();
     }
 }

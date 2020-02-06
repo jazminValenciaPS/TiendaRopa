@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Producto extends Model
 {
+    protected $primaryKey = 'idProducto';
     protected $table = 'producto';
 
     protected $fillable = [
@@ -13,10 +14,11 @@ class Producto extends Model
         'idSubcat',
         'idColor',
         'idTalla',
-        'Nombre',
+        'NombreProducto',
         'Descripcion',
         'Precio',
-        'Existencia'
+        'Existencia',
+        'Status'
     ];
 
     public function imagenes()

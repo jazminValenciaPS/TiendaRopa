@@ -2,14 +2,17 @@
     <main class="main">
          <!-- abre modal -->
         <div class="modal fade" tabindex="-1" :class="{'mostrar' : modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
-            <div class="modal-dialog modal-primary modal-lg" role="document">
-                <h4 class="modal-title center" v-text="tituloModal"></h4>    
+            <div class="modal-dialog modal-primary modal-lg " role="document">
+                <div class="center">
+                <h3 v-text="tituloModal"></h3>
+
+                </div>
                     <div class="col s5 center">
                         <img v-if="tipoAccion==2" :src="'img/'+img"  class="imagenEdit" alt="">
                     </div>
                     <div class="form-group row">
                         <!-- input para el nombre del producto --> 
-                        <input id="nombre" type="text" v-model="Nombre" class="validate">
+                        <input id="nombre" type="text" v-model="NombreProducto" class="validate" >
                         <label  for="nombre">Nombre</label>
                         <br>  
                         <!-- input para la descripción del producto-->
@@ -20,22 +23,32 @@
                         <input id="precio" type="text" v-model="Precio" class="validate">
                         <label  for="precio">Precio</label>
                         <br> 
+                        <!-- input para la descripción del producto-->
+                        <input id="descripcion" type="text" v-model="Existencia" class="validate">
+                        <label  for="descripcion">Existencia</label>
+                        <br> 
                         <!-- select Subcategorias --> 
                         <select name="LeaveType" class="browser-default" v-model="idSubcat">
                             <option value="" disabled selected>Selecciona la subCategoría</option>
-                            <option v-on:change="vercoloresSubCategorias()" v-for="subcategoria in arraySubcategoria" :value="subcategoria.idSubcat" :key="subcategoria.id">{{ subcategoria.NombreSub }}</option>
+                            <option v-on:change="(event) => console.log(event)" v-for="subcategoria in arraySubcategoria" :value="subcategoria.idSubCategorias" :key="subcategoria.id">{{ subcategoria.NombreSub }}</option>
                         </select> 
                         <br>
                         <!-- select color -->
                         <!-- <select multiple name="LeaveType" class="browser-default"> -->
                             <!-- v-model="idColor" -->
                          <select name="LeaveType" class="browser-default" v-model="idColor">
-                            <option value="" disabled selected>Selecciona un color</option>
-                            <option  v-on:change="vercoloresSubCategorias()" v-for="color in arrayColor" :value="color.id" :key="color.id">{{ color.NombreColor }}</option>
+                            <option value="" disabled selected>Selecciona una color</option>
+                            <option  v-on:change="() => {}" v-for="color in arrayColor" :value="color.id" :key="color.id">{{ color.NombreColor }}</option>
+                        </select> 
+                        <br>
+                        <!-- select Subcategorias --> 
+                        <select name="LeaveType" class="browser-default" v-model="idTalla">
+                            <option value="" disabled selected>Selecciona la talla</option>
+                            <option v-on:change="(event) => console.log(event)" v-for="tallas in arrayTalla" :value="tallas.idTalla" :key="tallas.idTalla">{{ tallas.Talla }}</option>
                         </select> 
                         <br>
                         <!-- input para la imagen del producto --> 
-                        <div class="col s10 center">
+                        <div class="col s10 center" v-if="tipoAccion==1" >
                             <div class="file-field input-field">
                                 <div class="waves-effect waves-light btn deep-orange lighten-4 brown-text">
                                     <span>Imagen</span>
@@ -46,8 +59,15 @@
                                 </div>
                             </div>
                         </div> 
-
+                        
                     </div> 
+                    <div v-show="errorProducto" class="form-group row div-error">
+                            <div class="text-center text-error">
+                                <div v-for="error in errorMostrarMsjProducto" :key="error" v-text="error">
+
+                                </div>
+                            </div>
+                    </div>
                 <div class="modal-footer">
                     <button type="button" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="cerrarModal()">Cerrar</button>
                     <button type="button" v-if="tipoAccion==1" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="nuevoProducto()">Guardar</button>
@@ -67,31 +87,40 @@
                 </div>
         </div>
     <!-- fin boton abrir modal -->
+    
+       <div class="row">
+           <div class="center col s12">
+               <div class="centro col s5 ">
+                    <ul class="collection " v-for="producto in arrayProducto" :key="producto.idProducto">
+                        <li class="collection-item avatar">
+                        <img :src="'img/'+producto.Imagen" class="circle">
+                            <h5 v-text="producto.NombreProducto"></h5>
+                            <h6>Descripción: </h6>
+                            <h6 v-text="producto.Descripcion"></h6>
+                            <a href="#!" class="secondary-content" v-if="producto.Status == 1">
+                                <i class="switch">
+                                    <label><input type="checkbox" checked="checked" name="status" v-model="producto.Status" @click="desactivarProducto(producto.idProducto)"><span class="lever"></span></label>
+                                </i>
+                                      <i class="material-icons brown-text " @click="abrirModal('productos','actualizar',producto)">create</i>
 
-        <!-- abre tabla -->
-        <table class="tusers striped">
-            <thead>
-                <tr>
-                    <th>Nombre<th>
-                    <th>Descripción</th>
-                    <th>Estado</th>
-                    <th>Precio</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="producto in arrayProducto" :key="producto.idProducto">
-                    <td v-text="producto.NombreProducto"></td>
-                    <td></td>
-                    <td v-text="producto.Descripcion"></td>
-                    <td v-text="producto.Existencia"></td>
-                    <td v-text="producto.Precio"></td>
-                </tr>                                
-            </tbody>
-        </table>
-    <!-- cierra tabla -->
+                            </a>
+                            <a href="#!" class="secondary-content" v-if="producto.Status == 0">
+                                <i class="switch">
+                                    <label><input type="checkbox"  name="status" v-model="producto.Status" @click="activarProducto(producto.idProducto)"><span class="lever"></span></label>
+                                </i>
+                                    <i class="material-icons brown-text " @click="abrirModal('productos','actualizar',producto)">create</i>
+
+                            </a>
+                        </li>
+                    </ul>
+               </div> 
+           </div> 
+        </div> 
+
     </main>
 </template>
 <script>
+import Swal from 'sweetalert2';
 document.addEventListener('DOMContentLoaded', function() {
                         var elems = document.querySelectorAll('select');
                         var instances = M.FormSelect.init(elems);
@@ -101,67 +130,37 @@ document.addEventListener('DOMContentLoaded', function() {
             return{
                 idProducto: 0,
                 img: '',
-                Nombre: '',
+                NombreProducto: '',
                 Descripcion:'',
-                Precio:'',
+                Precio:0,
+                idTalla:'',
                 idSubcat:'',
                 idColor:'',
                 Existencia: 0,
-                idTalla:'',
-                Talla:'',
+                status : true,
                 tipoAccion:0,
                 arrayProducto:[],
                 arrayColor:[],
                 arraySubcategoria:[],
+                arrayTalla: [],
                 modal : 0,
+                errorProducto : 0,
+                errorMostrarMsjProducto: [],
                 tituloModal : '',
-                pagination:{
-                    "total" : 0,
-                    "current_page" :0,
-                    "per_page" : 0,
-                    "last_page" : 0,
-                    "from" : 0,
-                    "to" : 0
-                },
-                offset : 3,
-                criterio : 'nombre',
-                buscar : '',
-                file: ''
 
             }
-        },computed:{
-            isActived: function() {
-                return this.pagination.current_page;
-            },
-            // calcular los elementos de la paginacion
-            pagesNumber: function(){
-                if(!this.pagination.to){
-                    return [];
-                } 
-
-                var from =  this.pagination.current_page - this.offset;
-                if(from < 1){
-                    from = 1;
-                }
-
-                var to = from + (this.offset * 2);
-                if(to >= this.pagination.last_page){
-                    to = this.pagination.last_page;
-                }
-
-                var pagesArray = []
-                while(from <= to){
-                    pagesArray.push(from);
-                    from++;
-                }
-                return pagesArray;
-            }
-        }, methods:{
+        },methods:{
             listarProductos(){
                 let me=this;
                 var url = '/productos'
                 axios.get('/productos').then(function (response){
                     me.arrayProducto = response.data;
+                    me.status = response.status.data;
+                    if(status == true){
+                        status = 1
+                    }else{
+                        status = 0
+                    }
                   
                 })
                 .catch(function(error){
@@ -183,11 +182,16 @@ document.addEventListener('DOMContentLoaded', function() {
                             case 'actualizar':{
                                 this.modal = 2;
                                 this.Nombre = '';
+                                this.idProducto = data['idProducto'];
                                 this.tipoAccion = 2;
                                 this.img=data['Imagen'];
-                                this.Nombre=data['Nombre'];
+                                this.NombreProducto=data['NombreProducto'];
                                 this.Descripcion=data['Descripcion'];
-                                this.
+                                this.Precio=data['Precio'];
+                                this.Existencia=data['Existencia'];
+                                this.idSubcat=data['idSubCategorias'];
+                                this.idColor=data['id'];
+                                this.idTalla=data['idTalla'];
                                 this.tituloModal = 'Actualizar Producto';
                             }
                         }
@@ -195,15 +199,57 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             },
             nuevoProducto(){
+               if (this.validarProducto()){
+                    return;
+                }
                 let me = this;
 
                 let formData = new FormData();
+
                 formData.append('file', me.file);
+                formData.append('idColor', me.idColor);
+                formData.append('idTalla', me.idTalla);
+                formData.append('idSubcat', me.idSubcat);
+                formData.append('NombreProducto', me.NombreProducto);
+                formData.append('Descripcion', me.Descripcion);
+                formData.append('Precio', me.Precio);
+                formData.append('Existencia', me.Existencia);
+                 // Registramos la informacion
                 
-                
-                // Registramos la informacion
+                 
                 axios.post('/productos/registrar', formData, {
+                    
                     headers: {
+                        'Content-Type': 'multipart/form-data',
+                        
+                    }
+                })
+                .then(function (response) {
+                    me.listarProductos();
+                    me.cerrarModal();
+                    me.limpiar();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            actualizarProducto(id){
+                let me = this;
+                let formData = new FormData();
+
+                
+                formData.append('idProducto',id);
+                formData.append('idColor', me.idColor);
+                formData.append('idTalla', me.idTalla);
+                formData.append('idSubcat', me.idSubcat);
+                formData.append('NombreProducto', me.NombreProducto);
+                formData.append('Descripcion', me.Descripcion);
+                formData.append('Precio', me.Precio);
+                formData.append('Existencia', me.Existencia);
+
+                // Regresamos la informacion
+                axios.post('/productos/actualizar', formData,{
+                   headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 })
@@ -211,30 +257,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     me.listarProductos();
                     me.cerrarModal();
                     me.limpiar();
-                     var toastHTML = '<span>Slider Registrado Correctamente</span>';
-                     M.toast({ html: toastHTML, classes: 'rounded tos', displayLength: 1500 });
-
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            actualizarProducto(){
-                let me = this;
-                let formData = new FormData();
-
-                formData.append('file', me.file);
-                formData.append('id',id);
-                
-                // Regresamos la informacion
-                axios.post('/productos/actualizar', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                })
-                .then(function (response) {
-                    me.listarProductos();
-                    me.cerrarModal();
                 
                 })
                 .catch(function (error) {
@@ -244,8 +266,18 @@ document.addEventListener('DOMContentLoaded', function() {
             cerrarModal(){
                 this.modal=0;
                 this.tituloModal='';
-                this.img='';
-                this.Nombre = "";
+                this.NombreProducto = "";
+                this.Descripcion="";
+                this.Precio="";
+                this.idSubcat="";
+                this.idColor="";
+                this.idTalla="";
+                this.tipoAccion = 0;
+                this.Existencia=0;
+                this.Cambio = 0;
+                
+                this.errorProducto= 0;
+                this.errorMostrarMsjProducto = [];
             },
             limpiar(){
                 let me = this;
@@ -256,40 +288,165 @@ document.addEventListener('DOMContentLoaded', function() {
                 me.Precio='';
                 me.idSubcat='';
                 me.idColor='';
+                me.idTalla='';
                 me.tipoAccion = 0;
+                me.NombreProducto='';
+                me.Existencia=0;
                 me.Cambio = 0;
             },
-            vercoloresSubCategorias(){
+            verSelects(){
                 let me=this;
                 me.listado=2;
-                //Obtener los datos del ingreso
-                var url= this.ruta + '/subcategoria';
+                //Obtener los datos del ingreso de sub categorias
+                var url= '/subcategoria';
                 axios.get(url).then(function (response) {
-                    var respuesta= response.data;
-                    arraySubcategoria = respuesta.subCategorias;
-                    me.NombreSubCategoria = arraySubcategoria[0]['NombreSubcategoria'];
-                   
+                    var arraySubcategoria= response.data;
+                    me.arraySubcategoria = arraySubcategoria.map(object => ({idSubCategorias: object.idSubCategorias, NombreSub: object.NombreSub})); 
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
-                //Obtener los datos de los detalles
+                //Obtener los datos de los detalles de colores
                 var urld= '/colores';
                 axios.get(urld).then(function (response) {
-                    console.log(response);
-                    var respuesta= response.data;
-                    arrayColor = respuesta.color;
-                    arrayColor = respuesta.color;
-
-                     me.NombreColor= arrayColor[0]['NombreColor'];
-
+                    var arrayColor= response.data;
+                    me.arrayColor = arrayColor.map(object => ({id: object.id, NombreColor: object.NombreColor}));
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+                //Obtener los datos de los detalles de tallas
+                var urld= '/talla';
+                axios.get(urld).then(function (response) {
+                    var arrayTalla= response.data;
+                    me.arrayTalla = arrayTalla.map(object => ({idTalla: object.idTalla, Talla: object.Talla}));
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             },
-        }, mounted(){
+            seleccionarImagen(img){
+                if (img == 1) {            
+                    this.file = this.$refs.filea.files[0];
+                    readURL(document.getElementsByClassName("sliderAlta")[0], 1);
+                }
+                else {
+                    this.file = this.$refs.filec.files[0];
+                    readURL(document.getElementsByClassName("sliderEdit")[0], 2);
+                }
+                this.cambio = 1;
+
+                function readURL(input, img) {
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            if (img == 1) {
+                                $('.imgAlta').attr('src', e.target.result);
+                            }
+                            else {
+                                $('.imgCambio').attr('src', e.target.result);
+                            }
+                        };
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                }
+            },
+            desactivarProducto(id){
+                let me = this;
+
+                Swal.fire({
+                title: '¿Está seguro de desactivar este producto?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Aceptar!',
+                cancelButtonText: 'Cancelar',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                buttonsStyling: false,
+                reverseButtons: true
+                }).then((result) => {
+                    if (result.value) {
+ 
+                        axios.put('/productos/desactivar',{
+                            'id': id
+                        }).then(function (response) {
+                          me.listarProductos();
+                            Swal.fire(
+                                'Desactivado!',
+                                'el producto ha sido desactivado con éxito.',
+                                'success'
+                            )
+                        }).catch(function (error) {
+                            console.log(error);
+                        });                    
+                    } else if (
+                            // Read more about handling dismissals
+                            result.dismiss === Swal.DismissReason.cancel
+                        ) {
+                        
+                    }
+                    })
+            },
+            activarProducto(id){
+                let me = this;
+
+                Swal.fire({
+                title: '¿Está seguro de activar este producto?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Aceptar!',
+                cancelButtonText: 'Cancelar',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                buttonsStyling: false,
+                reverseButtons: true
+                }).then((result) => {
+                if (result.value) {
+                    axios.put('/productos/activar',{
+                        'id': id
+                    }).then(function (response) {
+                        me.listarProductos();
+                        Swal.fire(
+                            'activado!',
+                            'El producto ha sido activado con éxito.',
+                            'success'
+                        )
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                
+               } else if (
+                    // Read more about handling dismissals
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    
+                }
+                }) 
+                  
+               },
+               validarProducto(){
+                    this.errorProducto=0;
+                    this.errorMostrarMsjProducto =[];
+
+                    if (this.idTalla==0) this.errorMostrarMsjProducto.push("Seleccione una talla.");
+                    if (this.idSubcat==0) this.errorMostrarMsjProducto.push("Seleccione una sub categoria.");
+                    if (this.idColor==0) this.errorMostrarMsjProducto.push("Seleccione un color");
+                    if (!this.NombreProducto) this.errorMostrarMsjProducto.push("El nombre del Producto no puede estar vacío.");
+                    if (!this.Existencia ) this.errorMostrarMsjProducto.push("La Existencia del producto debe ser un número y no puede estar vacío.");
+                    if (!this.Precio ) this.errorMostrarMsjProducto.push("El precio del producto debe ser un número y no puede estar vacío.");
+
+                    if (this.errorMostrarMsjProducto.length) this.errorProducto = 1;
+
+                    return this.errorProducto;
+            },
+        }
+        , mounted(){
             this.listarProductos();
+            this.verSelects();
         }
     };
 </script>

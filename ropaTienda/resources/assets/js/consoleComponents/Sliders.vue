@@ -131,56 +131,53 @@
                 }
             },
             nuevoSlider() {
-                    let me = this;
+                let me = this;
 
-                            let formData = new FormData();
-                            formData.append('file', me.file);
-                            
-                            
-                            //Registramos la informacion
-                            axios.post('/slider/registrar', formData, {
-                                headers: {
-                                    'Content-Type': 'multipart/form-data'
-                                }
-                            })
-                            .then(function (response) {
-                                me.listarSliders();
-                                me.cerrarModal();
-                                me.limpiar();
-                                // var toastHTML = '<span>Slider Registrado Correctamente</span>';
-                                // M.toast({ html: toastHTML, classes: 'rounded tos', displayLength: 1500 });
+                let formData = new FormData();
+                formData.append('file', me.file);
+                
+                
+                //Registramos la informacion
+                axios.post('/slider/registrar', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
+                .then(function (response) {
+                    me.listarSliders();
+                    me.cerrarModal();
+                    me.limpiar();
+                    // var toastHTML = '<span>Slider Registrado Correctamente</span>';
+                    // M.toast({ html: toastHTML, classes: 'rounded tos', displayLength: 1500 });
 
-                            })
-                            .catch(function (error) {
-                                console.log(error);
-                            });
-                      
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+                
                     
             },
             actualizarSlider(id){
+            let me = this;
+
+            let formData = new FormData();
+            formData.append('file', me.file);
+            formData.append('id',id);
+      
+            //Regresamos la informacion
+            axios.post('/slider/actualizar', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(function (response) {
+                me.listarSliders();
+                me.cerrarModal();
             
-             let me = this;
+            })
+            .catch(function (error) {
+                console.log(error);
 
-                    let formData = new FormData();
-                        formData.append('file', me.file);
-                         formData.append('id',id);
-
-                
-                    
-                    //Regresamos la informacion
-                    axios.post('/slider/actualizar', formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        }
-                    })
-                    .then(function (response) {
-                        me.listarSliders();
-                        me.cerrarModal();
-                   
-                   })
-                    .catch(function (error) {
-                        console.log(error);
-        
              });
                         
             },
@@ -277,9 +274,9 @@
     z-index: 100;
 }
 .centrado{
-    height:560px;
-     margin-left: 20%;
-     margin-right: 30%;
+    height:560px !important;
+     margin-left: 20% !important;
+     margin-right: 30% ;
 }
 .espacioButton{
     margin-left: 10px !important;

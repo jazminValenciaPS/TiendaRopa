@@ -23,6 +23,8 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('ropa-component', require('./components/Ropa.vue').default);
 Vue.component('accesorios-component', require('./components/Accesorios.vue').default);
 Vue.component('cosmeticos-component', require('./components/Cosmeticos.vue').default);
+// Vue.component('productost-component', require('./components/ProductosT.vue').default);
+
 Vue.component('subcategorias-component', require('./consoleComponents/Subcategorias.vue').default);
 Vue.component('sliders-component', require('./consoleComponents/Sliders.vue').default);
 Vue.component('productos-component', require('./consoleComponents/Productos.vue').default);

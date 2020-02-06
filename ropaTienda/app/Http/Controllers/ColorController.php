@@ -17,11 +17,11 @@ class ColorController extends Controller
     public function store(Request $request)
     {
         $validateData = $request->validate([
-           'Nombre' => 'unique:colores,Nombre'
+           'NombreColor' => 'unique:colores,NombreColor'
          ] );
 
         $colores = new Colores();
-        $colores->Nombre = $request->Nombre;
+        $colores->NombreColor = $request->Nombre;
         
         $colores->save();
     }
