@@ -1,13 +1,16 @@
 <template>
     <main class="main">
      <!-- Muestra los Sliders -->
-        <div class="container ">
+        <div class="container">
             <div class="row">
-                <div class="col s12 ">    
+                <div class="col s12">    
                     <br>    
-                    <div class="carousel center" >
-                        <a class="carousel-item" v-for="slider in arraySliders" :key="slider.id"><img  :src="'img/'+slider.imagen" class="responsive-img"></a>
+                    <div class="carousel carousel-slider center" id="carrucel-demo">
+                        <a v-for="slider in arraySliders" :key="slider.id">
+                            <img :src="'img/'+slider.imagen" class="responsive-img" >
+                        </a>
                     </div>
+                    <br>
                 </div>
             </div>
         </div>         
@@ -96,6 +99,25 @@
 //         setTimeout(autoplay, 2000);
 //       }
 //     });
+
+        $(document).ready(function(){
+        $('.carousel').carousel(
+        {
+            dist: 0,
+            padding: 1,
+            fullWidth: true,
+            indicators: true,
+            duration: 300,
+        }
+        );
+        });
+
+        autoplay()   
+        function autoplay() {
+            $('.carousel').carousel('next');
+            setTimeout(autoplay, 1000);
+        }
+
     export default {
          data(){
             return{
