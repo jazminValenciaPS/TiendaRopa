@@ -10,6 +10,8 @@
       <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"/> -->
       <meta name="csrf-token" content="{{ csrf_token()  }}">
       <meta name="viewport" content="width=device-width, initial-scale=1">  
+ 
+  <link href="https://unpkg.com/vueperslides/dist/vueperslides.css" rel="stylesheet">
         <!-- Styles -->
       <style>
        
@@ -41,6 +43,8 @@
       <script src="js/plantilla.js"></script>
       <script src="js/app.js"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+      <script src="https://unpkg.com/vue"></script>
+      <script src="https://unpkg.com/vueperslides"></script>
 
       
    <script>
@@ -48,6 +52,10 @@
             var elems = document.querySelectorAll('select');
             var instances = M.FormSelect.init(elems);
         });
+        document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.sidenav');
+    var instances = M.Sidenav.init(elems, {closeOnClick: true});
+  });
  
    </script>
 

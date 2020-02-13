@@ -1,18 +1,25 @@
 <!DOCTYPE html>
 <html>
   <head>
-      <!--Import Google Icon Font-->
+    <!--Import Google Icon Font-->
       
-      <!--Import materialize.css-->
-      <link rel="stylesheet" href='css/plantilla.css' >
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href='css/plantilla.css' >
 
-      <!--Let browser know website is optimized for mobile-->
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-      <meta name="csrf-token" content="{{ csrf_token()  }}">
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="csrf-token" content="{{ csrf_token()  }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css"> 
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js">
-            <!-- <script src="sweetalert2.min.js"></script> -->
-            <!-- <link rel="stylesheet" href="sweetalert2.min.css"> -->
-   </head>
+    <!-- <script src="sweetalert2.min.js"></script> -->
+    <!-- <link rel="stylesheet" href="sweetalert2.min.css"> -->
+  
+   <!--Import Google Icon Font-->
+   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+     
+  
+  </head>
   
    <body>
      <div id="app">
@@ -58,6 +65,7 @@
       <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
       <script src="js/plantilla.js"></script>
       <script src="js/app.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script> 
       <script>
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -76,6 +84,18 @@
         setTimeout(autoplay, 2000);
       }
     });
+    document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.sidenav');
+    var instances = M.Sidenav.init(elems, {closeOnClick: true});
+  });
+
+//   $( document ).ready(function(){
+// $('.button-collapse').sideNav({
+//       closeOnClick: true
+//     }
+//   );
+// });
+    
 </script>
 
    </body>

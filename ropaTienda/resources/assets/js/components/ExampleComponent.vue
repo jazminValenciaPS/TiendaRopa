@@ -1,130 +1,64 @@
 <template>
     <main class="main">
      <!-- Muestra los Sliders -->
-        <div class="container">
-            <div class="row">
-                <div class="col s12">    
-                    <br>    
-                    <div class="carousel carousel-slider center" id="carrucel-demo">
-                        <a v-for="slider in arraySliders" :key="slider.id">
-                            <img :src="'img/'+slider.imagen" class="responsive-img" >
-                        </a>
-                    </div>
-                    <br>
-                </div>
-            </div>
-        </div>         
-     <!-- Termina muestra los Sliders -->
-    
-        <div class="row ">
-            <div class="col s3 borde"></div>
-            <div class="col s3 right-align tamañoMedio" ><div class="textoArribos">Nuevos</div></div>
-            <div class="col h3 s3 tamañoMedio"><div class="textoArribos">arrivos</div></div>  
-            <div class="col s3 borde"></div>  
-        </div>  
-
-
-        <div class="row contenedorCard">
-            
-            <div class="col s2 m4">
-                <div class="card medium">
-                    <div class="card-image ">
-                        <img src="img/topAzul.jpg">
-                    </div>
-                    <div class="card-content">
-                        <p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y 
-                        archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de 
-                        las industrias desde el año 1500, cuando un impresor (N. del T. persona
-                        que se dedica a la imprenta) desconocido usó una galería de textos.
-                        </p>
-                    </div>
-                    <div class="card-action">
-                        <a href="#">This is a link</a>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col s2 m4">
-                <div class="card medium">
-                    <div class="card-image ">
-                        <img src="img/topAzul.jpg">
-                    </div>
-                    <div class="card-content">   
-                        <p>Lorem Ipsum Lorem Lorem  Melissa paolaes simplemente el texto de relleno de las imprentas y 
-                        archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de 
-                        las industrias desde el año 1500, cuando un impresor (N. del T. persona
-                        que se dedica a la imprenta) desconocido usó una galería de textos.</p>
-                    </div>
-                    <div class="card-action">
-                        <a href="#">Esto es un link</a>
-                    </div>
-                </div>
-            </div> 
-
-            <div class="col s2 m4 ">
-                <div class="card medium ">
-                    <div class="card-image ">
-                        <img src="img/topAzul.jpg">
-                    </div>
-                    <div class="card-content">
-                        <p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y 
-                        archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de 
-                        las industrias desde el año 1500, cuando un impresor (N. del T. persona
-                        que se dedica a la imprenta) desconocido usó una galería de textos.</p>
-                    </div>
-                    <div class="card-action">
-                        <a href="#">This is a link</a>
-                    </div>
-                </div>
+     <br>
+        <div class="row">
+            <div class="col s12 contenedorCard">
+                <br>
+                <vueper-slides autoplay>
+                    <vueper-slide  v-for="slider in arraySliders" :key="slider.id" :image="'img/'+slider.imagen"/>
+                </vueper-slides>
             </div>
         </div>
+       
+     <!-- Termina muestra los Sliders -->
+     <br>
+    
+        <div class="row ">
+            <div class="col s1 l3 borde"></div>
+            <div class="col s4 l3 right-align tamañoMedio" ><div class="textoArribos">Nuevos</div></div>
+            <div class="col  s4 l3 tamañoMedio"><div class="textoArribos">productos</div></div>  
+            <div class="col s1 l3 borde"></div>  
+            <!-- <div class="col s1 l3 borde"></div>   -->
+
+        </div>  
+
+ <!-- Muestra de productos recientes -->
+
+            <div class="row ">
+                <div class="col s12 m4 l10 contenedorCard">
+                    <div id="espacioCard" class="card medium col s12 l4" v-for="producto in arrayProductos" :key="producto.idProducto" >
+                        <div id="estiloImagenCard" class="card-image">
+                            <img id="imagenCard" :src="'img/'+producto.Imagen">
+                        </div>
+                        <div id="DescripcionCard" class="responsive card-content">
+                            <p class="col s12 l12">Nombre: {{producto.NombreProducto}}</p>
+                            <p class="col s12 l12">Descripcion: {{producto.Descripcion}}</p>
+                        </div>
+                        <!-- <div class="card-action">
+                        <a href="#">This is a link</a>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
     </main>
 </template>
 
 <script>
-//   document.addEventListener('DOMContentLoaded', function() {
-//       var elems = document.querySelectorAll('.carousel');
-    
-//       var instances = M.Carousel.init(elems,
-//     {
-//           duration: 300,
-//           indicators: true,
-        
-//           padding: 1,
-        
-//       }); 
-//       autoplay();
-//       function autoplay(){
-//         setTimeout(autoplay, 2000);
-//       }
-//     });
 
-        $(document).ready(function(){
-        $('.carousel').carousel(
-        {
-            dist: 0,
-            padding: 1,
-            fullWidth: true,
-            indicators: true,
-            duration: 300,
-        }
-        );
-        });
+import { VueperSlides, VueperSlide } from 'vueperslides'
+import 'vueperslides/dist/vueperslides.css'
 
-        autoplay()   
-        function autoplay() {
-            $('.carousel').carousel('next');
-            setTimeout(autoplay, 1000);
-        }
 
     export default {
+        components: { VueperSlides, VueperSlide },
          data(){
             return{
                 img: '',
                 file:'',
                 arraySliders:[],
-                arrayProductos:[]
+                arrayProductos:[],
+                catalogo:1,
             }
             },methods:{
               listarSliders(){
@@ -141,14 +75,25 @@
 
              },
              listarProductos(){
-
-             },
+                let me=this;
+                var url = '/productos/recientes'
+                axios.get(url).then(function (response){
+                    me.arrayProductos = response.data;
+                  
+                })
+                .catch(function(error){
+                    console.log(error);
+                });
+            }, 
             },
         mounted() {
             console.log('Component mounted.');
             this.listarSliders();
+            this.listarProductos();
         }
      }
 
 
  </script>
+
+ 

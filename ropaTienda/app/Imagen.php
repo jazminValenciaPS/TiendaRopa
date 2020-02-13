@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Imagen extends Model
 {
+    protected $table = 'imagenes';
+    protected $primaryKey = 'idImagen';
+
     protected $fillable = [
         'Imagen',
         'Tipo'

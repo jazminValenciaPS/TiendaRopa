@@ -93,7 +93,7 @@ import Swal from 'sweetalert2';
                 let me = this;
                 me.tipoAccion = 0;
                 me.Cambio = 0;
-                me.nombre= "";
+                me.Nombre= '';
                 
             },   
             nuevoColor() {
@@ -106,9 +106,10 @@ import Swal from 'sweetalert2';
                     'Nombre': this.Nombre,
                     
                 }).then(function (response) {
+                    me.limpiar();
                     me.cerrarModal();
                     me.listarColores(); 
-                    me.limpiar();
+                    
                 }).catch(function (error) {
                     console.log(error);
                 });

@@ -17,12 +17,13 @@
                          <label class="activate" for="nombre">Nombre</label>
 
                         <br> 
-                        <!-- select Sub categorias -->
+                        <!-- select Sub categorias -->                        
                         <select name="LeaveType" class="browser-default" v-model="idCate">
-                            <option value="" disabled selected>Selecciona la categoria</option>
-                            <option value="1">Ropa</option>
+                            <option value="" disabled selected>Selecciona la Categoría</option>
+                            <option  v-on:change="(event) => console.log(event)" v-for="cate in arrayCategorias" :value="cate.idCategorias" :key="cate.idCategorias">{{ cate.nombre }}</option>
+                            <!-- <option value="1">Ropa</option>
                             <option value="2">Accesorios</option>
-                            <option value="3">Cosmeticos</option>
+                            <option value="3">Cosmeticos</option> -->
                         </select> 
                         <br>
                         <!-- recoleccion de imagenes para la sub categoria -->       
@@ -101,11 +102,12 @@ import Swal from 'sweetalert2';
         data(){
             return{
                 idSubCategorias: 0,
-                idCate: 0,
+                idCate: '',
                 NombreSub: '',
                 nombreCat: '',
                 status : true,
                 arraySubcategoria:[],
+                arrayCategorias: [],
                 modal : 0,
                 imagenSub: '',
                 tituloModal : 'Registrar Sub Categorias' ,
@@ -206,6 +208,19 @@ import Swal from 'sweetalert2';
                     console.log(error);
                 });
             
+            },
+            verSelects(){
+                let me=this;
+                me.listado=2;
+                //Obtener los datos del ingreso de sub categorias
+                var url= '/categoria';
+                axios.get(url).then(function (response) {
+                    var arrayCategorias= response.data;
+                    me.arrayCategorias = arrayCategorias.map(object => ({idCategorias: object.idCategorias, nombre: object.nombre})); 
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
             },
             cerrarModal(){
                 this.modal=0;
@@ -370,6 +385,7 @@ import Swal from 'sweetalert2';
 
         },mounted(){
             this.listarSubCategorias();
+            this.verSelects();
           
         }
     };

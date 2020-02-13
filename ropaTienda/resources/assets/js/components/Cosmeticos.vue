@@ -4,21 +4,21 @@
         <div class="row " v-if="listado==1">
   <!-- Muestra breadcrumb -->
 
-     <nav class="clean">
-        <div class="nav-wrapper">
-        <div class="col s12">
-            <a v-if="catalogo>=1" @click="catalogo=1" class="breadcrumb">Cosméticos</a>
-            <a v-if="catalogo>=2" @click="catalogo=2" class="breadcrumb">{{bread2}}</a>
-            <a v-if="catalogo>=3" @click="catalogo=3" class="breadcrumb">{{bread3}}</a>
+   <div class="breadcrumb ">
+        <div class="breadcrumb-item">
+            <div class="col s12 ">
+                <a v-if="catalogo>=1" @click="catalogo=1" class="black-text ">Accesorios</a>
+                <a v-if="catalogo>=2" @click="catalogo=2" class="black-text ">/ {{bread2}}</a>
+                <a v-if="catalogo>=3" @click="catalogo=3" class="black-text ">/ {{bread3}}</a>
+            </div>
         </div>
-        </div>
-     </nav>
+     </div>
   <!--Termina muestra breadcrumb -->
 
          <br>
-         <!-- Muestra SubCategorias -->
-            <div v-if="catalogo==1" class="col s12 ">
-              <div v-for="subcategorias in arraySubcategorias" :key="subcategorias.idSubCategorias" class="col s4 center ">
+          <!-- Muestra SubCategorias -->
+            <div v-if="catalogo==1" class="col s12 l12">
+              <div v-for="subcategorias in arraySubcategorias" :key="subcategorias.idSubCategorias" class="col s12 l4 center ">
                        <a @click="verProductos(subcategorias.idSubCategorias),bread2=subcategorias.NombreSub" >
                            <img class="tImagen productos" :src="'img/'+ subcategorias.imagenSub"></a>
                         <h5><a class="brown-text" >{{ subcategorias.NombreSub}}</a></h5>
@@ -29,10 +29,10 @@
 
          <!-- Muestra Productos -->
 
-             <div v-else-if="catalogo==2" class="col s12 contenedorCard">
-               <div style="margin-left:20px;" class="card medium col s4 " v-for="producto in arrayProductos" :key="producto.idProducto">
+             <div v-else-if="catalogo==2" class="col s12 l4 contenedorCard">
+               <div style="margin-left:20px;" class="card medium col s12 l4 " v-for="producto in arrayProductos" :key="producto.idProducto">
                     <div class="card-image ">
-                        <img :src="'img/'+producto.Imagen">
+                        <img id="imagenCard" :src="'img/'+producto.Imagen">
                     </div>
                     <div class="card-content">
                         <p> {{producto.NombreProducto}}</p>
@@ -41,7 +41,7 @@
                     </div>
                     <div class="card-action">
                         <!-- <a href="">Mostrar más.</a> -->
-                        <a @click="verProductoDetalle(producto.id),bread3=producto.NombreProducto ">Mostrar más.</a>
+                        <a @click="verProductoDetalle(producto.idProducto),bread3=producto.NombreProducto ">Mostrar más.</a>
                     </div>
             </div>  
             </div>
@@ -49,28 +49,37 @@
 
          <!-- Muestra detalles de productos -->
 
-            <div v-else-if="catalogo==3" class="col s12">
-                <div class="row contenedorCard" >
-             <br>
-             <div  v-for="detalle in arrayDetalleProducto" :key="detalle.idPorducto">
-                <div class="col s5">
-                    <img :src="'img/'+detalle.Imagen">
-                </div>
-                <div class="s5 center">
+            <div v-else-if="catalogo==3" class="col s12 l12 m12">
+                <div class="row " >
                     <br>
-                    <h2 >{{ detalle.NombreProducto}}</h2>
-                    <h5>$ {{detalle.Precio}} MXN</h5>
+                    <div  v-for="detalle in arrayDetalleProducto" :key="detalle.idPorducto">
+                        <div class="col s12 l6 center">
+                            <img class="responsive imagenProducto" :src="'img/'+detalle.Imagen">
+                        </div>
+                        <div class="col s12 l5 center">
+                            <h2 style="margin-top: 0%;">{{ detalle.NombreProducto}}</h2>
+                            <h5 class="">$ {{detalle.Precio}} MXN</h5>
 
-                    <h5>
-                        <p>Descripción:
-                        <br>
-                    {{detalle.Descripcion}}</p></h5>
-                </div>               
-            </div>
+                            <h5 class="">                    
+                                <p>Talla: {{detalle.Talla}}
+                                </p>
+                            </h5>
+                            <h5 class="">
+                                <p>
+                                    Color: {{detalle.NombreColor}}
+                                </p>
+                            </h5>
+                            <h5 class="">
+                                <p>Descripción:
+                                <br>
+                            {{detalle.Descripcion}}</p></h5>
+                        </div>               
+                    </div>
+                 </div>
+             </div>
          <!-- Termina muestra detalles de productos -->
 
-        </div>
-            </div>
+        
         </div>
 
     </main>

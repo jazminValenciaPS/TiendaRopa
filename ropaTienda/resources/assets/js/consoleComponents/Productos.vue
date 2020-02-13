@@ -31,20 +31,30 @@
                         <select name="LeaveType" class="browser-default" v-model="idSubcat">
                             <option value="" disabled selected>Selecciona la subCategoría</option>
                             <option v-on:change="(event) => console.log(event)" v-for="subcategoria in arraySubcategoria" :value="subcategoria.idSubCategorias" :key="subcategoria.id">{{ subcategoria.NombreSub }}</option>
+                         <label>Seleccione la SubCategoría</label>
                         </select> 
                         <br>
                         <!-- select color -->
                         <!-- <select multiple name="LeaveType" class="browser-default"> -->
                             <!-- v-model="idColor" -->
-                         <select name="LeaveType" class="browser-default" v-model="idColor">
+
+                        <!-- <div>
+                        <label class="typo__label">Colores</label>
+                        <multiselect v-model="value" tag-placeholder="Agregar color"   track-by="code" :options="options" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
+                        <pre class="language-json"><code>{{ value  }}</code></pre>
+                        </div> -->
+
+                         <select name="LeaveType"  class="browser-default" v-model="idColor">
                             <option value="" disabled selected>Selecciona una color</option>
                             <option  v-on:change="() => {}" v-for="color in arrayColor" :value="color.id" :key="color.id">{{ color.NombreColor }}</option>
+                         <label>Seleccione un color</label>
                         </select> 
                         <br>
                         <!-- select Subcategorias --> 
                         <select name="LeaveType" class="browser-default" v-model="idTalla">
                             <option value="" disabled selected>Selecciona la talla</option>
                             <option v-on:change="(event) => console.log(event)" v-for="tallas in arrayTalla" :value="tallas.idTalla" :key="tallas.idTalla">{{ tallas.Talla }}</option>
+                         <label>Seleccione una talla</label>
                         </select> 
                         <br>
                         <!-- input para la imagen del producto --> 
@@ -52,7 +62,7 @@
                             <div class="file-field input-field">
                                 <div class="waves-effect waves-light btn deep-orange lighten-4 brown-text">
                                     <span>Imagen</span>
-                                    <input id="file" ref="filea"  type="file" data-vv-scope="new"  v-on:change="seleccionarImagen(1)" class="sliderAlta">
+                                    <input id="file" ref="filea"  type="file" data-vv-scope="new"  v-on:change="seleccionarImagen(1)" class="productoAlta">
                                 </div>
                                 <div class="file-path-wrapper">
                                     <input class="file-path validate" type="text">
@@ -94,6 +104,7 @@
                     <ul class="collection " v-for="producto in arrayProducto" :key="producto.idProducto">
                         <li class="collection-item avatar">
                         <img :src="'img/'+producto.Imagen" class="circle">
+
                             <h5 v-text="producto.NombreProducto"></h5>
                             <h6>Descripción: </h6>
                             <h6 v-text="producto.Descripcion"></h6>
@@ -109,7 +120,6 @@
                                     <label><input type="checkbox"  name="status" v-model="producto.Status" @click="activarProducto(producto.idProducto)"><span class="lever"></span></label>
                                 </i>
                                     <i class="material-icons brown-text " @click="abrirModal('productos','actualizar',producto)">create</i>
-
                             </a>
                         </li>
                     </ul>
@@ -121,6 +131,7 @@
 </template>
 <script>
 import Swal from 'sweetalert2';
+
 document.addEventListener('DOMContentLoaded', function() {
                         var elems = document.querySelectorAll('select');
                         var instances = M.FormSelect.init(elems);
@@ -147,13 +158,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 errorProducto : 0,
                 errorMostrarMsjProducto: [],
                 tituloModal : '',
+                file:''
 
             }
         },methods:{
             listarProductos(){
                 let me=this;
-                var url = '/productos'
-                axios.get('/productos').then(function (response){
+                var url = '/selectProductos'
+                axios.get(url).then(function (response){
                     me.arrayProducto = response.data;
                     me.status = response.status.data;
                     if(status == true){
@@ -328,11 +340,11 @@ document.addEventListener('DOMContentLoaded', function() {
             seleccionarImagen(img){
                 if (img == 1) {            
                     this.file = this.$refs.filea.files[0];
-                    readURL(document.getElementsByClassName("sliderAlta")[0], 1);
+                    readURL(document.getElementsByClassName("productoAlta")[0], 1);
                 }
                 else {
                     this.file = this.$refs.filec.files[0];
-                    readURL(document.getElementsByClassName("sliderEdit")[0], 2);
+                    readURL(document.getElementsByClassName("productoEdit")[0], 2);
                 }
                 this.cambio = 1;
 
@@ -427,21 +439,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 }) 
                   
-               },
-               validarProducto(){
-                    this.errorProducto=0;
-                    this.errorMostrarMsjProducto =[];
+            },
+            validarProducto(){
+                this.errorProducto=0;
+                this.errorMostrarMsjProducto =[];
 
-                    if (this.idTalla==0) this.errorMostrarMsjProducto.push("Seleccione una talla.");
-                    if (this.idSubcat==0) this.errorMostrarMsjProducto.push("Seleccione una sub categoria.");
-                    if (this.idColor==0) this.errorMostrarMsjProducto.push("Seleccione un color");
-                    if (!this.NombreProducto) this.errorMostrarMsjProducto.push("El nombre del Producto no puede estar vacío.");
-                    if (!this.Existencia ) this.errorMostrarMsjProducto.push("La Existencia del producto debe ser un número y no puede estar vacío.");
-                    if (!this.Precio ) this.errorMostrarMsjProducto.push("El precio del producto debe ser un número y no puede estar vacío.");
+                if (this.idTalla==0) this.errorMostrarMsjProducto.push("Seleccione una talla.");
+                if (this.idSubcat==0) this.errorMostrarMsjProducto.push("Seleccione una sub categoria.");
+                if (this.idColor==0) this.errorMostrarMsjProducto.push("Seleccione un color");
+                if (!this.NombreProducto) this.errorMostrarMsjProducto.push("El nombre del Producto no puede estar vacío.");
+                if (!this.Existencia ) this.errorMostrarMsjProducto.push("La Existencia del producto debe ser un número y no puede estar vacío.");
+                if (!this.Precio ) this.errorMostrarMsjProducto.push("El precio del producto debe ser un número y no puede estar vacío.");
 
-                    if (this.errorMostrarMsjProducto.length) this.errorProducto = 1;
+                if (this.errorMostrarMsjProducto.length) this.errorProducto = 1;
 
-                    return this.errorProducto;
+                return this.errorProducto;
             },
         }
         , mounted(){

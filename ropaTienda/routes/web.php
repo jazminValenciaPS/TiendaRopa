@@ -11,7 +11,7 @@
 |
 */
 
-//Ruta página principal
+// Ruta página principal
 Route::get('/', function () {
     return view('contenido/contenido');
 });
@@ -19,7 +19,28 @@ Route::get('/', function () {
 //Ruta página de administrador "consola"
 Route::get('/consola', function () {
     return view('contenido/consola');
-});
+})->name('consola');
+
+Auth::routes();
+
+
+// Route::get('/home', 'HomeController@index')->name('home');
+
+// Route::get('/main', function () {
+//     return view('contenido/contenido');
+// })->name('main');
+
+// Route::group(['middleware'=>['guest']],function(){
+    // Route::get('/administrador','Auth\LoginController@showLoginForm')->middleware('guest');
+
+    // Route::post('/login', 'Auth\LoginController@login')->name('login');
+
+    Route::get('/administrador','Auth\LoginController@showLoginForm');
+    // Route::post('/login', 'Auth\LoginController@login')->name('login');
+// });
+
+//Categorias
+Route::get('/categoria', 'CategoriaController@index');
 
 // SubCategorias
 Route::get('/subcategoria', 'SubCategoriaController@index');
@@ -33,7 +54,11 @@ Route::put('/subcategoria/activar', 'SubCategoriaController@activar');
 
 //Productos
 Route::get('/productos', 'ProductoController@index');
+Route::get('/selectProductos', 'ProductoController@selectProductos');
+
+
 Route::post('/productos/registrar', 'ProductoController@store');
+Route::get('/productos/recientes', 'ProductoController@recientes');
 Route::post('/productos/actualizar', 'ProductoController@update');
 Route::put('/productos/activar', 'ProductoController@activar');
 Route::put('/productos/desactivar', 'ProductoController@desactivar');
@@ -56,7 +81,8 @@ Route::post('/colores/registrar','colorController@store');
 Route::put('/colores/activar', 'colorController@activar');
 Route::put('/colores/desactivar', 'colorController@desactivar');
 
-Route::get('/talla', 'TallaController@index');
-Auth::routes();
+//usuarios
+Route::get('/user', 'userController@index');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/talla', 'TallaController@index');
+

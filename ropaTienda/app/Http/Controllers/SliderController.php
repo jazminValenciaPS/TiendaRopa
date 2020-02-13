@@ -17,7 +17,7 @@ class SliderController extends Controller
 {
     public function index()
     {
-        $slider = Slider::all();
+        $slider = Slider::limit(5)->orderBy('id', 'desc')->get();
         return $slider;
     }
 
