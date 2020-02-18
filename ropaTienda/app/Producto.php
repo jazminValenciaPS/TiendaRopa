@@ -12,8 +12,7 @@ class Producto extends Model
     protected $fillable = [
         'idImg',
         'idSubcat',
-        'idColor',
-        'idTalla',
+        // 'idTalla',
         'NombreProducto',
         'Descripcion',
         'Precio',
@@ -29,13 +28,14 @@ class Producto extends Model
     {
         return $this->belongsTo('App\subCategoria');
     }
-    public function colores()
+    public function producto_color()
     {
-        return $this->belongsTo('App\Color');
+        return $this->hasMany('App\Producto_color');
     }
-    public function tallas()
+    public function producto_talla()
     {
-        return $this->hasMany('App\Talla');
+        return $this->hasMany('App\Producto_talla');
     }
+  
 
 }

@@ -8,7 +8,7 @@
        
             
             <li class="centerTextConsola right" >
-            <a class="black-text" href="{{ route('logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Cerrar Sesión</a>
+            <a class="black-text" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Cerrar Sesión</a>
             </li>
             <li class="centerTextConsola right"  @click="menu=3"><a class="black-text" href="#">Productos</a></li>
             <li class="centerTextConsola right"  @click="menu=2"><a class="black-text" href="#">Subcategorias</a></li>
@@ -30,7 +30,7 @@
             <li class="centerTextConsola"  @click="menu=2"><a class="black-text" href="#">Subcategorias</a></li>
             <li class="centerTextConsola"  @click="menu=3"><a class="black-text" href="#">Productos</a></li>
             <li class="centerTextConsola" >
-            <a class="black-text" href="{{ route('logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Cerrar Sesión</a>
+            <a class="black-text" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Cerrar Sesión</a>
             </li>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" >
             {{ csrf_field() }}

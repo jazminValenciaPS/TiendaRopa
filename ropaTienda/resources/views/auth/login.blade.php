@@ -3,10 +3,10 @@
 
 @section('login')
 
-<form class="col s12 was-validated" method="POST" action="{{ route('login') }}">
+<form class="col s12 l12 was-validated" method="POST" action="{{ route('login') }}">
 {{ csrf_field() }}
 <div class="row" >
-         <div class="center input-field col s6 l6 offset-l3 {{ $errors->has('usuario' ? 'has-error' : '' ) }}">
+         <div class="center input-field col s12 l6  offset-l3 {{ $errors->has('usuario' ? 'has-error' : '' ) }}">
             <i class="material-icons prefix brown-text">person</i>
              <input  value="{{old('usuario')}}"  name="usuario" id="usuario" type="text" class="validate" autofocus>
              <label for="id">Usuario</label>
@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="center input-field col s6 l6 offset-l3 {{$errors->has('password' ? 'has-error': '' ) }}">
+        <div class="center input-field col s12 l6  offset-l3 {{$errors->has('password' ? 'has-error': '' ) }}">
             <i class="material-icons prefix brown-text">lock</i>
             <input id="password" name="password" id="password" type="password" class="validate">
             <label for="password">Contraseña</label>

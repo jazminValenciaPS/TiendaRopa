@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\DB;
+use App\Producto;
+use App\Producto_talla;
+
 class ProductoTallaController extends Controller
 {
     /**
@@ -11,9 +15,35 @@ class ProductoTallaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        
+        if (!$request->ajax()) return redirect('/administrador');
+
+        $id = $request->id;
+
+        return  $productos = DB::table('producto_talla')
+        ->join('producto','producto.idProducto', '=','producto_talla.idProduc')
+        ->join('tallas','tallas.idTalla', '=','producto_talla.idTalla')
+        ->select('producto.idProducto','producto_talla.idTalla','tallas.Talla')
+        ->where([
+            ['producto.idProducto','=',$id],
+            ['producto.Status','=',1]   
+        ])
+        ->get();
+    }
+
+
+    public function selectTalla(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/administrador');
+
+
+        return  $productos = DB::table('producto_talla')
+        ->join('producto','producto.idProducto', '=','producto_talla.idProduc')
+        ->join('tallas','tallas.idTalla', '=','producto_talla.idTalla')
+        ->select('producto.idProducto','producto_talla.idTalla','tallas.Talla')
+        ->where('producto.Status','=',1)
+        ->get();
     }
 
     /**

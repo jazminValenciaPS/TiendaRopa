@@ -21,6 +21,7 @@ Route::get('/consola', function () {
     return view('contenido/consola');
 })->name('consola');
 
+
 Auth::routes();
 
 
@@ -36,8 +37,19 @@ Auth::routes();
     // Route::post('/login', 'Auth\LoginController@login')->name('login');
 
     Route::get('/administrador','Auth\LoginController@showLoginForm');
+    Route::get('/logout','Auth\LoginController@logout')->name('logout');
+
     // Route::post('/login', 'Auth\LoginController@login')->name('login');
 // });
+
+
+Route::group(['middleware' => 'admin'], function () {
+
+    Route::get('/admin/series', 'Admin\SeriesController@index');
+    Route::get('/admin/series/{id}', 'Admin\SeriesController@edit');
+
+});
+
 
 //Categorias
 Route::get('/categoria', 'CategoriaController@index');
@@ -63,9 +75,22 @@ Route::post('/productos/actualizar', 'ProductoController@update');
 Route::put('/productos/activar', 'ProductoController@activar');
 Route::put('/productos/desactivar', 'ProductoController@desactivar');
 
+
+
+
 //Producto
 Route::get('/productosSub','ProductoController@productosSub');
 Route::get('/detalleProducto' ,'ProductoController@detalleProducto');
+
+//Colores de los productos
+Route::get('/producto_color','ProductoColorController@index');
+Route::get('/productoColor','ProductoColorController@selectColor');
+
+//Tallas de los productos
+Route::get('/producto_talla','ProductoTallaController@index');
+Route::get('/productoTalla','ProductoTallaController@selectTalla');
+
+
 
 
 // detalleProducto

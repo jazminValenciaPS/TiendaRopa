@@ -4,6 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\DB;
+use App\Producto;
+use App\Producto_color;
+
+
+
 class ProductoColorController extends Controller
 {
     /**
@@ -11,11 +17,36 @@ class ProductoColorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if (!$request->ajax()) return redirect('/administrador');
+
+        $id = $request->id;
+
+        return  $productos = DB::table('producto_color')
+        ->join('producto','producto.idProducto', '=','producto_color.idProduc')
+         ->join('colores','colores.id', '=','producto_color.idColor')
+        ->select('producto.idProducto','producto_color.idColor','colores.NombreColor')
+        ->where([
+            ['producto.idProducto','=',$id],
+            ['producto.Status','=',1]   
+        ])
+        ->get();
     }
 
+
+    public function selectColor(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/administrador');
+
+        return  $productos = DB::table('producto_color')
+        ->join('producto','producto.idProducto', '=','producto_color.idProduc')
+         ->join('colores','colores.id', '=','producto_color.idColor')
+        ->select('producto.idProducto','producto_color.idColor','colores.NombreColor')
+        ->where('producto.Status','=',1)
+        ->get();
+
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -45,7 +76,7 @@ class ProductoColorController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**

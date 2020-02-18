@@ -24,8 +24,8 @@
    <body>
      <div id="app">
        <div class="row">
-         <div class="col s12 m12 l12 center">
-           <img class="tLogo" src="img/algoPrecioso.png" alt="">
+         <div class="col s12 l12 center">
+           <img class="" src="img/LogoMW.png" alt="">
          </div>
        </div>
        @include('plantilla.navbar')      
@@ -88,14 +88,6 @@
     var elems = document.querySelectorAll('.sidenav');
     var instances = M.Sidenav.init(elems, {closeOnClick: true});
   });
-
-//   $( document ).ready(function(){
-// $('.button-collapse').sideNav({
-//       closeOnClick: true
-//     }
-//   );
-// });
-    
 </script>
 
    </body>

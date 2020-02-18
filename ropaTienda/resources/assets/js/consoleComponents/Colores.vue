@@ -3,54 +3,60 @@
        <!-- Modal de Registrar Slider -->
             <div class="modal fade" tabindex="-1" :class="{'mostrar' : modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
                 <div class="modal-dialog modal-primary modal-lg" role="document">
-                    <h4 class="modal-title center" v-text="tituloModal"></h4>
-                    <div class="form-group row">
-                        <div class="input-field col s10 center">
-                            <i class="material-icons prefix deep-orange-text text-lighten-4">color_lens</i>
-                            <input v-model="Nombre" id="Nombre" type="text" class="validate">
-                            <label for="Nombre">Nombre</label>
+                   <div class = "container">
+                        <h4 class="modal-title center" v-text="tituloModal"></h4>
+                        <div class="form-group row">
+                            <div class="input-field col s10 center">
+                                <i class="material-icons prefix deep-orange-text text-lighten-4">color_lens</i>
+                                <input v-model="Nombre" id="Nombre" type="text" class="validate">
+                                <label for="Nombre">Nombre</label>
+                            </div> 
                         </div> 
-                    </div> 
-                    <div v-show="errorColor" class="form-group row div-error">
-                        <div class="text-center text-error">
-                            <div v-for="error in errorMostrarMsjColor" :key="error" v-text="error">
+                        <div v-show="errorColor" class="form-group row div-error">
+                            <div class="text-center text-error">
+                                <div v-for="error in errorMostrarMsjColor" :key="error" v-text="error">
 
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="cerrarModal()">Cerrar</button>
-                        <button type="button" v-if="tipoAccion==1" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="nuevoColor()">Guardar</button>
-                        <button type="button" v-if="tipoAccion==2" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="actualizarColor()">Actualizar</button>
-                    </div>
+                        <div class="modal-footer">
+                            <button type="button" v-if="tipoAccion==2" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="actualizarColor()">Actualizar</button>
+                            <button type="button" v-if="tipoAccion==1" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="nuevoColor()">Guardar</button>
+                            <button type="button" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="cerrarModal()">Cerrar</button>
+                        </div>
+                   </div>
                 </div>
              </div>  
        <!-- termina modal   -->
-             
-                <div class="row">
-                    <div class="col s12">
-                        <h3 class="center">Color de ropa</h3>
-                        <div class="right col s2">
-                            <a class="btn-floating btn-large waves-effect waves-light deep-orange lighten-4 right" @click="abrirModal('color','registrar')"><i class="brown-text material-icons">add</i></a>
-                        </div>
+             <!-- Inicia muestra de colores  -->
+            <div class="row">
+                <div class="col s12 l12">
+                    <h3 class="center">Color de ropa</h3>
+                    <div class="right col s2 l4">
+                        <a class="btn-floating btn-large waves-effect waves-light deep-orange lighten-4 right" @click="abrirModal('color','registrar')"><i class="brown-text material-icons">add</i></a>
                     </div>
-                    <br>
-                    <ul class="collection" v-for="color in arrayColores" :key="color.id">
-                        <li class="collection-item avatar">
-                            <h5 v-text="color.NombreColor"></h5>
-                        <a href="#!" class="secondary-content" v-if="color.Status == 1">
-                            <i class="switch">
-                                <label>desactivado<input type="checkbox" checked="checked" name="status" v-model="color.Status" @click="desactivarColor(color.id)"><span class="lever"></span>Activado</label>
-                            </i>
-                        </a>
-                        <a href="#!" class="secondary-content" v-if="color.Status == 0">
-                            <i class="switch">
-                                <label>desactivado<input type="checkbox"  name="status" v-model="color.Status" @click="activarColor(color.id)"><span class="lever"></span>Activado</label>
-                            </i>
-                        </a>
-                        </li>
-                    </ul>
-               </div> 
+                </div>
+            </div>
+            <div class="row">
+
+                <ul class="collection" v-for="color in arrayColores" :key="color.id">
+                    <li class="collection-item avatar">
+                        <h5 v-text="color.NombreColor"></h5>
+                    <a href="#!" class="secondary-content" v-if="color.Status == 1">
+                        <i class="switch">
+                            <label>desactivado<input type="checkbox" checked="checked" name="status" v-model="color.Status" @click="desactivarColor(color.id)"><span class="lever"></span>Activado</label>
+                        </i>
+                    </a>
+                    <a href="#!" class="secondary-content" v-if="color.Status == 0">
+                        <i class="switch">
+                            <label>desactivado<input type="checkbox"  name="status" v-model="color.Status" @click="activarColor(color.id)"><span class="lever"></span>Activado</label>
+                        </i>
+                    </a>
+                    </li>
+                </ul>
+            </div> 
+             <!-- termina muestra de colores  -->
+
     </main>
 </template>
 <script>
@@ -73,20 +79,20 @@ import Swal from 'sweetalert2';
         },
         methods:{
             listarColores(){
-            let m=this;
-            axios.get('/colores').then(function (response){
-                m.arrayColores = response.data;
-                m.status = response.status.data;
-                    if(status == true){
-                        status = 1
-                    }else{
-                        status = 0
-                    }
-                
-            })
-            .catch(function(error){
-                console.log(error);
-            });
+                let m=this;
+                axios.get('/colores').then(function (response){
+                    m.arrayColores = response.data;
+                    m.status = response.status.data;
+                        if(status == true){
+                            status = 1
+                        }else{
+                            status = 0
+                        }
+                    
+                })
+                .catch(function(error){
+                    console.log(error);
+                });
 
             },
             limpiar() {
@@ -94,6 +100,8 @@ import Swal from 'sweetalert2';
                 me.tipoAccion = 0;
                 me.Cambio = 0;
                 me.Nombre= '';
+               $("#file").val("");
+
                 
             },   
             nuevoColor() {
@@ -270,14 +278,19 @@ import Swal from 'sweetalert2';
                 }
                 }) 
                   
-               },
-                validarColores(){
+            },
+            validarColores(){
                     this.errorColor = 0;
                     this.errorMostrarMsjColor = [];
 
-                    if (!this.Nombre) this.errorMostrarMsjColor.push("El nombre del color no puede estar vacío y no puede ser numerico.");
+                    if (!this.Nombre) this.errorMostrarMsjColor.push("El nombre del color no puede estar vacío.");
+                     if(!isNaN(this.Nombre))this.errorMostrarMsjColor.push("El nombre del color no puede ser numérico.");
+
+                    // if (!isNaN(Nombre)) this.errorMostrarMsjColor.push("El nombre del color no puede ser numérico.");
+
                     
                     if (this.errorMostrarMsjColor.length) this.errorColor = 1;
+
 
                     return this.errorColor;
             },

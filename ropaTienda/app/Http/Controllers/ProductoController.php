@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Producto;
 use App\Imagen;
+use App\Producto_color;
+use App\Producto_talla;
+
+
 
 use Illuminate\Support\Facades\Log;
 use Request as Peticion ;
@@ -19,15 +23,15 @@ class ProductoController extends Controller
     public function selectProductos(Request $request){
         if (!$request->ajax()) return redirect('/administrador');
 
-
         return  $productos = DB::table('producto')
-        ->join('tallas','tallas.idTalla', '=','producto.idTalla')
+        ->join('producto_talla','producto_talla.idProduc','=','producto.idProducto')
+        ->join('tallas','tallas.idTalla', '=','producto_talla.idTalla')
         ->join('imagenes','imagenes.idImagen', '=','producto.idImg')
         ->join('sub_categorias','sub_categorias.idSubCategorias', '=','producto.idSubCat')
-        ->join('colores','colores.id', '=','producto.idcolor')
-        ->select('tallas.idTalla','tallas.Talla','tallas.idTalla','producto.NombreProducto','producto.Descripcion','producto.Status',
-        'producto.Precio','producto.idProducto','producto.Existencia','imagenes.idImagen','imagenes.Imagen','sub_categorias.idSubCategorias',
-        'sub_categorias.NombreSub','colores.NombreColor','colores.id')
+        ->select('producto.NombreProducto','producto.Descripcion','producto.Status','producto.Precio',
+        'producto.idProducto','producto.Existencia','imagenes.idImagen','imagenes.Imagen','sub_categorias.idSubCategorias',
+        'sub_categorias.NombreSub')
+        ->distinct()
         ->get();
 
     }
@@ -37,15 +41,16 @@ class ProductoController extends Controller
 
 
         return  $productos = DB::table('producto')
-        ->join('tallas','tallas.idTalla', '=','producto.idTalla')
+        ->join('producto_talla','producto_talla.idProduc','=','producto.idProducto')
+        ->join('tallas','tallas.idTalla', '=','producto_talla.idTalla')
         ->join('imagenes','imagenes.idImagen', '=','producto.idImg')
         ->join('sub_categorias','sub_categorias.idSubCategorias', '=','producto.idSubCat')
-        ->join('colores','colores.id', '=','producto.idcolor')
-        ->select('tallas.idTalla','tallas.Talla','tallas.idTalla','producto.NombreProducto',
+        ->select('producto.NombreProducto',
         'producto.Descripcion','producto.Status','producto.Precio','producto.idProducto',
         'producto.Existencia','imagenes.idImagen','imagenes.Imagen','sub_categorias.idSubCategorias',
-        'sub_categorias.NombreSub','colores.NombreColor','colores.id')
+        'sub_categorias.NombreSub')
         ->where('producto.Status','=',1)
+        ->distinct()
         ->get();
 
     }
@@ -55,28 +60,24 @@ class ProductoController extends Controller
 
         $id = $request->id;
 
-        //   print_r($id);
 
         return $productos = DB::table('producto')
-        ->join('tallas','tallas.idTalla', '=','producto.idTalla')
+        ->join('producto_talla','producto_talla.idProduc','=','producto.idProducto')
+
+        ->join('tallas','tallas.idTalla', '=','producto_talla.idTalla')
         ->join('imagenes','imagenes.idImagen', '=','producto.idImg')
         ->join('sub_categorias','sub_categorias.idSubCategorias', '=','producto.idSubCat')
-        ->join('colores','colores.id', '=','producto.idcolor')
-        ->select('tallas.idTalla','tallas.Talla','tallas.idTalla','producto.NombreProducto','producto.Descripcion',
+        ->select('producto.NombreProducto','producto.Descripcion',
         'producto.Precio','producto.Existencia','imagenes.idImagen','imagenes.Imagen','sub_categorias.idSubCategorias',
-        'sub_categorias.NombreSub','colores.NombreColor','colores.id','producto.idProducto')
+        'sub_categorias.NombreSub','producto.idProducto')
         ->where([
             ['producto.idProducto','=',$id],
             ['producto.Status','=',1]   
         ])
+        ->distinct()
         ->get();
-        // return $productos;
 
-        
 
-        // return ['productos' => $productos]; 
-            //    $producto = Producto::all()->where('idProducto','=',$id);
-            //  return  $producto; 
         
     }
 
@@ -86,7 +87,7 @@ class ProductoController extends Controller
        
         $producto = new Producto();        
         $imagenes = new Imagen();
-
+        
         $img = Peticion::file('file');
         $extension = $img -> guessExtension();
         $date = date('d-m-Y_h-i-s-ms-a');
@@ -97,43 +98,56 @@ class ProductoController extends Controller
         $imagenes->Tipo = 'P';
         $imagenes->save();
         $idImg = $imagenes->idImagen;
+
+        
        
-
-
-     //    Inserción a productos
+        //    Inserción a productos
         $producto->NombreProducto = $request->NombreProducto;
         $producto->Descripcion = $request->Descripcion;
         $producto->Precio = $request->Precio;
         $producto->Existencia = $request->Existencia;
         $producto->idSubcat = $request->idSubcat;
-        $producto->idColor = $request->idColor;
-        $producto->idTalla = $request->idTalla;
+        // $producto->idColor = $request->idColor;
+        // $producto->idTalla = $request->idTalla;
         $producto->idImg = $idImg ;
         $producto->Status = '1';
-        
         $producto->save();
-       
+        $idProduc = $producto->idProducto;
+        $data = explode(",", $request->idColor);
 
+        foreach ($data as $idColor){
+            $color = new Producto_color();
+            $color->idProduc = $idProduc;
+            $color->idColor = $idColor;
+            $color->save();
+        }
+        $data = explode(",", $request->idTalla);
+        foreach ($data as $idTalla){
+            error_log('entro' . $idTalla . $idProduc);
+            $talla = new Producto_talla();
+            $talla->idProduc = $idProduc;
+            $talla->idTalla = $idTalla ;
+            $talla->save();
+        }
+        error_log('salio');
     }
 
     public function productosSub(Request $request){
         $id = $request->id;
-
-
         return  $productos = DB::table('producto')
-        ->join('tallas','tallas.idTalla', '=','producto.idTalla')
+        ->join('producto_talla','producto_talla.idProduc','=','producto.idProducto')
+        ->join('tallas','tallas.idTalla', '=','producto_talla.idTalla')
         ->join('imagenes','imagenes.idImagen', '=','producto.idImg')
         ->join('sub_categorias','sub_categorias.idSubCategorias', '=','producto.idSubCat')
-        ->join('colores','colores.id', '=','producto.idcolor')
-        ->select('tallas.idTalla','tallas.Talla','tallas.idTalla','producto.NombreProducto','producto.Descripcion','producto.Status',
+        ->select('producto.NombreProducto','producto.Descripcion','producto.Status',
         'producto.Precio','producto.idProducto','producto.Existencia','imagenes.idImagen','imagenes.Imagen','sub_categorias.idSubCategorias',
-        'sub_categorias.NombreSub','colores.NombreColor','colores.id')
+        'sub_categorias.NombreSub')
         ->where([
             ['producto.idSubcat','=',$id],
             ['producto.Status','=',1]   
         ])
+        ->distinct()
         ->get();
-
 
     }
 
@@ -147,7 +161,7 @@ class ProductoController extends Controller
     
     public function update(Request $request)
     {
-        if (!$request->ajax()) return redirect('/administrador');
+        if ($request->ajax()) return redirect('/administrador');
 
         $producto = Producto::findOrFail($request->idProducto);
         
@@ -156,10 +170,20 @@ class ProductoController extends Controller
         $producto->Precio = $request->Precio;
         $producto->Existencia = $request->Existencia;
         $producto->idSubcat = $request->idSubcat;
-        $producto->idColor = $request->idColor;
-        $producto->idTalla = $request->idTalla;
         
-        $producto->save();   
+
+        $productoTalla = Producto_talla::findOrFail($request->idProducto);
+
+        $productoTalla->idTalla = $request->idTalla;
+
+        $productoColor = Producto_color::findOrFail($request->idProducto);
+        $productoColor->idColor = $request->idColor;
+
+
+        $producto->save(); 
+        $productoTalla->save();  
+        $productoColor->save();  
+
     }
 
     public function desactivar(Request $request)

@@ -3,10 +3,11 @@
          <!-- abre modal -->
         <div class="modal fade" tabindex="-1" :class="{'mostrar' : modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
             <div class="modal-dialog modal-primary modal-lg " role="document">
-                <div class="center">
-                <h3 v-text="tituloModal"></h3>
-
-                </div>
+                <div class = "container">
+                    <br>
+                    <div class="center">
+                        <h3 v-text="tituloModal"></h3>
+                    </div>
                     <div class="col s5 center">
                         <img v-if="tipoAccion==2" :src="'img/'+img"  class="imagenEdit" alt="">
                     </div>
@@ -31,31 +32,24 @@
                         <select name="LeaveType" class="browser-default" v-model="idSubcat">
                             <option value="" disabled selected>Selecciona la subCategoría</option>
                             <option v-on:change="(event) => console.log(event)" v-for="subcategoria in arraySubcategoria" :value="subcategoria.idSubCategorias" :key="subcategoria.id">{{ subcategoria.NombreSub }}</option>
-                         <label>Seleccione la SubCategoría</label>
+                        <label>Seleccione la SubCategoría</label>
                         </select> 
                         <br>
-                        <!-- select color -->
-                        <!-- <select multiple name="LeaveType" class="browser-default"> -->
-                            <!-- v-model="idColor" -->
 
-                        <!-- <div>
-                        <label class="typo__label">Colores</label>
-                        <multiselect v-model="value" tag-placeholder="Agregar color"   track-by="code" :options="options" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
-                        <pre class="language-json"><code>{{ value  }}</code></pre>
-                        </div> -->
-
-                         <select name="LeaveType"  class="browser-default" v-model="idColor">
-                            <option value="" disabled selected>Selecciona una color</option>
-                            <option  v-on:change="() => {}" v-for="color in arrayColor" :value="color.id" :key="color.id">{{ color.NombreColor }}</option>
-                         <label>Seleccione un color</label>
-                        </select> 
+                        <!-- ejemplo multiple select   -->
+                        <div>
+                            <label class="typo__label">Selecciona Colores</label>
+                            <multiselect  v-model="idColor"  :options="arrayColor" label="NombreColor" track-by="id" :multiple="true">
+                                <pre class="language-json"><code>{{ idColor.NombreColor }}</code></pre>
+                            </multiselect>
+                        </div>
                         <br>
-                        <!-- select Subcategorias --> 
-                        <select name="LeaveType" class="browser-default" v-model="idTalla">
-                            <option value="" disabled selected>Selecciona la talla</option>
-                            <option v-on:change="(event) => console.log(event)" v-for="tallas in arrayTalla" :value="tallas.idTalla" :key="tallas.idTalla">{{ tallas.Talla }}</option>
-                         <label>Seleccione una talla</label>
-                        </select> 
+                        <div>
+                            <label class="typo__label">Selecciona tallas</label>
+                            <multiselect v-model="idTalla" :options="arrayTalla" label="Talla" track-by="idTalla" :multiple="true">
+                                <pre class="language-json"><code>{{ idTalla.Talla }}</code></pre>
+                            </multiselect>
+                        </div>
                         <br>
                         <!-- input para la imagen del producto --> 
                         <div class="col s10 center" v-if="tipoAccion==1" >
@@ -69,19 +63,19 @@
                                 </div>
                             </div>
                         </div> 
-                        
                     </div> 
                     <div v-show="errorProducto" class="form-group row div-error">
-                            <div class="text-center text-error">
-                                <div v-for="error in errorMostrarMsjProducto" :key="error" v-text="error">
+                        <div class="text-center text-error">
+                            <div v-for="error in errorMostrarMsjProducto" :key="error" v-text="error">
 
-                                </div>
                             </div>
+                        </div>
                     </div>
-                <div class="modal-footer">
-                    <button type="button" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="cerrarModal()">Cerrar</button>
-                    <button type="button" v-if="tipoAccion==1" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="nuevoProducto()">Guardar</button>
-                    <button type="button" v-if="tipoAccion==2" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="actualizarProducto(idProducto)">Actualizar</button>
+                    <div class="modal-footer">
+                        <button type="button" v-if="tipoAccion==1" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="nuevoProducto()">Guardar</button>
+                        <button type="button" v-if="tipoAccion==2" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="actualizarProducto(idProducto)">Actualizar</button>
+                        <button type="button" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="cerrarModal()">Cerrar</button>
+                    </div>
                 </div>
             </div>
         </div>  
@@ -89,9 +83,9 @@
 
   <!-- boton abrir modal -->
         <div class="row">
-                <div class="col s12">
+                <div class="col s12 l12 ">
                     <h3 class="center">Productos</h3>
-                    <div class="right col s2">
+                    <div class="right col s2 l4">
                         <a class="btn-floating btn-large waves-effect waves-light deep-orange lighten-4 right" @click="abrirModal('productos','registrar')"><i class="brown-text material-icons">add</i></a>
                      </div>
                 </div>
@@ -99,8 +93,7 @@
     <!-- fin boton abrir modal -->
     
        <div class="row">
-           <div class="center col s12">
-               <div class="centro col s5 ">
+               <div class="center col s12  l12">
                     <ul class="collection " v-for="producto in arrayProducto" :key="producto.idProducto">
                         <li class="collection-item avatar">
                         <img :src="'img/'+producto.Imagen" class="circle">
@@ -123,7 +116,6 @@
                             </a>
                         </li>
                     </ul>
-               </div> 
            </div> 
         </div> 
 
@@ -131,6 +123,7 @@
 </template>
 <script>
 import Swal from 'sweetalert2';
+ import Multiselect from 'vue-multiselect'
 
 document.addEventListener('DOMContentLoaded', function() {
                         var elems = document.querySelectorAll('select');
@@ -154,12 +147,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 arrayColor:[],
                 arraySubcategoria:[],
                 arrayTalla: [],
+                arrayIdColor:[],
+                arrayIdTalla:[],
                 modal : 0,
                 errorProducto : 0,
                 errorMostrarMsjProducto: [],
                 tituloModal : '',
-                file:''
-
+                file:'',
+                selected: null
             }
         },methods:{
             listarProductos(){
@@ -178,6 +173,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 .catch(function(error){
                     console.log(error);
                 });
+                var urld= '/productoColor';
+                axios.get(urld).then(function (response) {
+                    me.arrayIdColor = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+                 var urld= '/productoTalla';
+                axios.get(urld).then(function (response) {
+                    me.arrayIdTalla = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+            
             }, 
             abrirModal(modelo,accion, data = []){
                 switch(modelo){
@@ -202,8 +214,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                 this.Precio=data['Precio'];
                                 this.Existencia=data['Existencia'];
                                 this.idSubcat=data['idSubCategorias'];
-                                this.idColor=data['id'];
-                                this.idTalla=data['idTalla'];
+                                this.arrayIdColor=data['idColor'];
+                                this.arrayIdTalla=data['idTalla'];
+                                // this.idColor=data['idColor'];
+                                // this.idTalla=data['idTalla'];
                                 this.tituloModal = 'Actualizar Producto';
                             }
                         }
@@ -219,8 +233,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 let formData = new FormData();
 
                 formData.append('file', me.file);
-                formData.append('idColor', me.idColor);
-                formData.append('idTalla', me.idTalla);
+
+                formData.append('idColor', me.idColor.map(item => item.id).join(','));
+                formData.append('idTalla', me.idTalla.map(item => item.idTalla).join(','));
                 formData.append('idSubcat', me.idSubcat);
                 formData.append('NombreProducto', me.NombreProducto);
                 formData.append('Descripcion', me.Descripcion);
@@ -246,7 +261,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             },
             actualizarProducto(id){
-                let me = this;
+               let me = this;
                 let formData = new FormData();
 
                 
@@ -393,10 +408,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         }).catch(function (error) {
                             console.log(error);
                         });                    
-                    } else if (
+                    } else if(
                             // Read more about handling dismissals
                             result.dismiss === Swal.DismissReason.cancel
                         ) {
+                          me.listarProductos();
                         
                     }
                     })
@@ -435,7 +451,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Read more about handling dismissals
                     result.dismiss === Swal.DismissReason.cancel
                 ) {
-                    
+                          me.listarProductos();                    
                 }
                 }) 
                   
@@ -448,15 +464,33 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (this.idSubcat==0) this.errorMostrarMsjProducto.push("Seleccione una sub categoria.");
                 if (this.idColor==0) this.errorMostrarMsjProducto.push("Seleccione un color");
                 if (!this.NombreProducto) this.errorMostrarMsjProducto.push("El nombre del Producto no puede estar vacío.");
+                if (!this.Descripcion) this.errorMostrarMsjProducto.push("La descripción del Producto no puede estar vacía.");
                 if (!this.Existencia ) this.errorMostrarMsjProducto.push("La Existencia del producto debe ser un número y no puede estar vacío.");
-                if (!this.Precio ) this.errorMostrarMsjProducto.push("El precio del producto debe ser un número y no puede estar vacío.");
+                if (!this.Precio ) this.errorMostrarMsjProducto.push("El precio del producto no puede estar vacío.");
+                if(isNaN(this.Precio))this.errorMostrarMsjProducto.push("El precio del producto debe ser numérico.");
+                if(isNaN(this.Existencia))this.errorMostrarMsjProducto.push("La existencia del producto debe ser numérica.");
+
+
+                if(!isNaN(this.NombreProducto))this.errorMostrarMsjProducto.push("El nombre del producto no puede ser numérico.");
+                if(!isNaN(this.Descripcion))this.errorMostrarMsjProducto.push("La descripción del producto no puede ser numérico.");
+
+                
+
 
                 if (this.errorMostrarMsjProducto.length) this.errorProducto = 1;
 
                 return this.errorProducto;
             },
-        }
-        , mounted(){
+            updateSelected: function (newSelected) {
+                this.selected = newSelected
+            },
+            addTag (newTag) {
+                this.idColor.push(tag);
+                this.idTalla.push(tag);
+            }
+        },components: {
+            Multiselect
+        },mounted(){
             this.listarProductos();
             this.verSelects();
         }

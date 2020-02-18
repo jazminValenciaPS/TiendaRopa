@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProductoTallaTable extends Migration
+class CreateProductoColorTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,15 @@ class CreateProductoTallaTable extends Migration
      */
     public function up()
     {
-        Schema::create('producto_talla', function (Blueprint $table) {
-            $table->bigIncrements('idProTalla');
+        Schema::create('producto_color', function (Blueprint $table) {
+            $table->bigIncrements('idProColor');
 
-            $table->unsignedBigInteger('idTalla');
-            $table->foreign('idTalla')->references('idTalla')->on('tallas')->onDelete('cascade');
+            $table->unsignedBigInteger('idColor');
+            $table->foreign('idColor')->references('id')->on('colores')->onDelete('cascade');
             $table->unsignedBigInteger('idProduc');
             $table->foreign('idProduc')->references('idProducto')->on('producto')->onDelete('cascade');
 
+            $table->timestamps();
         });
     }
 
@@ -31,6 +32,6 @@ class CreateProductoTallaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('producto_talla');
+        Schema::dropIfExists('producto_color');
     }
 }

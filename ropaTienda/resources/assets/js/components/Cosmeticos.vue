@@ -60,15 +60,28 @@
                             <h2 style="margin-top: 0%;">{{ detalle.NombreProducto}}</h2>
                             <h5 class="">$ {{detalle.Precio}} MXN</h5>
 
-                            <h5 class="">                    
-                                <p>Talla: {{detalle.Talla}}
-                                </p>
+                           <h5 class="col s10">                    
+                                <p>Talla:</p>
                             </h5>
-                            <h5 class="">
-                                <p>
-                                    Color: {{detalle.NombreColor}}
-                                </p>
+                        <select name="LeaveType" class="col s10 l10 browser-default">
+                            <option value="" disabled selected>Selecciona una talla</option>
+                            <option v-on:change="(event) => console.log(event)" v-for="talla in arrayIdTalla" :value="talla.idTalla" :key="talla.idTalla">{{ talla.Talla }}</option>
+                         <label>Seleccione una talla</label>
+                        </select> 
+                        <br>
+                            <!-- Termina select talla --> 
+
+                            <!-- select color --> 
+                            <h5 class="col s10">                    
+                                <p>Color:</p>
                             </h5>
+                        <select name="LeaveType" class="col s10 l10 browser-default">
+                            <option value="" disabled selected>Selecciona un color</option>
+                            <option v-on:change="(event) => console.log(event)" v-for="color in arrayIdColor" :value="color.idColor" :key="color.idColor">{{ color.NombreColor }}</option>
+                         <label>Seleccione un color</label>
+                        </select> 
+                        <br>
+                            <!-- Termina select color --> 
                             <h5 class="">
                                 <p>Descripción:
                                 <br>
@@ -92,6 +105,8 @@
             arraySubcategorias:[],
             arrayProductos:[],
             arrayDetalleProducto:[],
+             arrayIdColor:[],
+            arrayIdTalla:[],
             listado:1,
             catalogo:1,
             bread2:'',
@@ -127,6 +142,7 @@
                 .catch(function(error){
                     console.log(error);
                 });
+                
 
 
         },
@@ -141,6 +157,20 @@
                   
                 })
                 .catch(function(error){
+                    console.log(error);
+                });
+                 var urld= '/producto_color?id='+id;
+                axios.get(urld).then(function (response) {
+                    m.arrayIdColor = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+                 var urld= '/producto_talla?id='+id;
+                axios.get(urld).then(function (response) {
+                    m.arrayIdTalla = response.data;
+                })
+                .catch(function (error) {
                     console.log(error);
                 });
 
