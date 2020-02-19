@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Producto_talla extends Model
 {
     protected $table = 'producto_talla';
+    protected $primaryKey = 'idProTalla';
        
     protected $fillable = [
         'idTalla',
@@ -14,10 +15,10 @@ class Producto_talla extends Model
     ];
 
     public function producto(){
-        return $this->belongsTo('App\Producto');
+        return $this->belongsToMany('App\Producto','idProTalla','idProducto');
     }
     public function talla()
     {
-        return $this->belongsTo('App\Talla');
+        return $this->belongsToMany('App\Talla','idProTalla','idTalla');
     }
 }

@@ -99,8 +99,9 @@ class ProductoController extends Controller
         $imagenes->save();
         $idImg = $imagenes->idImagen;
 
+
+
         
-       
         //    Inserción a productos
         $producto->NombreProducto = $request->NombreProducto;
         $producto->Descripcion = $request->Descripcion;
@@ -123,13 +124,13 @@ class ProductoController extends Controller
         }
         $data = explode(",", $request->idTalla);
         foreach ($data as $idTalla){
-            error_log('entro' . $idTalla . $idProduc);
+            // error_log('entro' . $idTalla . $idProduc);
             $talla = new Producto_talla();
             $talla->idProduc = $idProduc;
             $talla->idTalla = $idTalla ;
             $talla->save();
         }
-        error_log('salio');
+        // error_log('salio');
     }
 
     public function productosSub(Request $request){
@@ -161,29 +162,68 @@ class ProductoController extends Controller
     
     public function update(Request $request)
     {
-        if ($request->ajax()) return redirect('/administrador');
-
-        $producto = Producto::findOrFail($request->idProducto);
+        if (!$request->ajax()) return redirect('/administrador');
         
+        $idProducto = $request->idProducto;
+        $producto = Producto::findOrFail($idProducto);
         $producto->NombreProducto = $request->NombreProducto;
         $producto->Descripcion = $request->Descripcion;
         $producto->Precio = $request->Precio;
         $producto->Existencia = $request->Existencia;
         $producto->idSubcat = $request->idSubcat;
+
+        $producto->save();
+
+        $arrayColor = $request->idColor;
+        $data = explode(",",$arrayColor);
+       // print_r($data);
+//AQUI NECESITAMOS AYUDA
+        foreach ($data as $idColor){
+            
+            
+            $tColor  = DB::table('producto_color')
+            ->select('producto_color.idProColor')
+            ->where([
+                ['producto_color.idProduc','=',$idProducto]
+                // ['producto_color.idColor','=',$idColor]
+            ])->get();
+            $tColor= json_decode( json_encode($tColor), true);
+            $tColor=$tColor[0];
+            //$tColor=$tColor["idProColor"];
+            print_r($tColor["idProColor"]);
+
+            
+           
+           
+            $color= Producto_color::updateOrCreate([
+                'idProColor' => $tColor["idProColor"], 
+                'idProduc' => $idProducto
+            ],[
+                'idColor' => $idColor
+            ]
+            );
+            // $color->save();
         
+        }
+        
+        $arrayTalla = $request->idTalla;
 
-        $productoTalla = Producto_talla::findOrFail($request->idProducto);
+        $data1 = explode(",", $arrayTalla);
+        
+        foreach ($data1 as $idTalla) {
 
-        $productoTalla->idTalla = $request->idTalla;
+            // print_r($idTalla);
 
-        $productoColor = Producto_color::findOrFail($request->idProducto);
-        $productoColor->idColor = $request->idColor;
+            $talla = Producto_talla::updateOrCreate([
+                'idProduc' => $idProducto
+            ],[
+                'idTalla' => $idTalla
 
-
-        $producto->save(); 
-        $productoTalla->save();  
-        $productoColor->save();  
-
+            ]
+            );
+            $talla->save();
+        }
+ 
     }
 
     public function desactivar(Request $request)
@@ -193,6 +233,7 @@ class ProductoController extends Controller
         $producto->save(); 
         
     }
+    
     
     public function activar(Request $request)
     {

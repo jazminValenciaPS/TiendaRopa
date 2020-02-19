@@ -39,15 +39,15 @@
                         <!-- ejemplo multiple select   -->
                         <div>
                             <label class="typo__label">Selecciona Colores</label>
-                            <multiselect  v-model="idColor"  :options="arrayColor" label="NombreColor" track-by="id" :multiple="true">
-                                <pre class="language-json"><code>{{ idColor.NombreColor }}</code></pre>
+                            <multiselect  v-model="arrayIdColor"  :options="arrayColor" label="NombreColor" track-by="idColor" :multiple="true">
+                                <!-- <pre class="language-json"><code>{{ idColor.NombreColor }}</code></pre> -->
                             </multiselect>
                         </div>
                         <br>
                         <div>
                             <label class="typo__label">Selecciona tallas</label>
-                            <multiselect v-model="idTalla" :options="arrayTalla" label="Talla" track-by="idTalla" :multiple="true">
-                                <pre class="language-json"><code>{{ idTalla.Talla }}</code></pre>
+                            <multiselect v-model="arrayIdTalla" :options="arrayTalla" label="Talla" track-by="idTalla" :multiple="true">
+                                <!-- <pre class="language-json"><code>{{ idTalla.Talla }}</code></pre> -->
                             </multiselect>
                         </div>
                         <br>
@@ -105,14 +105,14 @@
                                 <i class="switch">
                                     <label><input type="checkbox" checked="checked" name="status" v-model="producto.Status" @click="desactivarProducto(producto.idProducto)"><span class="lever"></span></label>
                                 </i>
-                                      <i class="material-icons brown-text " @click="abrirModal('productos','actualizar',producto)">create</i>
+                                      <i class="material-icons brown-text " @click="abrirModal('productos','actualizar',producto,producto.idProducto)">create</i>
 
                             </a>
                             <a href="#!" class="secondary-content" v-if="producto.Status == 0">
                                 <i class="switch">
                                     <label><input type="checkbox"  name="status" v-model="producto.Status" @click="activarProducto(producto.idProducto)"><span class="lever"></span></label>
                                 </i>
-                                    <i class="material-icons brown-text " @click="abrirModal('productos','actualizar',producto)">create</i>
+                                    <i class="material-icons brown-text " @click="abrirModal('productos','actualizar',producto,producto.idProducto)">create</i>
                             </a>
                         </li>
                     </ul>
@@ -173,25 +173,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 .catch(function(error){
                     console.log(error);
                 });
-                var urld= '/productoColor';
-                axios.get(urld).then(function (response) {
-                    me.arrayIdColor = response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                // var urld= '/productoColor';
+                // axios.get(urld).then(function (response) {
+                //     me.arrayIdColor = response.data;
+                // })
+                // .catch(function (error) {
+                //     console.log(error);
+                // });
 
-                 var urld= '/productoTalla';
-                axios.get(urld).then(function (response) {
-                    me.arrayIdTalla = response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                //  var urld= '/productoTalla';
+                // axios.get(urld).then(function (response) {
+                //     me.arrayIdTalla = response.data;
+                // })
+                // .catch(function (error) {
+                //     console.log(error);
+                // });
 
             
             }, 
-            abrirModal(modelo,accion, data = []){
+            abrirModal(modelo,accion, data = [],id){
+                let m=this;
                 switch(modelo){
                     case "productos":{
                         switch(accion){
@@ -219,6 +220,24 @@ document.addEventListener('DOMContentLoaded', function() {
                                 // this.idColor=data['idColor'];
                                 // this.idTalla=data['idTalla'];
                                 this.tituloModal = 'Actualizar Producto';
+
+                                var urld= '/producto_color?id='+id;
+                                axios.get(urld).then(function (response) {
+                                    console.log('estoy asignando los datos al array');
+                                    m.arrayIdColor = response.data;
+                                })
+                                .catch(function (error) {
+                                    console.log(error);
+                                });
+
+                                var urld= '/producto_talla?id='+id;
+                                axios.get(urld).then(function (response) {
+                                    m.arrayIdTalla = response.data;
+                                })
+                                .catch(function (error) {
+                                    console.log(error);
+                                });
+
                             }
                         }
                     }
@@ -234,8 +253,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 formData.append('file', me.file);
 
-                formData.append('idColor', me.idColor.map(item => item.id).join(','));
-                formData.append('idTalla', me.idTalla.map(item => item.idTalla).join(','));
+                formData.append('idColor', me.arrayIdColor.map(item => item.idColor).join(','));
+                formData.append('idTalla', me.arrayIdTalla.map(item => item.idTalla).join(','));
                 formData.append('idSubcat', me.idSubcat);
                 formData.append('NombreProducto', me.NombreProducto);
                 formData.append('Descripcion', me.Descripcion);
@@ -260,20 +279,21 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.log(error);
                 });
             },
-            actualizarProducto(id){
-               let me = this;
+            actualizarProducto(idProducto){
+                let me = this;
                 let formData = new FormData();
 
                 
-                formData.append('idProducto',id);
-                formData.append('idColor', me.idColor);
-                formData.append('idTalla', me.idTalla);
+                formData.append('idProducto',idProducto);
+                formData.append('idColor', me.arrayIdColor.map(item => item.idColor).join(','));
+                formData.append('idTalla', me.arrayIdTalla.map(item => item.idTalla).join(','));
                 formData.append('idSubcat', me.idSubcat);
                 formData.append('NombreProducto', me.NombreProducto);
                 formData.append('Descripcion', me.Descripcion);
                 formData.append('Precio', me.Precio);
                 formData.append('Existencia', me.Existencia);
 
+                console.log("estoy entrando a productos actualizar",me.arrayIdColor);
                 // Regresamos la informacion
                 axios.post('/productos/actualizar', formData,{
                    headers: {
@@ -302,7 +322,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.tipoAccion = 0;
                 this.Existencia=0;
                 this.Cambio = 0;
-                
+                this.arrayIdColor=[];
+                this.arrayIdTalla=[];
                 this.errorProducto= 0;
                 this.errorMostrarMsjProducto = [];
             },
@@ -320,6 +341,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 me.NombreProducto='';
                 me.Existencia=0;
                 me.Cambio = 0;
+                me.arrayIdColor= [];
+                me.arrayIdTalla=[];
             },
             verSelects(){
                 let me=this;
@@ -337,7 +360,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 var urld= '/colores';
                 axios.get(urld).then(function (response) {
                     var arrayColor= response.data;
-                    me.arrayColor = arrayColor.map(object => ({id: object.id, NombreColor: object.NombreColor}));
+                    me.arrayColor = arrayColor.map(object => ({idColor: object.id, NombreColor: object.NombreColor}));
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -460,9 +483,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.errorProducto=0;
                 this.errorMostrarMsjProducto =[];
 
-                if (this.idTalla==0) this.errorMostrarMsjProducto.push("Seleccione una talla.");
+                if (this.arrayIdTalla==0) this.errorMostrarMsjProducto.push("Seleccione una talla.");
                 if (this.idSubcat==0) this.errorMostrarMsjProducto.push("Seleccione una sub categoria.");
-                if (this.idColor==0) this.errorMostrarMsjProducto.push("Seleccione un color");
+                if (this.arrayIdColor==0) this.errorMostrarMsjProducto.push("Seleccione un color");
                 if (!this.NombreProducto) this.errorMostrarMsjProducto.push("El nombre del Producto no puede estar vacío.");
                 if (!this.Descripcion) this.errorMostrarMsjProducto.push("La descripción del Producto no puede estar vacía.");
                 if (!this.Existencia ) this.errorMostrarMsjProducto.push("La Existencia del producto debe ser un número y no puede estar vacío.");

@@ -2332,6 +2332,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3015,22 +3018,25 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       })["catch"](function (error) {
         console.log(error);
-      });
-      var urld = '/productoColor';
-      axios.get(urld).then(function (response) {
-        me.arrayIdColor = response.data;
-      })["catch"](function (error) {
-        console.log(error);
-      });
-      var urld = '/productoTalla';
-      axios.get(urld).then(function (response) {
-        me.arrayIdTalla = response.data;
-      })["catch"](function (error) {
-        console.log(error);
-      });
+      }); // var urld= '/productoColor';
+      // axios.get(urld).then(function (response) {
+      //     me.arrayIdColor = response.data;
+      // })
+      // .catch(function (error) {
+      //     console.log(error);
+      // });
+      //  var urld= '/productoTalla';
+      // axios.get(urld).then(function (response) {
+      //     me.arrayIdTalla = response.data;
+      // })
+      // .catch(function (error) {
+      //     console.log(error);
+      // });
     },
     abrirModal: function abrirModal(modelo, accion) {
       var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+      var id = arguments.length > 3 ? arguments[3] : undefined;
+      var m = this;
 
       switch (modelo) {
         case "productos":
@@ -3062,6 +3068,19 @@ document.addEventListener('DOMContentLoaded', function () {
                   // this.idTalla=data['idTalla'];
 
                   this.tituloModal = 'Actualizar Producto';
+                  var urld = '/producto_color?id=' + id;
+                  axios.get(urld).then(function (response) {
+                    console.log('estoy asignando los datos al array');
+                    m.arrayIdColor = response.data;
+                  })["catch"](function (error) {
+                    console.log(error);
+                  });
+                  var urld = '/producto_talla?id=' + id;
+                  axios.get(urld).then(function (response) {
+                    m.arrayIdTalla = response.data;
+                  })["catch"](function (error) {
+                    console.log(error);
+                  });
                 }
             }
           }
@@ -3075,10 +3094,10 @@ document.addEventListener('DOMContentLoaded', function () {
       var me = this;
       var formData = new FormData();
       formData.append('file', me.file);
-      formData.append('idColor', me.idColor.map(function (item) {
-        return item.id;
+      formData.append('idColor', me.arrayIdColor.map(function (item) {
+        return item.idColor;
       }).join(','));
-      formData.append('idTalla', me.idTalla.map(function (item) {
+      formData.append('idTalla', me.arrayIdTalla.map(function (item) {
         return item.idTalla;
       }).join(','));
       formData.append('idSubcat', me.idSubcat);
@@ -3099,17 +3118,22 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log(error);
       });
     },
-    actualizarProducto: function actualizarProducto(id) {
+    actualizarProducto: function actualizarProducto(idProducto) {
       var me = this;
       var formData = new FormData();
-      formData.append('idProducto', id);
-      formData.append('idColor', me.idColor);
-      formData.append('idTalla', me.idTalla);
+      formData.append('idProducto', idProducto);
+      formData.append('idColor', me.arrayIdColor.map(function (item) {
+        return item.idColor;
+      }).join(','));
+      formData.append('idTalla', me.arrayIdTalla.map(function (item) {
+        return item.idTalla;
+      }).join(','));
       formData.append('idSubcat', me.idSubcat);
       formData.append('NombreProducto', me.NombreProducto);
       formData.append('Descripcion', me.Descripcion);
       formData.append('Precio', me.Precio);
-      formData.append('Existencia', me.Existencia); // Regresamos la informacion
+      formData.append('Existencia', me.Existencia);
+      console.log("estoy entrando a productos actualizar", me.arrayIdColor); // Regresamos la informacion
 
       axios.post('/productos/actualizar', formData, {
         headers: {
@@ -3135,6 +3159,8 @@ document.addEventListener('DOMContentLoaded', function () {
       this.tipoAccion = 0;
       this.Existencia = 0;
       this.Cambio = 0;
+      this.arrayIdColor = [];
+      this.arrayIdTalla = [];
       this.errorProducto = 0;
       this.errorMostrarMsjProducto = [];
     },
@@ -3152,6 +3178,8 @@ document.addEventListener('DOMContentLoaded', function () {
       me.NombreProducto = '';
       me.Existencia = 0;
       me.Cambio = 0;
+      me.arrayIdColor = [];
+      me.arrayIdTalla = [];
     },
     verSelects: function verSelects() {
       var me = this;
@@ -3175,7 +3203,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var arrayColor = response.data;
         me.arrayColor = arrayColor.map(function (object) {
           return {
-            id: object.id,
+            idColor: object.id,
             NombreColor: object.NombreColor
           };
         });
@@ -3286,9 +3314,9 @@ document.addEventListener('DOMContentLoaded', function () {
     validarProducto: function validarProducto() {
       this.errorProducto = 0;
       this.errorMostrarMsjProducto = [];
-      if (this.idTalla == 0) this.errorMostrarMsjProducto.push("Seleccione una talla.");
+      if (this.arrayIdTalla == 0) this.errorMostrarMsjProducto.push("Seleccione una talla.");
       if (this.idSubcat == 0) this.errorMostrarMsjProducto.push("Seleccione una sub categoria.");
-      if (this.idColor == 0) this.errorMostrarMsjProducto.push("Seleccione un color");
+      if (this.arrayIdColor == 0) this.errorMostrarMsjProducto.push("Seleccione un color");
       if (!this.NombreProducto) this.errorMostrarMsjProducto.push("El nombre del Producto no puede estar vacío.");
       if (!this.Descripcion) this.errorMostrarMsjProducto.push("La descripción del Producto no puede estar vacía.");
       if (!this.Existencia) this.errorMostrarMsjProducto.push("La Existencia del producto debe ser un número y no puede estar vacío.");
@@ -43334,13 +43362,16 @@ var render = function() {
             : _vm.catalogo == 2
             ? _c(
                 "div",
-                { staticClass: "col s12 l4 contenedorCard" },
+                {
+                  staticClass: "col s12 l12",
+                  staticStyle: { "padding-left": "200px" }
+                },
                 _vm._l(_vm.arrayProductos, function(producto) {
                   return _c(
                     "div",
                     {
                       key: producto.idProducto,
-                      staticClass: "card medium col s12 l4 ",
+                      staticClass: "center card medium col s12 l3",
                       staticStyle: { "margin-left": "20px" }
                     },
                     [
@@ -43648,13 +43679,16 @@ var render = function() {
             : _vm.catalogo == 2
             ? _c(
                 "div",
-                { staticClass: "col s12 l4 contenedorCard" },
+                {
+                  staticClass: "col s12 l12",
+                  staticStyle: { "padding-left": "200px" }
+                },
                 _vm._l(_vm.arrayProductos, function(producto) {
                   return _c(
                     "div",
                     {
                       key: producto.idProducto,
-                      staticClass: "card medium col s12 l4 ",
+                      staticClass: "center card medium col s12 l3",
                       staticStyle: { "margin-left": "20px" }
                     },
                     [
@@ -43896,7 +43930,10 @@ var render = function() {
     _c("div", { staticClass: "row " }, [
       _c(
         "div",
-        { staticClass: "col s12 m4 l10 contenedorCard" },
+        {
+          staticClass: "col s12 m4 l10 contenedorCard",
+          staticStyle: { "padding-left": "200px" }
+        },
         _vm._l(_vm.arrayProductos, function(producto) {
           return _c(
             "div",
@@ -44083,13 +44120,16 @@ var render = function() {
             : _vm.catalogo == 2
             ? _c(
                 "div",
-                { staticClass: "col s12 l4 contenedorCard" },
+                {
+                  staticClass: "col s12 l12",
+                  staticStyle: { "padding-left": "200px" }
+                },
                 _vm._l(_vm.arrayProductos, function(producto) {
                   return _c(
                     "div",
                     {
                       key: producto.idProducto,
-                      staticClass: "card medium col s12 l4 ",
+                      staticClass: "center card medium col s12 l3",
                       staticStyle: { "margin-left": "20px" }
                     },
                     [
@@ -44848,29 +44888,21 @@ var render = function() {
                       _vm._v("Selecciona Colores")
                     ]),
                     _vm._v(" "),
-                    _c(
-                      "multiselect",
-                      {
-                        attrs: {
-                          options: _vm.arrayColor,
-                          label: "NombreColor",
-                          "track-by": "id",
-                          multiple: true
-                        },
-                        model: {
-                          value: _vm.idColor,
-                          callback: function($$v) {
-                            _vm.idColor = $$v
-                          },
-                          expression: "idColor"
-                        }
+                    _c("multiselect", {
+                      attrs: {
+                        options: _vm.arrayColor,
+                        label: "NombreColor",
+                        "track-by": "idColor",
+                        multiple: true
                       },
-                      [
-                        _c("pre", { staticClass: "language-json" }, [
-                          _c("code", [_vm._v(_vm._s(_vm.idColor.NombreColor))])
-                        ])
-                      ]
-                    )
+                      model: {
+                        value: _vm.arrayIdColor,
+                        callback: function($$v) {
+                          _vm.arrayIdColor = $$v
+                        },
+                        expression: "arrayIdColor"
+                      }
+                    })
                   ],
                   1
                 ),
@@ -44884,29 +44916,21 @@ var render = function() {
                       _vm._v("Selecciona tallas")
                     ]),
                     _vm._v(" "),
-                    _c(
-                      "multiselect",
-                      {
-                        attrs: {
-                          options: _vm.arrayTalla,
-                          label: "Talla",
-                          "track-by": "idTalla",
-                          multiple: true
-                        },
-                        model: {
-                          value: _vm.idTalla,
-                          callback: function($$v) {
-                            _vm.idTalla = $$v
-                          },
-                          expression: "idTalla"
-                        }
+                    _c("multiselect", {
+                      attrs: {
+                        options: _vm.arrayTalla,
+                        label: "Talla",
+                        "track-by": "idTalla",
+                        multiple: true
                       },
-                      [
-                        _c("pre", { staticClass: "language-json" }, [
-                          _c("code", [_vm._v(_vm._s(_vm.idTalla.Talla))])
-                        ])
-                      ]
-                    )
+                      model: {
+                        value: _vm.arrayIdTalla,
+                        callback: function($$v) {
+                          _vm.arrayIdTalla = $$v
+                        },
+                        expression: "arrayIdTalla"
+                      }
+                    })
                   ],
                   1
                 ),
@@ -45161,7 +45185,8 @@ var render = function() {
                                 return _vm.abrirModal(
                                   "productos",
                                   "actualizar",
-                                  producto
+                                  producto,
+                                  producto.idProducto
                                 )
                               }
                             }
@@ -45246,7 +45271,8 @@ var render = function() {
                                 return _vm.abrirModal(
                                   "productos",
                                   "actualizar",
-                                  producto
+                                  producto,
+                                  producto.idProducto
                                 )
                               }
                             }

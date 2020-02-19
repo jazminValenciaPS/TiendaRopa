@@ -22,20 +22,20 @@ class Producto extends Model
 
     public function imagenes()
     {
-        return $this->belongsTo('App\Imagen');
+        return $this->belongsTo('App\Imagen', 'idImg','idImagen');
     }
     public function subCategorias()
     {
-        return $this->belongsTo('App\subCategoria');
+        return $this->belongsTo('App\subCategoria', 'idSubcat', 'idSubCategorias');
     }
-    public function producto_color()
-    {
-        return $this->hasMany('App\Producto_color');
-    }
-    public function producto_talla()
-    {
-        return $this->hasMany('App\Producto_talla');
-    }
+    // public function producto_color()
+    // {
+    //     return $this->belongsToMany('App\Producto_color','');
+    // }
+    // public function producto_talla()
+    // {
+    //     return $this->belongsToMany('App\Producto_talla');
+    // }
   
 
 }

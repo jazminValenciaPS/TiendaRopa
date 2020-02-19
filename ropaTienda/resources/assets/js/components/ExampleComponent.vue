@@ -26,8 +26,11 @@
  <!-- Muestra de productos recientes -->
 
             <div class="row ">
-                <div class="col s12 m4 l10 contenedorCard">
-                    <div id="espacioCard" class="card medium col s12 l4" v-for="producto in arrayProductos" :key="producto.idProducto" >
+                <div class="col s12 m4 l10 contenedorCard" style="padding-left:200px;">
+                     <!-- <div v-else-if="catalogo==2" class="col s12 l12" style="padding-left:200px;">
+               <div style="margin-left:20px;" class="center card medium col s12 l3" v-for="producto in arrayProductos" :key="producto.idProducto">-->
+                  
+                    <div id="espacioCard" class="card medium col s12 l4" v-for="producto in arrayProductos" :key="producto.idProducto" > 
                         <div id="estiloImagenCard" class="card-image">
                             <img id="imagenCard" :src="'img/'+producto.Imagen">
                         </div>
