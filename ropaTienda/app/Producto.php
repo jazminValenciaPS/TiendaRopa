@@ -12,7 +12,6 @@ class Producto extends Model
     protected $fillable = [
         'idImg',
         'idSubcat',
-        // 'idTalla',
         'NombreProducto',
         'Descripcion',
         'Precio',
@@ -28,13 +27,16 @@ class Producto extends Model
     {
         return $this->belongsTo('App\subCategoria', 'idSubcat', 'idSubCategorias');
     }
-    // public function producto_color()
+    // public function colors()
     // {
-    //     return $this->belongsToMany('App\Producto_color','');
+    //     return $this->hasManyThrough(
+    //                                 'App\Colores', 
+    //                                 'App\Producto_color'
+    //                             );
     // }
-    // public function producto_talla()
+    // public function tallas()
     // {
-    //     return $this->belongsToMany('App\Producto_talla');
+    //     return $this->hasManyThrough('App\Talla', 'App\Producto_talla');
     // }
   
 

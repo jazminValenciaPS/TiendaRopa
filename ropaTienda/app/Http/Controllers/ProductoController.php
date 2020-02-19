@@ -173,54 +173,22 @@ class ProductoController extends Controller
         $producto->idSubcat = $request->idSubcat;
 
         $producto->save();
-
-        $arrayColor = $request->idColor;
-        $data = explode(",",$arrayColor);
-       // print_r($data);
-//AQUI NECESITAMOS AYUDA
+        $idProduc = $producto->idProducto;
+        $data = explode(",", $request->idColor);
+        DB::table('producto_color')->where('idProduc', $idProduc)->delete();
         foreach ($data as $idColor){
-            
-            
-            $tColor  = DB::table('producto_color')
-            ->select('producto_color.idProColor')
-            ->where([
-                ['producto_color.idProduc','=',$idProducto]
-                // ['producto_color.idColor','=',$idColor]
-            ])->get();
-            $tColor= json_decode( json_encode($tColor), true);
-            $tColor=$tColor[0];
-            //$tColor=$tColor["idProColor"];
-            print_r($tColor["idProColor"]);
-
-            
-           
-           
-            $color= Producto_color::updateOrCreate([
-                'idProColor' => $tColor["idProColor"], 
-                'idProduc' => $idProducto
-            ],[
-                'idColor' => $idColor
-            ]
-            );
-            // $color->save();
-        
+            $color = new Producto_color();
+            $color->idProduc = $idProduc;
+            $color->idColor = $idColor;
+            $color->save();
         }
-        
-        $arrayTalla = $request->idTalla;
-
-        $data1 = explode(",", $arrayTalla);
-        
-        foreach ($data1 as $idTalla) {
-
-            // print_r($idTalla);
-
-            $talla = Producto_talla::updateOrCreate([
-                'idProduc' => $idProducto
-            ],[
-                'idTalla' => $idTalla
-
-            ]
-            );
+        $data = explode(",", $request->idTalla);
+        DB::table('producto_talla')->where('idProduc', $idProduc)->delete();
+        foreach ($data as $idTalla){
+            // error_log('entro' . $idTalla . $idProduc);
+            $talla = new Producto_talla();
+            $talla->idProduc = $idProduc;
+            $talla->idTalla = $idTalla ;
             $talla->save();
         }
  
