@@ -22,10 +22,13 @@
         "sass-loader": "^7.1.0",
         "vue": "^2.5.17",
         "vue-template-compiler": "^2.6.11"
+<<<<<<< HEAD
     },
     "dependencies": {
         "sweetalert2": "^9.7.0",
         "vue-multiselect": "^2.1.6",
         "vueperslides": "^2.8.2"
+=======
+>>>>>>> master
     }
 }
