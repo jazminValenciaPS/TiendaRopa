@@ -215,7 +215,7 @@ class ProductoController extends Controller
         return  $productos = DB::table('producto')
         ->join('imagenes','imagenes.idImagen', '=','producto.idImg')
         ->select('producto.NombreProducto','producto.Descripcion','producto.idProducto',
-        'imagenes.idImagen','imagenes.Imagen')->orderBy('idProducto', 'desc')->limit(3)
+        'imagenes.idImagen','imagenes.Imagen')->orderBy('idProducto', 'desc')->limit(6)
         ->get();
 
 

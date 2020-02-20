@@ -29,8 +29,8 @@
 
          <!-- Muestra Productos -->
 
-            <div v-else-if="catalogo==2" class="col s12 l12" style="padding-left:200px;">
-               <div style="margin-left:20px;" class="center card medium col s12 l3" v-for="producto in arrayProductos" :key="producto.idProducto">
+            <div v-else-if="catalogo==2" class="col s12 l12 " >
+               <div  class="center card medium col s12 l3 productosCard" v-for="producto in arrayProductos" :key="producto.idProducto">
                      <div class="card-image ">
                         <img id="imagenCard" :src="'img/'+producto.Imagen">
                     </div>
@@ -75,7 +75,7 @@
                             <h5 class="col s10">                    
                                 <p>Color:</p>
                             </h5>
-                        <select name="LeaveType" class="col s10 l10 browser-default">
+                        <select name="LeaveType" class="col s10 m5 l10 browser-default">
                             <option value="" disabled selected>Selecciona un color</option>
                             <option v-on:change="(event) => console.log(event)" v-for="color in arrayIdColor" :value="color.idColor" :key="color.idColor">{{ color.NombreColor }}</option>
                          <label>Seleccione un color</label>
@@ -83,6 +83,7 @@
                         <br>
                             <!-- Termina select color --> 
                             <h5 class="">
+                                <p></p>
                                 <p>Descripción:
                                 <br>
                             {{detalle.Descripcion}}</p></h5>

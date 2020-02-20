@@ -70,6 +70,7 @@
 </template>
 
 <script>
+
     export default {
         data(){
             return{
@@ -83,7 +84,6 @@
                 file: '',
                 errorSlider:'',
                 errorMostrarMsjSlider: [],
-
             }
         },
         methods:{
@@ -137,103 +137,48 @@
                 }
             },
             nuevoSlider() {
-                //  if (this.validarSlider()){
-                //     return;
-                // }
                 let me = this;
-            // me.$validator.validateAll('new').then(valid => {
-            //     if (valid) {
-                //     let formData = new FormData();
-                // formData.append('file', me.file);
-                   
-                    
-                    //Regresamos la informacion
-                //      axios.post('/slider/registrar', formData, {
-                //     headers: {
-                //         'Content-Type': 'multipart/form-data'
-                //     }
-                // })
-                //     .then(function (response) {
-                //     me.listarSliders();
-                //     me.cerrarModal();
-                //     me.limpiar();
-                //     // var toastHTML = '<span>Slider Registrado Correctamente</span>';
-                //     // M.toast({ html: toastHTML, classes: 'rounded tos', displayLength: 1500 });
-
-                // })
-                // .catch(function (error) {
-                //     console.log(error);
-                // });
-            //     }
-            //     else{
-            //         var toastHTML = '<span>Corrige la información e intente de nuevo</span>';
-            //         M.toast({html: toastHTML, classes: 'rounded tos fondo-baja'});
-            //     }
-            // });
-
-//  me.$validator.validateAll('update').then(valid => {
-//                 if (valid) {
-//                     let formData = new FormData();
-//                     if (me.Cambio == 1) {
-//                         formData.append('file', me.file);
-//                     }
-//                     formData.append('ID', me.ID);
-//                     formData.append('ID_Usuario', store.getters.getAuthUser);
-//                     formData.append('Titulo', me.Titulo);
-//                     formData.append('Cuerpo', me.Cuerpo);
-//                     formData.append('Estado', me.Estado);
-//                     formData.append('Cambio', me.Cambio);
-                    
-//                     //Regresamos la informacion
-//                     axios.post('/Noticias/Actualizar', formData, {
-//                         headers: {
-//                             'Content-Type': 'multipart/form-data'
-//                         }
-//                     })
-//                     .then(function (response) {
-//                         me.listarNoticias(1,me.criterio,me.buscar,me.listadoEstatus);
-//                         $('.modal.open').modal('close');
-//                         var toastHTML = '<span>Información Actualizada Correctamente</span>';
-//                         M.toast({html: toastHTML, classes: 'rounded tos fondo-alta', displayLength: 1500});
-//                     })
-//                     .catch(function (error) {
-//                         console.log(error);
-//                     });
-//                 }
-//                 else{
-//                     var toastHTML = '<span>Corrige la información e intente de nuevo</span>';
-//                     M.toast({html: toastHTML, classes: 'rounded tos fondo-baja'});
-//                 }
-//             });
-
-
-
-
-
-
+                
                 let formData = new FormData();
                 formData.append('file', me.file);
-                
-                
-                //Registramos la informacion
-                axios.post('/slider/registrar', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                })
-                .then(function (response) {
-                    me.listarSliders();
-                    me.cerrarModal();
-                    me.limpiar();
-                    // var toastHTML = '<span>Slider Registrado Correctamente</span>';
-                    // M.toast({ html: toastHTML, classes: 'rounded tos', displayLength: 1500 });
 
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                // if(!(/\.(jpg|png)$/i).test(FormData.name)) {
+                //     alert('Ingrese una imagen con alguno de los siguientes formatos: .jpeg/.jpg/.png.');
+                //     return false;
+                // }
+                // var img = new Image();
                 
+                // img.onload = function dimension() {
+                //     if (this.width.toFixed(0) > 960 && this.height.toFixed(0) > 319) {
+                //     alert('Las medidas deben ser: 960 x 319');
                     
+                //     } else {
+                //     alert('Imagen correcta :)');
+                //     // El tamaño de la imagen fue validado
+                //     banderaTamano = true;
+
+                    // Buscamos el formulario
+                    // var form = document.getElementById('formulario');
+                    // Enviamos de nuevo el formulario con la bandera modificada.
+                    // form.submit();
+                        axios.post('/slider/registrar', formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                        })
+                        .then(function (response) {
+                            me.listarSliders();
+                            me.cerrarModal();
+                            me.limpiar();
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    // }
+                // }
+                //Registramos la informacion
+               
+                // return false;
             },
             actualizarSlider(id){
                 let me = this;
@@ -266,37 +211,36 @@
                 this.file='';
 
             },
-            abrirModal(modelo,accion, data = []){
-                switch(modelo){
-                    case "sliders":
-                        {
-                            switch(accion){
-                                case 'registrar':
-                                    {
-                                        this.modal = 1;
-                                        this.nombre = '';
-                                        this.tipoAccion = 1;
-                                        this.tituloModal = 'Registrar Sliders';
-                                        break;
+            // abrirModal(modelo,accion, data = []){
+            //     switch(modelo){
+            //         case "sliders":
+            //             {
+            //                 switch(accion){
+            //                     case 'registrar':
+            //                         {
+            //                             this.modal = 1;
+            //                             this.nombre = '';
+            //                             this.tipoAccion = 1;
+            //                             this.tituloModal = 'Registrar Sliders';
+            //                             break;
 
-                                    }
-                                case 'actualizar':
-                                    {
-                                        this.modal = 2;
-                                        this.nombre = '';
-                                        this.tipoAccion = 2;
-                                        this.tituloModal = 'Actualizar Slider';
-                                        this.id=data['id'];
-                                        this.img=data['imagen'];
-                                        break;
-                                    }
-                            }
+            //                         }
+            //                     case 'actualizar':{
+            //                             this.modal = 2;
+            //                             this.nombre = '';
+            //                             this.tipoAccion = 2;
+            //                             this.tituloModal = 'Actualizar Slider';
+            //                             this.id=data['id'];
+            //                             this.img=data['imagen'];
+            //                             break;
+            //                         }
+            //                 }
 
-                        }
-                }
+            //             }
+            //     }
 
-            },
-            },
+            // },
+            // },
             abrirModal(modelo,accion, data = []){
                 switch(modelo){
                     case "sliders":
@@ -340,7 +284,7 @@
                 return this.errorSlider;
             },
           
-        // },
+        },
         mounted(){
             this.listarSliders();
         }

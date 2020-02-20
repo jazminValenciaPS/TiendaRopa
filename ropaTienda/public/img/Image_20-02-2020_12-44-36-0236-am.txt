@@ -8,68 +8,94 @@
                     <div class="center">
                         <h3 v-text="tituloModal"></h3>
                     </div>
-                    <div class="col s5 center">
-                        <img v-if="tipoAccion==2" :src="'img/'+img"  class="imagenEdit" alt="">
-                    </div>
-                    <div class="form-group row">
-                        <!-- input para el nombre del producto --> 
-                        <input id="nombre" type="text" v-model="NombreProducto" placeholder="Nombre Producto"  class="validate" >
-                        <!-- <label  for="nombre">Nombre</label> -->
-                        <br>  
-                        <!-- input para la descripción del producto-->
-                        <input id="descripcion" type="text" v-model="Descripcion" placeholder="Descripcion" class="validate">
-                        <!-- <label  for="descripcion"></label> -->
-                        <br> 
-                        <!-- input para el precio del producto --> 
-                        <input id="precio" type="text" v-model="Precio" placeholder="Precio" class="validate">
-                        <!-- <label  for="precio">Precio</label> -->
-                        <br> 
-                        <!-- input para la descripción del producto-->
-                        <input id="descripcion" type="text" v-model="Existencia" placeholder="Existencia" class="validate">
-                        <!-- <label  for="descripcion">Existencia</label> -->
-                        <br> 
-                        <!-- select Subcategorias --> 
-                        <select name="LeaveType" class="browser-default" v-model="idSubcat">
-                            <option value="" disabled selected>Selecciona la subCategoría</option>
-                            <option v-on:change="(event) => console.log(event)" v-for="subcategoria in arraySubcategoria" :value="subcategoria.idSubCategorias" :key="subcategoria.id">{{ subcategoria.NombreSub }}</option>
-                        <label>Seleccione la SubCategoría</label>
-                        </select> 
-                        <br>
+                        <div class="col s5 center">
+                            <img v-if="tipoAccion==2" :src="'img/'+img"  class="imagenEdit" alt="">
+                        </div>
+                        <div class="form-group row">
+                            <!-- input para el nombre del producto --> 
+                            <input id="nombre" type="text" v-model="NombreProducto" class="validate" >
+                            <label  for="nombre">Nombre</label>
+                            <br>  
+                            <!-- input para la descripción del producto-->
+                            <input id="descripcion" type="text" v-model="Descripcion" class="validate">
+                            <label  for="descripcion">Descripcion</label>
+                            <br> 
+                            <!-- input para el precio del producto --> 
+                            <input id="precio" type="text" v-model="Precio" class="validate">
+                            <label  for="precio">Precio</label>
+                            <br> 
+                            <!-- input para la descripción del producto-->
+                            <input id="descripcion" type="text" v-model="Existencia" class="validate">
+                            <label  for="descripcion">Existencia</label>
+                            <br> 
+                            <!-- select Subcategorias --> 
+                            <select name="LeaveType" class="browser-default" v-model="idSubcat">
+                                <option value="" disabled selected>Selecciona la subCategoría</option>
+                                <option v-on:change="(event) => console.log(event)" v-for="subcategoria in arraySubcategoria" :value="subcategoria.idSubCategorias" :key="subcategoria.id">{{ subcategoria.NombreSub }}</option>
+                            <label>Seleccione la SubCategoría</label>
+                            </select> 
+                            <br>
 
-                        <!-- ejemplo multiple select   -->
-                        <div>
-                            <label class="typo__label">Selecciona Colores</label>
-                            <multiselect  v-model="arrayIdColor"  :options="arrayColor" label="NombreColor" track-by="idColor" :multiple="true">
-                                <!-- <pre class="language-json"><code>{{ idColor.NombreColor }}</code></pre> -->
-                            </multiselect>
-                        </div>
-                        <br>
-                        <div>
-                            <label class="typo__label">Selecciona tallas</label>
-                            <multiselect v-model="arrayIdTalla" :options="arrayTalla" label="Talla" track-by="idTalla" :multiple="true">
-                                <!-- <pre class="language-json"><code>{{ idTalla.Talla }}</code></pre> -->
-                            </multiselect>
-                        </div>
-                        <br>
-                        <!-- input para la imagen del producto --> 
-                        <div class="col s10 center" v-if="tipoAccion==1" >
-                            <div class="file-field input-field">
-                                <div class="waves-effect waves-light btn deep-orange lighten-4 brown-text">
-                                    <span>Imagen</span>
-                                    <input id="file" ref="filea"  type="file" data-vv-scope="new"  v-on:change="seleccionarImagen(1)" class="productoAlta">
-                                </div>
-                                <div class="file-path-wrapper">
-                                    <input class="file-path validate" type="text">
-                                </div>
+                            <!-- ejemplo multiple select   -->
+                            <div>
+                                <label class="typo__label">Selecciona Colores</label>
+                                <multiselect  v-model="idColor"  :options="arrayColor" label="NombreColor" track-by="id" :multiple="true">
+                                    <pre class="language-json"><code>{{ idColor.NombreColor }}</code></pre>
+                                </multiselect>
                             </div>
+
+                            <!-- fin multiple select   -->
+
+                            <!-- <select name="LeaveType"  class="browser-default" v-model="idColor">
+                                <option value="" disabled selected>Selecciona una color</option>
+                                <option  v-on:change="() => {}" v-for="color in arrayColor" :value="color.id" :key="color.id">{{ color.NombreColor }}</option>
+                            <label>Seleccione un color</label>
+                            </select>  -->
+                            <br>
+                            <!-- select Subcategorias --> 
+                            <!-- <select name="LeaveType" class="browser-default" v-model="idTalla">
+                                <option value="" disabled selected>Selecciona la talla</option>
+                                <option v-on:change="(event) => console.log(event)" v-for="tallas in arrayTalla" :value="tallas.idTalla" :key="tallas.idTalla">{{ tallas.Talla }}</option>
+                            <label>Seleccione una talla</label>
+                            </select> -->
+                            
+                            <!-- ejemplo multiple select   -->
+                            <div>
+                                <label class="typo__label">Selecciona tallas</label>
+                                <multiselect v-model="idTalla" :options="arrayTalla" label="Talla" track-by="idTalla" :multiple="true">
+                                    <pre class="language-json"><code>{{ idTalla.Talla }}</code></pre>
+                                </multiselect>
+                            </div>
+
+
+                            <!-- <div>
+                                <label class="typo__label">Tagging</label>
+                                <multiselect v-model="value" tag-placeholder="Add this as new tag" placeholder="Search or add a tag" label="name" track-by="code" :options="options" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
+                                <pre class="language-json"><code>{{ value  }}</code></pre>
+                            </div> -->
+                                
+                            <br>
+                            <!-- input para la imagen del producto --> 
+                            <div class="col s10 center" v-if="tipoAccion==1" >
+                                <div class="file-field input-field">
+                                    <div class="waves-effect waves-light btn deep-orange lighten-4 brown-text">
+                                        <span>Imagen</span>
+                                        <input id="file" ref="filea"  type="file" data-vv-scope="new"  v-on:change="seleccionarImagen(1)" class="productoAlta">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                            </div> 
+                            
                         </div> 
-                    </div> 
-                    <div v-show="errorProducto" class="form-group row div-error">
-                        <div class="text-center text-error">
-                            <div v-for="error in errorMostrarMsjProducto" :key="error" v-text="error">
-                            </div>
+                        <div v-show="errorProducto" class="form-group row div-error">
+                                <div class="text-center text-error">
+                                    <div v-for="error in errorMostrarMsjProducto" :key="error" v-text="error">
+
+                                    </div>
+                                </div>
                         </div>
-                    </div>
                     <div class="modal-footer">
                         <button type="button" v-if="tipoAccion==1" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="nuevoProducto()">Guardar</button>
                         <button type="button" v-if="tipoAccion==2" class="espacioButton waves-effect waves-light btn deep-orange lighten-4 brown-text" @click="actualizarProducto(idProducto)">Actualizar</button>
@@ -104,14 +130,14 @@
                                 <i class="switch">
                                     <label><input type="checkbox" checked="checked" name="status" v-model="producto.Status" @click="desactivarProducto(producto.idProducto)"><span class="lever"></span></label>
                                 </i>
-                                      <i class="material-icons brown-text " @click="abrirModal('productos','actualizar',producto,producto.idProducto)">create</i>
+                                      <i class="material-icons brown-text " @click="abrirModal('productos','actualizar',producto)">create</i>
 
                             </a>
                             <a href="#!" class="secondary-content" v-if="producto.Status == 0">
                                 <i class="switch">
                                     <label><input type="checkbox"  name="status" v-model="producto.Status" @click="activarProducto(producto.idProducto)"><span class="lever"></span></label>
                                 </i>
-                                    <i class="material-icons brown-text " @click="abrirModal('productos','actualizar',producto,producto.idProducto)">create</i>
+                                    <i class="material-icons brown-text " @click="abrirModal('productos','actualizar',producto)">create</i>
                             </a>
                         </li>
                     </ul>
@@ -122,9 +148,8 @@
 </template>
 <script>
 import Swal from 'sweetalert2';
-import Multiselect from 'vue-multiselect'
+ import Multiselect from 'vue-multiselect'
 
- 
 document.addEventListener('DOMContentLoaded', function() {
                         var elems = document.querySelectorAll('select');
                         var instances = M.FormSelect.init(elems);
@@ -173,26 +198,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 .catch(function(error){
                     console.log(error);
                 });
-                // var urld= '/productoColor';
-                // axios.get(urld).then(function (response) {
-                //     me.arrayIdColor = response.data;
-                // })
-                // .catch(function (error) {
-                //     console.log(error);
-                // });
+                var urld= '/productoColor';
+                axios.get(urld).then(function (response) {
+                    me.arrayIdColor = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
 
-                //  var urld= '/productoTalla';
-                // axios.get(urld).then(function (response) {
-                //     me.arrayIdTalla = response.data;
-                // })
-                // .catch(function (error) {
-                //     console.log(error);
-                // });
+                 var urld= '/productoTalla';
+                axios.get(urld).then(function (response) {
+                    me.arrayIdTalla = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
 
             
             }, 
-            abrirModal(modelo,accion, data = [],id){
-                let m=this;
+            abrirModal(modelo,accion, data = []){
                 switch(modelo){
                     case "productos":{
                         switch(accion){
@@ -220,24 +244,6 @@ document.addEventListener('DOMContentLoaded', function() {
                                 // this.idColor=data['idColor'];
                                 // this.idTalla=data['idTalla'];
                                 this.tituloModal = 'Actualizar Producto';
-
-                                var urld= '/producto_color?id='+id;
-                                axios.get(urld).then(function (response) {
-                                    console.log('estoy asignando los datos al array');
-                                    m.arrayIdColor = response.data;
-                                })
-                                .catch(function (error) {
-                                    console.log(error);
-                                });
-
-                                var urld= '/producto_talla?id='+id;
-                                axios.get(urld).then(function (response) {
-                                    m.arrayIdTalla = response.data;
-                                })
-                                .catch(function (error) {
-                                    console.log(error);
-                                });
-
                             }
                         }
                     }
@@ -253,8 +259,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 formData.append('file', me.file);
 
-                formData.append('idColor', me.arrayIdColor.map(item => item.idColor).join(','));
-                formData.append('idTalla', me.arrayIdTalla.map(item => item.idTalla).join(','));
+                formData.append('idColor', me.idColor.map(item => item.id).join(','));
+                formData.append('idTalla', me.idTalla.map(item => item.idTalla).join(','));
                 formData.append('idSubcat', me.idSubcat);
                 formData.append('NombreProducto', me.NombreProducto);
                 formData.append('Descripcion', me.Descripcion);
@@ -279,21 +285,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.log(error);
                 });
             },
-            actualizarProducto(idProducto){
+            actualizarProducto(id){
                 let me = this;
                 let formData = new FormData();
 
                 
-                formData.append('idProducto',idProducto);
-                formData.append('idColor', me.arrayIdColor.map(item => item.idColor).join(','));
-                formData.append('idTalla', me.arrayIdTalla.map(item => item.idTalla).join(','));
+                formData.append('idProducto',id);
+                formData.append('idColor', me.idColor);
+                formData.append('idTalla', me.idTalla);
                 formData.append('idSubcat', me.idSubcat);
                 formData.append('NombreProducto', me.NombreProducto);
                 formData.append('Descripcion', me.Descripcion);
                 formData.append('Precio', me.Precio);
                 formData.append('Existencia', me.Existencia);
 
-                console.log("estoy entrando a productos actualizar",me.arrayIdColor);
                 // Regresamos la informacion
                 axios.post('/productos/actualizar', formData,{
                    headers: {
@@ -322,8 +327,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.tipoAccion = 0;
                 this.Existencia=0;
                 this.Cambio = 0;
-                this.arrayIdColor=[];
-                this.arrayIdTalla=[];
+                
                 this.errorProducto= 0;
                 this.errorMostrarMsjProducto = [];
             },
@@ -341,8 +345,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 me.NombreProducto='';
                 me.Existencia=0;
                 me.Cambio = 0;
-                me.arrayIdColor= [];
-                me.arrayIdTalla=[];
             },
             verSelects(){
                 let me=this;
@@ -360,7 +362,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 var urld= '/colores';
                 axios.get(urld).then(function (response) {
                     var arrayColor= response.data;
-                    me.arrayColor = arrayColor.map(object => ({idColor: object.id, NombreColor: object.NombreColor}));
+                    me.arrayColor = arrayColor.map(object => ({id: object.id, NombreColor: object.NombreColor}));
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -483,9 +485,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.errorProducto=0;
                 this.errorMostrarMsjProducto =[];
 
-                if (this.arrayIdTalla==0) this.errorMostrarMsjProducto.push("Seleccione una talla.");
+                if (this.idTalla==0) this.errorMostrarMsjProducto.push("Seleccione una talla.");
                 if (this.idSubcat==0) this.errorMostrarMsjProducto.push("Seleccione una sub categoria.");
-                if (this.arrayIdColor==0) this.errorMostrarMsjProducto.push("Seleccione un color");
+                if (this.idColor==0) this.errorMostrarMsjProducto.push("Seleccione un color");
                 if (!this.NombreProducto) this.errorMostrarMsjProducto.push("El nombre del Producto no puede estar vacío.");
                 if (!this.Descripcion) this.errorMostrarMsjProducto.push("La descripción del Producto no puede estar vacía.");
                 if (!this.Existencia ) this.errorMostrarMsjProducto.push("La Existencia del producto debe ser un número y no puede estar vacío.");

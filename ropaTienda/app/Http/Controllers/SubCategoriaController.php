@@ -71,7 +71,7 @@ class SubCategoriaController extends Controller
 
      public function desactivar(Request $request)
      { 
-        $subCat = subCategoria::findOrFail($request->idSub);
+        $subCat = subCategoria::findOrFail($request->id);
         $subCat->Status = '0';
         $subCat->save();
      }

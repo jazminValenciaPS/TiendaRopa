@@ -29,8 +29,8 @@
 
          <!-- Muestra Productos -->
 
-             <div v-else-if="catalogo==2" class="col s12 l12" style="padding-left:200px;">
-               <div style="margin-left:20px;" class="center card medium col s12 l3" v-for="producto in arrayProductos" :key="producto.idProducto">
+             <div v-else-if="catalogo==2" class="col s12 l12">
+               <div class="center card medium col s12 l3 productosCard" v-for="producto in arrayProductos" :key="producto.idProducto">
                     <div class="card-image ">
                         <img id="imagenCard" :src="'img/'+producto.Imagen">
                     </div>

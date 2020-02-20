@@ -2208,6 +2208,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2968,7 +2969,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -3488,71 +3488,24 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     nuevoSlider: function nuevoSlider() {
-      //  if (this.validarSlider()){
-      //     return;
-      // }
-      var me = this; // me.$validator.validateAll('new').then(valid => {
-      //     if (valid) {
-      //     let formData = new FormData();
-      // formData.append('file', me.file);
-      //Regresamos la informacion
-      //      axios.post('/slider/registrar', formData, {
-      //     headers: {
-      //         'Content-Type': 'multipart/form-data'
-      //     }
-      // })
-      //     .then(function (response) {
-      //     me.listarSliders();
-      //     me.cerrarModal();
-      //     me.limpiar();
-      //     // var toastHTML = '<span>Slider Registrado Correctamente</span>';
-      //     // M.toast({ html: toastHTML, classes: 'rounded tos', displayLength: 1500 });
-      // })
-      // .catch(function (error) {
-      //     console.log(error);
-      // });
-      //     }
-      //     else{
-      //         var toastHTML = '<span>Corrige la información e intente de nuevo</span>';
-      //         M.toast({html: toastHTML, classes: 'rounded tos fondo-baja'});
-      //     }
-      // });
-      //  me.$validator.validateAll('update').then(valid => {
-      //                 if (valid) {
-      //                     let formData = new FormData();
-      //                     if (me.Cambio == 1) {
-      //                         formData.append('file', me.file);
-      //                     }
-      //                     formData.append('ID', me.ID);
-      //                     formData.append('ID_Usuario', store.getters.getAuthUser);
-      //                     formData.append('Titulo', me.Titulo);
-      //                     formData.append('Cuerpo', me.Cuerpo);
-      //                     formData.append('Estado', me.Estado);
-      //                     formData.append('Cambio', me.Cambio);
-      //                     //Regresamos la informacion
-      //                     axios.post('/Noticias/Actualizar', formData, {
-      //                         headers: {
-      //                             'Content-Type': 'multipart/form-data'
-      //                         }
-      //                     })
-      //                     .then(function (response) {
-      //                         me.listarNoticias(1,me.criterio,me.buscar,me.listadoEstatus);
-      //                         $('.modal.open').modal('close');
-      //                         var toastHTML = '<span>Información Actualizada Correctamente</span>';
-      //                         M.toast({html: toastHTML, classes: 'rounded tos fondo-alta', displayLength: 1500});
-      //                     })
-      //                     .catch(function (error) {
-      //                         console.log(error);
-      //                     });
-      //                 }
-      //                 else{
-      //                     var toastHTML = '<span>Corrige la información e intente de nuevo</span>';
-      //                     M.toast({html: toastHTML, classes: 'rounded tos fondo-baja'});
-      //                 }
-      //             });
-
+      var me = this;
       var formData = new FormData();
-      formData.append('file', me.file); //Registramos la informacion
+      formData.append('file', me.file); // if(!(/\.(jpg|png)$/i).test(FormData.name)) {
+      //     alert('Ingrese una imagen con alguno de los siguientes formatos: .jpeg/.jpg/.png.');
+      //     return false;
+      // }
+      // var img = new Image();
+      // img.onload = function dimension() {
+      //     if (this.width.toFixed(0) > 960 && this.height.toFixed(0) > 319) {
+      //     alert('Las medidas deben ser: 960 x 319');
+      //     } else {
+      //     alert('Imagen correcta :)');
+      //     // El tamaño de la imagen fue validado
+      //     banderaTamano = true;
+      // Buscamos el formulario
+      // var form = document.getElementById('formulario');
+      // Enviamos de nuevo el formulario con la bandera modificada.
+      // form.submit();
 
       axios.post('/slider/registrar', formData, {
         headers: {
@@ -3561,11 +3514,13 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         me.listarSliders();
         me.cerrarModal();
-        me.limpiar(); // var toastHTML = '<span>Slider Registrado Correctamente</span>';
-        // M.toast({ html: toastHTML, classes: 'rounded tos', displayLength: 1500 });
+        me.limpiar();
       })["catch"](function (error) {
         console.log(error);
-      });
+      }); // }
+      // }
+      //Registramos la informacion
+      // return false;
     },
     actualizarSlider: function actualizarSlider(id) {
       var me = this;
@@ -3590,6 +3545,33 @@ __webpack_require__.r(__webpack_exports__);
       this.img = '';
       this.file = '';
     },
+    // abrirModal(modelo,accion, data = []){
+    //     switch(modelo){
+    //         case "sliders":
+    //             {
+    //                 switch(accion){
+    //                     case 'registrar':
+    //                         {
+    //                             this.modal = 1;
+    //                             this.nombre = '';
+    //                             this.tipoAccion = 1;
+    //                             this.tituloModal = 'Registrar Sliders';
+    //                             break;
+    //                         }
+    //                     case 'actualizar':{
+    //                             this.modal = 2;
+    //                             this.nombre = '';
+    //                             this.tipoAccion = 2;
+    //                             this.tituloModal = 'Actualizar Slider';
+    //                             this.id=data['id'];
+    //                             this.img=data['imagen'];
+    //                             break;
+    //                         }
+    //                 }
+    //             }
+    //     }
+    // },
+    // },
     abrirModal: function abrirModal(modelo, accion) {
       var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
 
@@ -3619,46 +3601,15 @@ __webpack_require__.r(__webpack_exports__);
             }
           }
       }
+    },
+    validarSlider: function validarSlider() {
+      this.errorSlider = 0;
+      this.errorMostrarMsjSlider = [];
+      if (!this.file) this.errorMostrarMsjSlider.push("Se tiene que ingresar una imagen.");
+      if (this.errorMostrarMsjSlider.length) this.errorSlider = 1;
+      return this.errorSlider;
     }
   },
-  abrirModal: function abrirModal(modelo, accion) {
-    var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-
-    switch (modelo) {
-      case "sliders":
-        {
-          switch (accion) {
-            case 'registrar':
-              {
-                this.modal = 1;
-                this.nombre = '';
-                this.tipoAccion = 1;
-                this.tituloModal = 'Registrar Sliders';
-                break;
-              }
-
-            case 'actualizar':
-              {
-                this.modal = 2;
-                this.nombre = '';
-                this.tipoAccion = 2;
-                this.tituloModal = 'Actualizar Slider';
-                this.id = data['id'];
-                this.img = data['imagen'];
-                break;
-              }
-          }
-        }
-    }
-  },
-  validarSlider: function validarSlider() {
-    this.errorSlider = 0;
-    this.errorMostrarMsjSlider = [];
-    if (!this.file) this.errorMostrarMsjSlider.push("Se tiene que ingresar una imagen.");
-    if (this.errorMostrarMsjSlider.length) this.errorSlider = 1;
-    return this.errorSlider;
-  },
-  // },
   mounted: function mounted() {
     this.listarSliders();
   }
@@ -43362,17 +43313,13 @@ var render = function() {
             : _vm.catalogo == 2
             ? _c(
                 "div",
-                {
-                  staticClass: "col s12 l12",
-                  staticStyle: { "padding-left": "200px" }
-                },
+                { staticClass: "col s12 l12" },
                 _vm._l(_vm.arrayProductos, function(producto) {
                   return _c(
                     "div",
                     {
                       key: producto.idProducto,
-                      staticClass: "center card medium col s12 l3",
-                      staticStyle: { "margin-left": "20px" }
+                      staticClass: "center card medium col s12 l3 productosCard"
                     },
                     [
                       _c("div", { staticClass: "card-image " }, [
@@ -43679,17 +43626,13 @@ var render = function() {
             : _vm.catalogo == 2
             ? _c(
                 "div",
-                {
-                  staticClass: "col s12 l12",
-                  staticStyle: { "padding-left": "200px" }
-                },
+                { staticClass: "col s12 l12 " },
                 _vm._l(_vm.arrayProductos, function(producto) {
                   return _c(
                     "div",
                     {
                       key: producto.idProducto,
-                      staticClass: "center card medium col s12 l3",
-                      staticStyle: { "margin-left": "20px" }
+                      staticClass: "center card medium col s12 l3 productosCard"
                     },
                     [
                       _c("div", { staticClass: "card-image " }, [
@@ -43799,7 +43742,7 @@ var render = function() {
                           _c(
                             "select",
                             {
-                              staticClass: "col s10 l10 browser-default",
+                              staticClass: "col s10 m5 l10 browser-default",
                               attrs: { name: "LeaveType" }
                             },
                             [
@@ -43839,6 +43782,8 @@ var render = function() {
                           _c("br"),
                           _vm._v(" "),
                           _c("h5", {}, [
+                            _c("p"),
+                            _vm._v(" "),
                             _c("p", [
                               _vm._v(
                                 "Descripción:\n                              "
@@ -43931,7 +43876,7 @@ var render = function() {
       _c(
         "div",
         {
-          staticClass: "col s12 m4 l10 contenedorCard",
+          staticClass: "col s12 m12 l12 contenedorCard center",
           staticStyle: { "padding-left": "200px" }
         },
         _vm._l(_vm.arrayProductos, function(producto) {
@@ -43939,7 +43884,7 @@ var render = function() {
             "div",
             {
               key: producto.idProducto,
-              staticClass: "card medium col s12 l4",
+              staticClass: "card medium col s12 l4 center",
               attrs: { id: "espacioCard" }
             },
             [
@@ -44120,17 +44065,13 @@ var render = function() {
             : _vm.catalogo == 2
             ? _c(
                 "div",
-                {
-                  staticClass: "col s12 l12",
-                  staticStyle: { "padding-left": "200px" }
-                },
+                { staticClass: "col s12 l12" },
                 _vm._l(_vm.arrayProductos, function(producto) {
                   return _c(
                     "div",
                     {
                       key: producto.idProducto,
-                      staticClass: "center card medium col s12 l3",
-                      staticStyle: { "margin-left": "20px" }
+                      staticClass: "center card medium col s12 l3 productosCard"
                     },
                     [
                       _c("div", { staticClass: "card-image " }, [
@@ -44724,7 +44665,11 @@ var render = function() {
                     }
                   ],
                   staticClass: "validate",
-                  attrs: { id: "nombre", type: "text" },
+                  attrs: {
+                    id: "nombre",
+                    type: "text",
+                    placeholder: "Nombre Producto"
+                  },
                   domProps: { value: _vm.NombreProducto },
                   on: {
                     input: function($event) {
@@ -44735,8 +44680,6 @@ var render = function() {
                     }
                   }
                 }),
-                _vm._v(" "),
-                _c("label", { attrs: { for: "nombre" } }, [_vm._v("Nombre")]),
                 _vm._v(" "),
                 _c("br"),
                 _vm._v(" "),
@@ -44750,7 +44693,11 @@ var render = function() {
                     }
                   ],
                   staticClass: "validate",
-                  attrs: { id: "descripcion", type: "text" },
+                  attrs: {
+                    id: "descripcion",
+                    type: "text",
+                    placeholder: "Descripcion"
+                  },
                   domProps: { value: _vm.Descripcion },
                   on: {
                     input: function($event) {
@@ -44761,10 +44708,6 @@ var render = function() {
                     }
                   }
                 }),
-                _vm._v(" "),
-                _c("label", { attrs: { for: "descripcion" } }, [
-                  _vm._v("Descripcion")
-                ]),
                 _vm._v(" "),
                 _c("br"),
                 _vm._v(" "),
@@ -44778,7 +44721,7 @@ var render = function() {
                     }
                   ],
                   staticClass: "validate",
-                  attrs: { id: "precio", type: "text" },
+                  attrs: { id: "precio", type: "text", placeholder: "Precio" },
                   domProps: { value: _vm.Precio },
                   on: {
                     input: function($event) {
@@ -44789,8 +44732,6 @@ var render = function() {
                     }
                   }
                 }),
-                _vm._v(" "),
-                _c("label", { attrs: { for: "precio" } }, [_vm._v("Precio")]),
                 _vm._v(" "),
                 _c("br"),
                 _vm._v(" "),
@@ -44804,7 +44745,11 @@ var render = function() {
                     }
                   ],
                   staticClass: "validate",
-                  attrs: { id: "descripcion", type: "text" },
+                  attrs: {
+                    id: "descripcion",
+                    type: "text",
+                    placeholder: "Existencia"
+                  },
                   domProps: { value: _vm.Existencia },
                   on: {
                     input: function($event) {
@@ -44815,10 +44760,6 @@ var render = function() {
                     }
                   }
                 }),
-                _vm._v(" "),
-                _c("label", { attrs: { for: "descripcion" } }, [
-                  _vm._v("Existencia")
-                ]),
                 _vm._v(" "),
                 _c("br"),
                 _vm._v(" "),
@@ -45625,7 +45566,11 @@ var render = function() {
                     }
                   ],
                   staticClass: "validate",
-                  attrs: { id: "nombre", type: "text" },
+                  attrs: {
+                    id: "nombre",
+                    type: "text",
+                    placeholder: "Nombre SubCategoria"
+                  },
                   domProps: { value: _vm.NombreSub },
                   on: {
                     input: function($event) {
@@ -45637,11 +45582,10 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _c(
-                  "label",
-                  { staticClass: "activate", attrs: { for: "nombre" } },
-                  [_vm._v("Nombre")]
-                ),
+                _c("label", {
+                  staticClass: "activate",
+                  attrs: { for: "nombre" }
+                }),
                 _vm._v(" "),
                 _c("br"),
                 _vm._v(" "),

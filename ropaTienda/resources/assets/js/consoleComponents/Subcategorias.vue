@@ -13,8 +13,8 @@
                     <div class="input-field ">
                             <!-- input para el nombre de la Sub categoria -->
                         
-                        <input  id="nombre" type="text" v-model="NombreSub" class="validate">
-                            <label class="activate" for="nombre">Nombre</label>
+                        <input  id="nombre" type="text" v-model="NombreSub" placeholder="Nombre SubCategoria" class="validate">
+                            <label class="activate" for="nombre"></label>
 
                         <br> 
                             <!-- select Sub categorias -->                        
