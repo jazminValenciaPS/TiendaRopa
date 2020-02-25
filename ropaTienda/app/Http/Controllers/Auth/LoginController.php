@@ -35,7 +35,7 @@ class LoginController extends Controller
         // ,'password' => $request->password])
             // Auth::loginUsingId(Auth::user()->userTablePrimaryKey);
             // return 'Tu sesión ha sido iniciada con éxito';
-            redirect()->route('consola');
+            redirect('/consola');
         }
 
         return back()
