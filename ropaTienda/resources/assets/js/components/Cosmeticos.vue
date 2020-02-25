@@ -7,7 +7,7 @@
    <div class="breadcrumb ">
         <div class="breadcrumb-item">
             <div class="col s12 ">
-                <a v-if="catalogo>=1" @click="catalogo=1" class="black-text ">Accesorios</a>
+                <a v-if="catalogo>=1" @click="catalogo=1" class="black-text ">Cosméticos</a>
                 <a v-if="catalogo>=2" @click="catalogo=2" class="black-text ">/ {{bread2}}</a>
                 <a v-if="catalogo>=3" @click="catalogo=3" class="black-text ">/ {{bread3}}</a>
             </div>

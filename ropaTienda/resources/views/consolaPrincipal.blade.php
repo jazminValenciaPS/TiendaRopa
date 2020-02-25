@@ -32,8 +32,8 @@
       <footer class="page-footer deep-orange lighten-4">
        
           <div class="container brown-text">
-          © 2014 Copyright Text
-          <a class="brown-text right" href="#!">More Links</a>
+          © 2020 Copyright 
+          <a class="brown-text right" href="#!"></a>
           </div>
     
       </footer>
